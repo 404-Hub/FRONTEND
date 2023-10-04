@@ -9,8 +9,8 @@ import Box from '@mui/material/Box';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Logo } from '@/components/Logo.tsx';
-import { theme } from '@/providers/UiProvider.tsx';
+import { Logo } from '@/components/layout/Logo';
+import { theme } from '@/providers/UiProvider';
 import Link from 'next/link';
 
 type HeaderTab = {
@@ -94,9 +94,13 @@ export const Header: FC = () => (
                   Войти
                 </Button>
               </Link>
-              <Button color="inherit" variant={'contained'}>
-                Регистрация
-              </Button>
+              <Link
+                  href={{ pathname: '/register' }}
+              >
+                <Button color="inherit" variant={'contained'}>
+                  Регистрация
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Toolbar>

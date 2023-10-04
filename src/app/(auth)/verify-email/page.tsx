@@ -1,4 +1,4 @@
-import VerifyEmailForm from '@/containers/verify-email-form';
+import VerifyEmailForm from '@/components/auth/VerifyEmailForm';
 
 export default function Page() {
   return (

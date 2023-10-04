@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import PasswordResetForm from '@/containers/password-reset-form';
+import PasswordResetForm from '@/components/auth/PasswordResetForm';
 
 export default function Page() {
   return (

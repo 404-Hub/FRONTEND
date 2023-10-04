@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container';
-import { MainCover } from '@/components/MainCover.tsx';
+import { MainCover } from '@/components/MainCover';
 
 export default function Page() {
   return (

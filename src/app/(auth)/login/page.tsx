@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
-import LoginForm from '@/containers/LoginForm.tsx';
+import LoginForm from '@/components/auth/LoginForm';
 
 export default function Page() {
   return (

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import UserNavigation from '@/containers/user-navigation';
+import UserNavigation from '@/components/auth/user-navigation';
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;

@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/lib/session';
-import { ChangePasswordForm } from '@/containers/change-password-form';
-import UpdateUserForm from '@/containers/update-user-form';
+import { ChangePasswordForm } from '@/components/auth/ChangePasswordForm';
+import UpdateUserForm from '@/components/auth/UpdateUserForm';
 
 export default async function Page() {
   const user = await getCurrentUser();

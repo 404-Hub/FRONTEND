@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import { AuthProvider } from '@/providers/AuthProvider.tsx';
-import { UiProvider } from '@/providers/UiProvider.tsx';
+import { AuthProvider } from '@/providers/AuthProvider';
+import { UiProvider } from '@/providers/UiProvider';
 import '@/styles/index.scss';
 
 export const metadata = {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ForgotPasswordForm } from '@/containers/forgot-password-form';
+import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm';
 
 export default function Page() {
   return (
