@@ -2,4 +2,5 @@
 module.exports = {
   singleAttributePerLine: true,
   printWidth: 100,
+  singleQuote: true,
 };
