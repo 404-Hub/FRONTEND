@@ -1,12 +1,12 @@
-import { PropsWithChildren } from 'react';
-import { Header } from '@/components/layout/Header';
+"use client";
 
-export default function Layout({
-  children,
-}: PropsWithChildren) {
+import { PropsWithChildren } from "react";
+import { Navigation } from "@/components/layout/Navigation";
+
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
-      <Header />
+      <Navigation />
       {children}
     </>
   );
