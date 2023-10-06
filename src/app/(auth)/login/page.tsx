@@ -1,5 +1,6 @@
 'use client';
 
+import NextLink from 'next/link';
 import { Link, Typography } from '@mui/material';
 import LoginForm from '@/components/auth/LoginForm';
 
@@ -19,7 +20,14 @@ export default function Page() {
         sx={{ mb: 5 }}
       >
         Нет аккаунта? {''}
-        <Link variant="subtitle2">Зарегистрироваться</Link>
+        <NextLink href={'/register'}>
+          <Link
+            component={'span'}
+            variant="subtitle2"
+          >
+            Зарегистрироваться
+          </Link>
+        </NextLink>
       </Typography>
 
       {/* <Divider sx={{ my: 3 }}> */}

@@ -1,9 +1,9 @@
 'use client';
 
 import NextLink from 'next/link';
+import Link from '@mui/material/Link';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -40,12 +40,10 @@ export default function LoginForm() {
     const credentials = Object.fromEntries(formData);
     const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-    signIn('credentials', { ...credentials, callbackUrl });
-  }
+    await signIn('credentials', { ...credentials, callbackUrl });
 
-  const handleClick = () => {
-    router.push('/dashboard');
-  };
+    router.push('/');
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -104,7 +102,6 @@ export default function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        onClick={handleClick}
       >
         Войти
       </LoadingButton>
