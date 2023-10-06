@@ -1,65 +1,65 @@
-"use client";
+'use client';
 
-import { FC, useCallback, useMemo, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import { Logo } from "@/components/layout/Logo";
-import { theme } from "@/providers/UiProvider";
-import Link from "next/link";
-import Drawer from "@mui/material/Drawer";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useViewport } from "@/providers/ViewportProvider";
-import { usePathname } from "next/navigation";
-import Typography from "@mui/material/Typography";
+import { FC, useCallback, useMemo, useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { Logo } from '@/components/layout/Logo';
+import Link from 'next/link';
+import Drawer from '@mui/material/Drawer';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useViewport } from '@/providers/ViewportProvider';
+import { usePathname } from 'next/navigation';
+import Typography from '@mui/material/Typography';
+import { theme } from '@/theme';
 
 type HeaderLink = {
   label: string;
   value: string;
 };
 
-const AuthBlock: FC<{ type: "mobile" | "desktop" }> = ({ type }) => (
+const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
   <Box
     sx={{
-      display: "flex",
+      display: 'flex',
       gap: 1,
-      justifyContent: "stretch",
+      justifyContent: 'stretch',
       flexGrow: 1,
-      ...(type === "mobile"
+      ...(type === 'mobile'
         ? {
             padding: 2,
-            "& > *": {
+            '& > *': {
               flex: 1,
-              width: "50%",
+              width: '50%',
             },
           }
         : {}),
     }}
   >
-    <Link href={{ pathname: "/login" }}>
+    <Link href={{ pathname: '/login' }}>
       <Button
         sx={{
-          width: "100%",
+          width: '100%',
         }}
         color="inherit"
-        variant={"contained"}
+        variant={'contained'}
       >
         Войти
       </Button>
     </Link>
-    <Link href={{ pathname: "/register" }}>
+    <Link href={{ pathname: '/register' }}>
       <Button
         sx={{
-          width: "100%",
+          width: '100%',
         }}
         color="inherit"
-        variant={"contained"}
+        variant={'contained'}
       >
         Регистрация
       </Button>
@@ -69,24 +69,24 @@ const AuthBlock: FC<{ type: "mobile" | "desktop" }> = ({ type }) => (
 
 const HeaderDesktop: FC<{
   links: HeaderLink[];
-  activeLink: HeaderLink["value"];
+  activeLink: HeaderLink['value'];
 }> = ({ links, activeLink }) => (
   <Container maxWidth="lg">
     <AppBar
       position="sticky"
-      color={"transparent"}
+      color={'transparent'}
       sx={{
         boxShadow: 0,
-        display: "flex",
-        justifyContent: "center",
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
       <Toolbar
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: 'flex',
+          justifyContent: 'space-between',
           flexGrow: 1,
-          maxWidth: "1440px",
+          maxWidth: '1440px',
         }}
       >
         <Logo />
@@ -104,15 +104,15 @@ const HeaderDesktop: FC<{
             />
           ))}
         </Tabs>
-        <Box sx={{ display: "flex", gap: 3 }}>
+        <Box sx={{ display: 'flex', gap: 3 }}>
           <Button
             color="inherit"
-            sx={{ display: "flex", gap: 1 }}
+            sx={{ display: 'flex', gap: 1 }}
           >
             Telegram
             <TelegramIcon />
           </Button>
-          <AuthBlock type={"desktop"} />
+          <AuthBlock type={'desktop'} />
         </Box>
       </Toolbar>
     </AppBar>
@@ -121,7 +121,7 @@ const HeaderDesktop: FC<{
 
 const HeaderMobile: FC<{
   links: HeaderLink[];
-  activeLink: HeaderLink["value"];
+  activeLink: HeaderLink['value'];
 }> = ({ links }) => {
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
@@ -134,16 +134,16 @@ const HeaderMobile: FC<{
       <Container maxWidth="lg">
         <AppBar
           position="sticky"
-          color={"transparent"}
+          color={'transparent'}
           sx={{
             boxShadow: 0,
-            display: "flex",
-            justifyContent: "center",
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <Toolbar
             sx={{
-              display: "flex",
+              display: 'flex',
               gap: 1,
               padding: 0,
             }}
@@ -156,15 +156,15 @@ const HeaderMobile: FC<{
         </AppBar>
       </Container>
       <Drawer
-        anchor={"left"}
+        anchor={'left'}
         open={isMobileMenuExpanded}
         onClose={toggleMobileMenu}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "80vw",
+            display: 'flex',
+            flexDirection: 'column',
+            width: '80vw',
           }}
         >
           <Box
@@ -176,27 +176,27 @@ const HeaderMobile: FC<{
             }}
           >
             <Typography
-              variant={"h6"}
-              align={"left"}
-              sx={{ width: "100%" }}
+              variant={'h6'}
+              align={'left'}
+              sx={{ width: '100%' }}
             >
               Menu
             </Typography>
           </Box>
-          <AuthBlock type={"mobile"} />
+          <AuthBlock type={'mobile'} />
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               padding: 2,
             }}
           >
             {links.map((tab) => (
               <Button key={tab.value}>
                 <Typography
-                  variant={"body2"}
-                  align={"left"}
-                  sx={{ width: "100%" }}
+                  variant={'body2'}
+                  align={'left'}
+                  sx={{ width: '100%' }}
                 >
                   {tab.label}
                 </Typography>
@@ -209,11 +209,11 @@ const HeaderMobile: FC<{
   );
 };
 
-const pathToLinkSlugMap: Record<HeaderLink["value"], string> = {
-  "/": "main",
-  "/my-tasks": "myTasks",
-  "/find-project": "findProject",
-  "/propose-idea": "proposeIdea",
+const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
+  '/': 'main',
+  '/my-tasks': 'myTasks',
+  '/find-project': 'findProject',
+  '/propose-idea': 'proposeIdea',
 };
 
 export const Navigation: FC = () => {
@@ -226,20 +226,20 @@ export const Navigation: FC = () => {
   const links = useMemo<HeaderLink[]>(
     () => [
       {
-        label: "Главная",
-        value: "main",
+        label: 'Главная',
+        value: 'main',
       },
       {
-        label: "Мои задачи",
-        value: "myTasks",
+        label: 'Мои задачи',
+        value: 'myTasks',
       },
       {
-        label: "Найти проект",
-        value: "findProject",
+        label: 'Найти проект',
+        value: 'findProject',
       },
       {
-        label: "Предложить идею для проекта",
-        value: "proposeIdea",
+        label: 'Предложить идею для проекта',
+        value: 'proposeIdea',
       },
     ],
     []

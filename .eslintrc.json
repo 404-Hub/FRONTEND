@@ -3,6 +3,7 @@
   "rules": {
     "no-console": "error",
     "import/extensions": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "react/display-name": "off"
   }
 }

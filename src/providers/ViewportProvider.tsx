@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useContext, createContext, PropsWithChildren } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { theme } from "@/providers/UiProvider";
+import { useContext, createContext, PropsWithChildren } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { theme } from '@/theme';
 
 export type ViewportContextState = {
   smOrLess: boolean;
@@ -19,10 +19,10 @@ export const ViewportContext = createContext<ViewportContextState>({
 });
 
 export function ViewportProvider({ children }: PropsWithChildren) {
-  const lgOrLess = useMediaQuery(theme.breakpoints.down("lg"));
-  const mdOrLess = useMediaQuery(theme.breakpoints.down("md"));
-  const smOrLess = useMediaQuery(theme.breakpoints.down("sm"));
-  const smOrMore = useMediaQuery(theme.breakpoints.up("sm"));
+  const lgOrLess = useMediaQuery(theme.breakpoints.down('lg'));
+  const mdOrLess = useMediaQuery(theme.breakpoints.down('md'));
+  const smOrLess = useMediaQuery(theme.breakpoints.down('sm'));
+  const smOrMore = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <ViewportContext.Provider

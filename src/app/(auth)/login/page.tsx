@@ -1,24 +1,34 @@
-import Link from 'next/link';
-import Typography from '@mui/material/Typography';
+'use client';
+
+import { Link, Typography } from '@mui/material';
 import LoginForm from '@/components/auth/LoginForm';
 
 export default function Page() {
   return (
     <>
-      <Typography variant="h3">
-        Login
+      <Typography
+        variant="h4"
+        gutterBottom
+      >
+        Войти | 404 Hub
       </Typography>
 
-      <LoginForm />
+      <Typography
+        component={'div'}
+        variant="body2"
+        sx={{ mb: 5 }}
+      >
+        Нет аккаунта? {''}
+        <Link variant="subtitle2">Зарегистрироваться</Link>
+      </Typography>
 
-      <ul>
-        <li>
-          <Link href="/register">Register</Link>
-        </li>
-        <li>
-          <Link href="/forgot-password">Forgot password</Link>
-        </li>
-      </ul>
+      {/* <Divider sx={{ my: 3 }}> */}
+      {/*  <Typography variant="body2" sx={{ color: 'text.secondary' }}> */}
+      {/*    ИЛИ */}
+      {/*  </Typography> */}
+      {/* </Divider> */}
+
+      <LoginForm />
     </>
   );
 }
