@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Logo } from '@/components/layout/Logo';
+import { Logo } from '@/components/base/logo/Logo';
 import Link from 'next/link';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';

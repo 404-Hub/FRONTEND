@@ -2,7 +2,7 @@
 
 import { styled } from '@mui/material/styles';
 import { Container } from '@mui/material';
-import { Logo } from '@/components/layout/Logo';
+import { Logo } from '@/components/base/logo/Logo';
 import { PropsWithChildren } from 'react';
 
 const StyledRoot = styled('div')(({ theme }) => ({

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import Typography from '@mui/material/Typography';
-import { SX } from '../../../types/sx';
+import { SX } from '../../../../types/sx';
 
 export type LogoProps = {
   sx?: SX;

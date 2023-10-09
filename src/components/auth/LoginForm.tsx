@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import { signIn } from 'next-auth/react';
@@ -11,8 +13,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { FormEvent, useState } from 'react';
 import { Iconify } from '@/components/base/iconify/Iconify';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SignInDto, signInDtoSchema } from '@/api/auth/signIn';
 
 function FormError({ error }: { error: string | null }) {
   if (!error) return null;
@@ -33,45 +36,74 @@ export default function LoginForm() {
 
   const error = searchParams.get('error');
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInDto>({
+    resolver: zodResolver(signInDtoSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-    const formData = new FormData(event.currentTarget);
-    const credentials = Object.fromEntries(formData);
+  const onSubmit = useCallback(async (data: SignInDto) => {
     const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-    await signIn('credentials', { ...credentials, callbackUrl });
+    await signIn('credentials', { ...data, callbackUrl });
 
     router.push('/');
-  }
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <TextField
+        <Controller
           name="email"
-          label="Email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="email"
+              label="Email"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.email?.message}
+              helperText={errors.email?.message}
+            />
+          )}
         />
 
-        <TextField
+        <Controller
           name="password"
-          label="Пароль"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="password"
+              label="Пароль"
+              type={showPassword ? 'text' : 'password'}
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
         />
-        <FormError error={error} />
       </Stack>
+
+      <FormError error={error} />
 
       <Stack
         direction="row"

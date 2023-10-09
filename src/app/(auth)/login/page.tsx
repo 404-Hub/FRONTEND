@@ -24,6 +24,9 @@ export default function Page() {
           <Link
             component={'span'}
             variant="subtitle2"
+            sx={{
+              cursor: 'pointer',
+            }}
           >
             Зарегистрироваться
           </Link>
