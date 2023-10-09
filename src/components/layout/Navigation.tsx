@@ -76,7 +76,7 @@ const HeaderDesktop: FC<{
       position="sticky"
       color={'transparent'}
       sx={{
-        boxShadow: 0,
+        boxShadow: 'none',
         display: 'flex',
         justifyContent: 'center',
       }}
