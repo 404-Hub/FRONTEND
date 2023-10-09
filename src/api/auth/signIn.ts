@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { InferType, object, string } from 'yup';
 
-export const signInDtoSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+export const signInDtoSchema = object().shape({
+  email: string().email().required(),
+  password: string().min(8).required(),
 });
 
-export type SignInDto = z.infer<typeof signInDtoSchema>;
+export type SignInDto = InferType<typeof signInDtoSchema>;
 
 export type SignInResponse = {
   // todo

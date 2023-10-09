@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Iconify } from '@/components/base/iconify/Iconify';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { SignInDto, signInDtoSchema } from '@/api/auth/signIn';
 
 function FormError({ error }: { error: string | null }) {
@@ -41,7 +41,7 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<SignInDto>({
-    resolver: zodResolver(signInDtoSchema),
+    resolver: yupResolver(signInDtoSchema),
     defaultValues: {
       email: '',
       password: '',

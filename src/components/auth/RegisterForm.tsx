@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { useCallback, useState } from 'react';
 import fetchClient from '@/lib/fetch-client';
 import { signIn } from 'next-auth/react';
 import TextField from '@mui/material/TextField';
@@ -15,6 +15,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Iconify } from '@/components/base/iconify/Iconify';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SignUpDto, signUpDtoSchema } from '@/api/auth/signUp';
 
 function FormError({ error }: { error: string | null }) {
   if (!error) return null;
@@ -35,15 +38,26 @@ export default function LoginForm() {
 
   const error = searchParams.get('error');
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpDto>({
+    resolver: yupResolver(signUpDtoSchema),
+    defaultValues: {
+      email: '',
+      name: '',
+      password: '',
+      passwordConfirm: '',
+    },
+  });
 
+  const onSubmit = useCallback(async (data: SignUpDto) => {
     try {
-      const formData = new FormData(event.currentTarget);
       const response = await fetchClient({
         method: 'POST',
         url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/register`,
-        body: JSON.stringify(Object.fromEntries(formData)),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -51,8 +65,8 @@ export default function LoginForm() {
       }
 
       const credentials = {
-        email: formData.get('email'),
-        password: formData.get('password'),
+        email: data.email,
+        password: data.password,
       };
 
       await signIn('credentials', credentials);
@@ -70,56 +84,97 @@ export default function LoginForm() {
 
       throw new Error('An error has occurred during registration request');
     }
-  };
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <TextField
+        <Controller
           name="email"
-          label="Email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="email"
+              label="Email"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.email?.message}
+              helperText={errors.email?.message}
+            />
+          )}
         />
 
-        <TextField
+        <Controller
           name="name"
-          label="Name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="name"
+              label="Name"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.name?.message}
+              helperText={errors.name?.message}
+            />
+          )}
         />
 
-        <TextField
+        <Controller
           name="password"
-          label="Пароль"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="password"
+              label="Пароль"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message}
+            />
+          )}
         />
 
-        <TextField
-          name="passwordConfirmation"
-          label="Подтверждение пароля"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+        <Controller
+          name="passwordConfirm"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              name="passwordConfirm"
+              label="Подтверждение пароля"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              value={field.value}
+              onChange={field.onChange}
+              error={!!errors.passwordConfirm?.message}
+              helperText={errors.passwordConfirm?.message}
+            />
+          )}
         />
+
         <FormError error={error} />
       </Stack>
 
