@@ -141,6 +141,16 @@ const HeaderMobile: FC<{
     setIsMobileMenuExpanded(!isMobileMenuExpanded);
   }, [isMobileMenuExpanded, setIsMobileMenuExpanded]);
 
+  const router = useRouter();
+  const handleTabClick = (value) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find(key => pathToLinkSlugMap[key] === value);
+    if (pathKey) {
+      router.push(pathKey);
+    } else {
+      console.error('Нет соответствующего ключа для значения:', value);
+    }
+  };
+
   return (
     <>
       <Container maxWidth="lg">
@@ -204,7 +214,7 @@ const HeaderMobile: FC<{
             }}
           >
             {links.map((tab) => (
-              <Button key={tab.value}>
+              <Button key={tab.value} onClick={() => handleTabClick(tab.value)}>
                 <Typography
                   variant={'body2'}
                   align={'left'}
