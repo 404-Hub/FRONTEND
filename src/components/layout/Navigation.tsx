@@ -15,7 +15,7 @@ import Link from 'next/link';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useViewport } from '@/providers/ViewportProvider';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Typography from '@mui/material/Typography';
 import { theme } from '@/theme';
 
@@ -24,7 +24,7 @@ type HeaderLink = {
   value: string;
 };
 
-const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
+const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({type}) => (
   <Box
     sx={{
       display: 'flex',
@@ -33,16 +33,16 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
       flexGrow: 1,
       ...(type === 'mobile'
         ? {
-            padding: 2,
-            '& > *': {
-              flex: 1,
-              width: '50%',
-            },
-          }
+          padding: 2,
+          '& > *': {
+            flex: 1,
+            width: '50%',
+          },
+        }
         : {}),
     }}
   >
-    <Link href={{ pathname: '/login' }}>
+    <Link href={{pathname: '/login'}}>
       <Button
         sx={{
           width: '100%',
@@ -53,7 +53,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
         Войти
       </Button>
     </Link>
-    <Link href={{ pathname: '/register' }}>
+    <Link href={{pathname: '/register'}}>
       <Button
         sx={{
           width: '100%',
@@ -70,59 +70,71 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
 const HeaderDesktop: FC<{
   links: HeaderLink[];
   activeLink: HeaderLink['value'];
-}> = ({ links, activeLink }) => (
-  <Container maxWidth="lg">
-    <AppBar
-      position="sticky"
-      color={'transparent'}
-      sx={{
-        boxShadow: 'none',
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
-      <Toolbar
+}> = ({links, activeLink}) => {
+  const router = useRouter();
+  const handleTabClick = (value) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find(key => pathToLinkSlugMap[key] === value);
+    if (pathKey) {
+      router.push(pathKey);
+    } else {
+      console.error('Нет соответствующего ключа для значения:', value);
+    }
+  };
+
+  return (
+    <Container maxWidth="lg">
+      <AppBar
+        position="sticky"
+        color={'transparent'}
         sx={{
+          boxShadow: 'none',
           display: 'flex',
-          justifyContent: 'space-between',
-          flexGrow: 1,
-          maxWidth: '1440px',
+          justifyContent: 'center',
         }}
       >
-        <Logo />
-        {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
-        <Tabs value={activeLink || false}>
-          {links.map(({ label, value }) => (
-            <Tab
-              key={value}
-              label={label}
-              value={value}
-              sx={{
-                fontSize: theme.typography.pxToRem(12),
-                padding: 1,
-              }}
-            />
-          ))}
-        </Tabs>
-        <Box sx={{ display: 'flex', gap: 3 }}>
-          <Button
-            color="inherit"
-            sx={{ display: 'flex', gap: 1 }}
-          >
-            Telegram
-            <TelegramIcon />
-          </Button>
-          <AuthBlock type={'desktop'} />
-        </Box>
-      </Toolbar>
-    </AppBar>
-  </Container>
-);
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexGrow: 1,
+            maxWidth: '1440px',
+          }}
+        >
+          <Logo/>
+          {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
+          <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
+            {links.map(({label, value}) => (
+              <Tab
+                key={value}
+                label={label}
+                value={value}
+                sx={{
+                  fontSize: theme.typography.pxToRem(12),
+                  padding: 1,
+                }}
+              />
+            ))}
+          </Tabs>
+          <Box sx={{display: 'flex', gap: 3}}>
+            <Button
+              color="inherit"
+              sx={{display: 'flex', gap: 1}}
+            >
+              Telegram
+              <TelegramIcon/>
+            </Button>
+            <AuthBlock type={'desktop'}/>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Container>
+  )
+}
 
 const HeaderMobile: FC<{
   links: HeaderLink[];
   activeLink: HeaderLink['value'];
-}> = ({ links }) => {
+}> = ({links}) => {
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
   const toggleMobileMenu = useCallback(() => {
@@ -149,9 +161,9 @@ const HeaderMobile: FC<{
             }}
           >
             <IconButton onClick={toggleMobileMenu}>
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
-            <Logo />
+            <Logo/>
           </Toolbar>
         </AppBar>
       </Container>
@@ -178,12 +190,12 @@ const HeaderMobile: FC<{
             <Typography
               variant={'h6'}
               align={'left'}
-              sx={{ width: '100%' }}
+              sx={{width: '100%'}}
             >
               Menu
             </Typography>
           </Box>
-          <AuthBlock type={'mobile'} />
+          <AuthBlock type={'mobile'}/>
           <Box
             sx={{
               display: 'flex',
@@ -196,7 +208,7 @@ const HeaderMobile: FC<{
                 <Typography
                   variant={'body2'}
                   align={'left'}
-                  sx={{ width: '100%' }}
+                  sx={{width: '100%'}}
                 >
                   {tab.label}
                 </Typography>
@@ -217,7 +229,7 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
 };
 
 export const Navigation: FC = () => {
-  const { mdOrLess } = useViewport();
+  const {mdOrLess} = useViewport();
 
   const pathname = usePathname();
 
@@ -244,7 +256,6 @@ export const Navigation: FC = () => {
     ],
     []
   );
-
   return mdOrLess ? (
     <HeaderMobile
       activeLink={activeLink}
