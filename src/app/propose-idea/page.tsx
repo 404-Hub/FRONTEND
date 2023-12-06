@@ -186,19 +186,19 @@ export default function Page() {
           Ты хочешь получить:
         </Typography>
         <Typography variant="subtitle1">
-          {userInputs['Опишите, что нужно сделать']}
+          {userInputs.description}
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           Для кого:
         </Typography>
         <Typography variant="subtitle1">
-          {userInputs['Опишите, ваших клиентов']}
+          {userInputs.additional}
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           Название проекта:
         </Typography>
         <Typography variant="subtitle1">
-          {userInputs['Название проекта']}
+          {userInputs.title}
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           Все верно?
@@ -354,8 +354,8 @@ export default function Page() {
               fullWidth
               label={currentStep.labelTitle}
               margin="normal"
-              value={userInputs[currentStep.labelTitle] || ''}
-              onChange={(e) => handleInputChange(currentStep.labelTitle, e.target.value)}
+              value={userInputs[currentStep.fieldName] || ''}
+              onChange={(e) => handleInputChange(currentStep.fieldName, e.target.value)}
             />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Paper elevation={1} sx={{
