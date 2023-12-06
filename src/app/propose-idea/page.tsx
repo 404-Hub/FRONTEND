@@ -128,7 +128,6 @@ export default function Page() {
   const [language, setLanguage] = useState('ru');
   const [stepData, setStepData] = useState(stepDataRu);
   const currentStep: OneStepData = stepData[activeStep];
-  // const stepData: OneStepData[] = stepDataJson as OneStepData[];
 
   useEffect(() => {
     setStepData(language === 'ru' ? stepDataRu : stepDataEn);
@@ -372,13 +371,23 @@ export default function Page() {
             >
               {currentStep.title}
             </Typography>
-            <TextField
-              fullWidth
-              label={currentStep.labelTitle}
-              margin="normal"
-              value={userInputs[currentStep.fieldName] || ''}
-              onChange={(e) => handleInputChange(currentStep.fieldName, e.target.value)}
-            />
+            {activeStep === 0 || activeStep === 1
+              ? <TextField
+                multiline
+                fullWidth
+                label={currentStep.labelTitle}
+                margin="normal"
+                value={userInputs[currentStep.fieldName] || ''}
+                onChange={(e) => handleInputChange(currentStep.fieldName, e.target.value)}
+              />
+              : <TextField
+                fullWidth
+                label={currentStep.labelTitle}
+                margin="normal"
+                value={userInputs[currentStep.fieldName] || ''}
+                onChange={(e) => handleInputChange(currentStep.fieldName, e.target.value)}
+              />
+            }
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Paper elevation={1} sx={{
                 display: 'flex',
