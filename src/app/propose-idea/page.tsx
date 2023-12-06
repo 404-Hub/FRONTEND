@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -18,7 +18,8 @@ import SvgIcon from '@mui/material/SvgIcon';
 import AddIcon from '@mui/icons-material/Add';
 import LensIcon from '@mui/icons-material/Lens';
 import RemoveIcon from '@mui/icons-material/Remove';
-import stepDataJson from './stepData.json';
+import stepDataRu from './stepDataRu.json';
+import stepDataEn from './stepDataEn.json';
 
 interface OneStepData {
   label: string;
@@ -34,8 +35,6 @@ interface OneStepData {
   isCorrectTitle: string;
   buttons: object[];
 }
-
-const stepData: OneStepData[] = stepDataJson as OneStepData[];
 
 function BoldCheckIcon(props) {
   return (
@@ -126,7 +125,18 @@ export default function Page() {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [showExample, setShowExample] = useState<boolean>(false);
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
+  const [language, setLanguage] = useState('ru');
+  const [stepData, setStepData] = useState(stepDataRu);
   const currentStep: OneStepData = stepData[activeStep];
+  // const stepData: OneStepData[] = stepDataJson as OneStepData[];
+
+  useEffect(() => {
+    setStepData(language === 'ru' ? stepDataRu : stepDataEn);
+  }, [language]);
+
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'ru' ? 'en' : 'ru'));
+  };
 
   const handleInputChange = (stepKey: string, value: string) => {
     setUserInputs((prevInputs) => ({
@@ -309,6 +319,9 @@ export default function Page() {
               {currentStep.header}
             </Typography>
           </Box>
+          <Button onClick={toggleLanguage}>
+            {language === 'ru' ? 'Switch to English' : 'Переключить на русский'}
+          </Button>
           <Box
             sx={{
               display: 'flex',
@@ -341,7 +354,6 @@ export default function Page() {
             </Stepper>
           </Box>
         </Box>
-
         {activeStep === 3 ? renderSummary()
           : <Box
             sx={{
