@@ -221,7 +221,7 @@ export default function Page() {
             onClick={buttonActions.EditData}
             fullWidth
           >
-            Изменить данные
+            {currentStep.buttons[0].EditData}
           </Button>
         </Box>
         <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
@@ -230,14 +230,14 @@ export default function Page() {
             onClick={buttonActions.Cancel}
             fullWidth
           >
-            Отмена
+            {currentStep.buttons[1].Cancel}
           </Button>
           <Button
             {...buttonStyles.Approve}
             onClick={buttonActions.Approve}
             fullWidth
           >
-            Да, всё верно
+            {currentStep.buttons[2].Approve}
           </Button>
         </Box>
       </Box>
