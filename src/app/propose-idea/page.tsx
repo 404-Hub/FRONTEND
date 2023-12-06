@@ -22,10 +22,13 @@ import stepDataJson from './stepData.json';
 
 interface OneStepData {
   label: string;
+  header: string;
   title: string;
+  fieldName: string;
   labelTitle: string;
+  showExample: string;
   exampleText: string;
-  buttons: string[];
+  buttons: object[];
 }
 
 const stepData: OneStepData[] = stepDataJson as OneStepData[];
@@ -108,10 +111,10 @@ function ColorlibStepIcon(props) {
     );
   }
   return (
-      <div>
-        {active ? <LensIcon style={iconStyle}/>
-          : <LensIcon style={iconStyle}/>}
-      </div>
+    <div>
+      {active ? <LensIcon style={iconStyle}/>
+        : <LensIcon style={iconStyle}/>}
+    </div>
   );
 }
 
@@ -171,87 +174,90 @@ export default function Page() {
   };
 
   const renderSummary = () => (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-          width: 500,
-          position: 'relative',
-        }}>
-        <Typography variant="h5" gutterBottom>
-          Давай подытожим 🙂
-        </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-          Ты хочешь получить:
-        </Typography>
-        <Typography variant="subtitle1">
-          {userInputs.description}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-          Для кого:
-        </Typography>
-        <Typography variant="subtitle1">
-          {userInputs.additional}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-          Название проекта:
-        </Typography>
-        <Typography variant="subtitle1">
-          {userInputs.title}
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom>
-          Все верно?
-        </Typography>
-        <Box sx={{
-          position: 'absolute',
-          bottom: -227,
-          width: '500px',
-        }}>
-          <Box sx={{ width: '100%', marginBottom: '8px' }}>
-            <Button
-              {...buttonStyles.EditData}
-              onClick={buttonActions.EditData}
-              fullWidth
-            >
-              Изменить данные
-            </Button>
-          </Box>
-          <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
-            <Button
-              {...buttonStyles.Cancel}
-              onClick={buttonActions.Cancel}
-              fullWidth
-            >
-              Отмена
-            </Button>
-            <Button
-              {...buttonStyles.Approve}
-              onClick={buttonActions.Approve}
-              fullWidth
-            >
-              Да, всё верно
-            </Button>
-          </Box>
-        </Box>
-      </Box>
-  );
-
-  const renderButtons = (buttonNames) => (
-      <Box sx={{
-        display: 'flex', gap: '4', marginTop: '1rem', width: '100%',
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1,
+        width: 500,
+        position: 'relative',
       }}>
-        {buttonNames.map((name) => (
+      <Typography variant="h5" gutterBottom>
+        Давай подытожим 🙂
+      </Typography>
+      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+        Ты хочешь получить:
+      </Typography>
+      <Typography variant="subtitle1">
+        {userInputs.description}
+      </Typography>
+      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+        Для кого:
+      </Typography>
+      <Typography variant="subtitle1">
+        {userInputs.additional}
+      </Typography>
+      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+        Название проекта:
+      </Typography>
+      <Typography variant="subtitle1">
+        {userInputs.title}
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        Все верно?
+      </Typography>
+      <Box sx={{
+        position: 'absolute',
+        bottom: -227,
+        width: '500px',
+      }}>
+        <Box sx={{ width: '100%', marginBottom: '8px' }}>
           <Button
-            key={name}
-            {...buttonStyles[name]}
-            onClick={buttonActions[name]}
+            {...buttonStyles.EditData}
+            onClick={buttonActions.EditData}
             fullWidth
           >
-            {name}
+            Изменить данные
           </Button>
-        ))}
+        </Box>
+        <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
+          <Button
+            {...buttonStyles.Cancel}
+            onClick={buttonActions.Cancel}
+            fullWidth
+          >
+            Отмена
+          </Button>
+          <Button
+            {...buttonStyles.Approve}
+            onClick={buttonActions.Approve}
+            fullWidth
+          >
+            Да, всё верно
+          </Button>
+        </Box>
       </Box>
+    </Box>
+  );
+
+  const renderButtons = (buttons) => (
+    <Box sx={{
+      display: 'flex', gap: '4', marginTop: '1rem', width: '100%',
+    }}>
+      {buttons.map((buttonObj) => {
+        const [action, label] = Object.entries(buttonObj)[0];
+        return (
+          <Button
+            key={action}
+            {...buttonStyles[action]}
+            onClick={buttonActions[action]}
+            fullWidth
+          >
+            {label}
+          </Button>
+        );
+      })}
+    </Box>
   );
 
   return (
@@ -296,7 +302,7 @@ export default function Page() {
                 paddingLeft: '5rem',
               }}
             >
-              Создание проекта
+              {currentStep.header}
             </Typography>
           </Box>
           <Box
@@ -366,7 +372,7 @@ export default function Page() {
                 padding: '8px',
               }}>
                 <Typography variant="body1" sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
-                  Показать пример
+                  {currentStep.showExample}
                 </Typography>
                 <IconButton onClick={toggleExample} sx={{ color: 'action.active' }}>
                   {showExample ? <RemoveIcon/> : <AddIcon/>}
