@@ -65,12 +65,12 @@ const commonContainedStyle = {
 };
 
 const buttonStyles = {
-  Далее: commonContainedStyle,
-  Отмена: commonOutlinedStyle,
-  Назад: commonOutlinedStyle,
-  'Создать проект': commonContainedStyle,
-  'Изменить данные': commonOutlinedStyle,
-  'Да, всё верно': commonContainedStyle,
+  Next: commonContainedStyle,
+  Cancel: commonOutlinedStyle,
+  Back: commonOutlinedStyle,
+  CreateProject: commonContainedStyle,
+  EditData: commonOutlinedStyle,
+  Approve: commonContainedStyle,
 };
 
 const ColorlibConnector = styled(StepConnector)(() => ({
@@ -162,12 +162,12 @@ export default function Page() {
   };
 
   const buttonActions = {
-    Далее: handleNextClick,
-    Отмена: handleCancel,
-    Назад: handleBack,
-    'Создать проект': handleCreateProject,
-    'Изменить данные': handleEditData,
-    'Да, всё верно': handleApproveData,
+    Next: handleNextClick,
+    Cancel: handleCancel,
+    Back: handleBack,
+    CreateProject: handleCreateProject,
+    EditData: handleEditData,
+    Approve: handleApproveData,
   };
 
   const renderSummary = () => (
@@ -210,8 +210,8 @@ export default function Page() {
         }}>
           <Box sx={{ width: '100%', marginBottom: '8px' }}>
             <Button
-              {...buttonStyles['Изменить данные']}
-              onClick={buttonActions['Изменить данные']}
+              {...buttonStyles.EditData}
+              onClick={buttonActions.EditData}
               fullWidth
             >
               Изменить данные
@@ -219,15 +219,15 @@ export default function Page() {
           </Box>
           <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
             <Button
-              {...buttonStyles['Отмена']}
-              onClick={buttonActions['Отмена']}
+              {...buttonStyles.Cancel}
+              onClick={buttonActions.Cancel}
               fullWidth
             >
               Отмена
             </Button>
             <Button
-              {...buttonStyles['Да, всё верно']}
-              onClick={buttonActions['Да, всё верно']}
+              {...buttonStyles.Approve}
+              onClick={buttonActions.Approve}
               fullWidth
             >
               Да, всё верно
