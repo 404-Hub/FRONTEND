@@ -1,12 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import withNextIntl from 'next-intl/plugin'
+
+const wrap = withNextIntl()
+
+const nextConfig = wrap({
   experimental: {
     serverActions: true,
   },
-  i18n: {
-    locales: ['ru', 'en'],
-    defaultLocale: 'ru',
-  },
-};
+});
 
 export default nextConfig;

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+// import React, { useState } from 'react';
+// import { useTranslation } from 'next-i18next';
 import {
   Button,
   TextField,
@@ -122,11 +124,14 @@ function ColorlibStepIcon(props) {
 }
 
 export default function Page() {
+  // const { t, i18n } = useTranslation();
   const [activeStep, setActiveStep] = useState<number>(0);
   const [showExample, setShowExample] = useState<boolean>(false);
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
   const [language, setLanguage] = useState('ru');
   const [stepData, setStepData] = useState(stepDataRu);
+  // const currentStep = t('stepData', { returnObjects: true })[activeStep];
+
   const currentStep: OneStepData = stepData[activeStep];
 
   useEffect(() => {
@@ -136,6 +141,10 @@ export default function Page() {
   const toggleLanguage = () => {
     setLanguage((prevLanguage) => (prevLanguage === 'ru' ? 'en' : 'ru'));
   };
+
+  // const toggleLanguage = () => {
+  //   i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru');
+  // };
 
   const handleInputChange = (stepKey: string, value: string) => {
     setUserInputs((prevInputs) => ({
@@ -276,7 +285,8 @@ export default function Page() {
   return (
     <>
       <Container
-        component="main"
+        // component="main"
+        // component="proposeIdea"
         sx={{
           display: 'flex',
           flexDirection: 'column',
