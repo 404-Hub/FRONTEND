@@ -1,6 +1,8 @@
 'use client';
 
-import { FC, useCallback, useMemo, useState } from 'react';
+import {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,7 +26,14 @@ type HeaderLink = {
   value: string;
 };
 
-const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({type}) => (
+const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
+  '/': 'main',
+  '/my-tasks': 'myTasks',
+  '/find-project': 'findProject',
+  '/propose-idea': 'proposeIdea',
+};
+
+const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
   <Box
     sx={{
       display: 'flex',
@@ -42,7 +51,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({type}) => (
         : {}),
     }}
   >
-    <Link href={{pathname: '/login'}}>
+    <Link href={{ pathname: '/login' }}>
       <Button
         sx={{
           width: '100%',
@@ -53,7 +62,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({type}) => (
         Войти
       </Button>
     </Link>
-    <Link href={{pathname: '/register'}}>
+    <Link href={{ pathname: '/register' }}>
       <Button
         sx={{
           width: '100%',
@@ -70,10 +79,10 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({type}) => (
 const HeaderDesktop: FC<{
   links: HeaderLink[];
   activeLink: HeaderLink['value'];
-}> = ({links, activeLink}) => {
+}> = ({ links, activeLink }) => {
   const router = useRouter();
-  const handleTabClick = (value) => {
-    const pathKey = Object.keys(pathToLinkSlugMap).find(key => pathToLinkSlugMap[key] === value);
+  const handleTabClick = (value: string) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find((key) => pathToLinkSlugMap[key] === value);
     if (pathKey) {
       router.push(pathKey);
     } else {
@@ -103,7 +112,7 @@ const HeaderDesktop: FC<{
           <Logo/>
           {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
           <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
-            {links.map(({label, value}) => (
+            {links.map(({ label, value }) => (
               <Tab
                 key={value}
                 label={label}
@@ -115,10 +124,10 @@ const HeaderDesktop: FC<{
               />
             ))}
           </Tabs>
-          <Box sx={{display: 'flex', gap: 3}}>
+          <Box sx={{ display: 'flex', gap: 3 }}>
             <Button
               color="inherit"
-              sx={{display: 'flex', gap: 1}}
+              sx={{ display: 'flex', gap: 1 }}
             >
               Telegram
               <TelegramIcon/>
@@ -128,13 +137,13 @@ const HeaderDesktop: FC<{
         </Toolbar>
       </AppBar>
     </Container>
-  )
-}
+  );
+};
 
 const HeaderMobile: FC<{
   links: HeaderLink[];
   activeLink: HeaderLink['value'];
-}> = ({links}) => {
+}> = ({ links }) => {
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
   const toggleMobileMenu = useCallback(() => {
@@ -142,8 +151,8 @@ const HeaderMobile: FC<{
   }, [isMobileMenuExpanded, setIsMobileMenuExpanded]);
 
   const router = useRouter();
-  const handleTabClick = (value) => {
-    const pathKey = Object.keys(pathToLinkSlugMap).find(key => pathToLinkSlugMap[key] === value);
+  const handleTabClick = (value: string) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find((key) => pathToLinkSlugMap[key] === value);
     if (pathKey) {
       router.push(pathKey);
     } else {
@@ -200,7 +209,7 @@ const HeaderMobile: FC<{
             <Typography
               variant={'h6'}
               align={'left'}
-              sx={{width: '100%'}}
+              sx={{ width: '100%' }}
             >
               Menu
             </Typography>
@@ -218,7 +227,7 @@ const HeaderMobile: FC<{
                 <Typography
                   variant={'body2'}
                   align={'left'}
-                  sx={{width: '100%'}}
+                  sx={{ width: '100%' }}
                 >
                   {tab.label}
                 </Typography>
@@ -231,15 +240,8 @@ const HeaderMobile: FC<{
   );
 };
 
-const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
-  '/': 'main',
-  '/my-tasks': 'myTasks',
-  '/find-project': 'findProject',
-  '/propose-idea': 'proposeIdea',
-};
-
 export const Navigation: FC = () => {
-  const {mdOrLess} = useViewport();
+  const { mdOrLess } = useViewport();
 
   const pathname = usePathname();
 
@@ -264,7 +266,7 @@ export const Navigation: FC = () => {
         value: 'proposeIdea',
       },
     ],
-    []
+    [],
   );
   return mdOrLess ? (
     <HeaderMobile

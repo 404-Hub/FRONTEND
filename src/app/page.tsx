@@ -5,7 +5,7 @@ import { useTranslation } from '@/app/i18n';
 const Footer = AnyFooter as any;
 
 export default async function Page() {
-  const { t } = await useTranslation();
+  const { t } = await useTranslation('translation');
   console.log(t('h1'));
   return (
     <>
