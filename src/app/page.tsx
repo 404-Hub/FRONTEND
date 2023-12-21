@@ -1,12 +1,14 @@
 import { Container } from '@mui/material';
 import { Footer as AnyFooter } from '@/components/Footer';
 import { useTranslation } from '@/app/i18n';
+import { MainCover as AnyMainCover } from '../components/MainCover';
 
 const Footer = AnyFooter as any;
+const MainCover = AnyMainCover as any;
 
 export default async function Page() {
   const { t } = await useTranslation('translation');
-  console.log(t('h1'));
+  console.log(t('h4'));
   return (
     <>
       <Container
@@ -19,8 +21,20 @@ export default async function Page() {
           padding: 4,
         }}
       >
+        <MainCover />
       </Container>
-      <Footer path="/"/>
+      <Container
+        component="main"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 12,
+          padding: 4,
+        }}
+      >
+        <Footer path="/"/>
+      </Container>
     </>
   );
 }
