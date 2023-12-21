@@ -3,7 +3,7 @@ import { MainCover } from '@/components/MainCover';
 import { useTranslation } from '@/app/i18n';
 
 export default async function Page(): Promise<any> {
-  const { t } = await useTranslation();
+  const { t } = await useTranslation('translation');
   // console.log('Page t(\'h1\')=>', t('h1'));
   return (
     <>
