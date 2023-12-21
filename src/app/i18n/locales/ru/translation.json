@@ -1,0 +1,11 @@
+{
+  "h1": "Э симпл экзампл",
+  "title": "Хоум",
+  "to-client-page": "Ту клайнт пейдж",
+  "to-second-page": "Ту секонд пейдж",
+  "welcome": "Вэлком Next.js 13/14 <1>with the new app directory features</1> and i18next",
+  "blog": {
+    "text": "Чекаут корреспондинг <1>blog post</1> дейскрайбинк экзампл",
+    "link": "https://locize.com/blog/next-app-dir-i18n/"
+  }
+}

@@ -1,40 +1,31 @@
-import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { handleAuth } from './authMiddleware';
+import { handleLanguage } from './languageMiddleware';
+
+const authRoutes: string[] = ['/dashboard'];
+const verifyRoutes: string[] = ['/request-email-verification', '/verify-email'];
+const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)'],
+};
 
 export default withAuth(
-  async (request) => {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-    const isIndexpage = request.nextUrl.pathname === '/';
-    const isAuthRoute = authRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
-    const isVerifyRoute = verifyRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
-    const isGuestRoute = guestRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
-
-    if (!token && (isAuthRoute || isVerifyRoute)) {
-      const redirectUrl = new URL('/login', request.url);
-      redirectUrl.searchParams.set('callbackUrl', request.nextUrl.href);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    if (token) {
-      if (!token.email_verified_at && !isVerifyRoute) {
-        return NextResponse.redirect(new URL('/request-email-verification', request.url));
-      }
-
-      if (isIndexpage || isGuestRoute || isVerifyRoute) {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
-      }
-    }
+  async (request: NextRequest): Promise<NextResponse | undefined> => {
+    await handleAuth(request, authRoutes, verifyRoutes, guestRoutes);
+    // console.log('Запрос:', request.headers);
+    const response = handleLanguage(request, 'i18next404', 'lng');
+    // if (response) {
+    //   console.log('Ответ:', response.headers);
+    // }
+    return response;
   },
   {
     callbacks: {
-      async authorized() {
+      async authorized(): Promise<boolean> {
         return true;
       },
     },
   },
 );
-
-const authRoutes = ['/dashboard'];
-const verifyRoutes = ['/request-email-verification', '/verify-email'];
-const guestRoutes = ['/forgot-password', '/login', '/password-reset', '/register'];

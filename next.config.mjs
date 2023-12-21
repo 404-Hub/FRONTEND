@@ -1,12 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
+    reactStrictMode: true,
+    // serverActions: true,
+    swcMinify: true,
+    appDir: true
   },
-  i18n: {
-    locales: ['ru', 'en'],
-    defaultLocale: 'ru',
-  },
+  webpack: (config) => {
+    config.experiments = { ...config.experiments, topLevelAwait: true };
+    return config;
+  }
 };
 
 export default nextConfig;
