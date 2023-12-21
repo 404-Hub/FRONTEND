@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    reactStrictMode: true,
+    // reactStrictMode: true,
     // serverActions: true,
-    swcMinify: true,
-    appDir: true
+    // swcMinify: true,
+    // appDir: true
   },
   webpack: (config) => {
     config.experiments = { ...config.experiments, topLevelAwait: true };

@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import { MainCover } from '@/components/MainCover';
-import { useTranslation } from '@/app/i18n/index';
+import { useTranslation } from '@/app/i18n';
 
 export default async function Page(): Promise<any> {
   const { t } = await useTranslation();
