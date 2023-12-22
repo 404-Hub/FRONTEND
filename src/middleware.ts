@@ -15,7 +15,7 @@ export default withAuth(
   async (request: NextRequest): Promise<NextResponse | undefined> => {
     await handleAuth(request, authRoutes, verifyRoutes, guestRoutes);
     // console.log('Запрос:', request.headers);
-    const response = handleLanguage(request, 'i18next404', 'lng');
+    const response = handleLanguage(request, 'i18next', 'lng');
     // if (response) {
     //   console.log('Ответ:', response.headers);
     // }

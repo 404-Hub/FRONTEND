@@ -19,7 +19,7 @@ const initI18next = async (lng: string, ns: string):Promise<i18n> => {
 };
 
 acceptLanguage.languages(languages);
-const cookieName = 'i18next404';
+const cookieName = 'i18next';
 
 export function detectLanguage() {
   const ckies = cookies();

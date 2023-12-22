@@ -1,13 +1,9 @@
 {
-  "h4": "Привет! Это 404Hub \uD83E\uDD16",
-  "title": "Хоум",
-  "to-client-page": "Ту клайнт пейдж",
-  "to-second-page": "Ту секонд пейдж",
-  "welcome": "Вэлком Next.js 13/14 <1>with the new app directory features</1> and i18next",
-  "blog": {
-    "text": "Чекаут корреспондинг <1>blog post</1> дейскрайбинк экзампл",
-    "link": "https://locize.com/blog/next-app-dir-i18n/"
-  },
+  "h4Main": "Привет! Это 404Hub \uD83E\uDD16",
+  "descriptionMain": "Здесь можно \uD83D\uDD0E найти или \uD83D\uDDC3 предложить идею проекта. Расскажи какого сервиса тебе не хватает, а разработчик, которому нужны пет проекты и опыт в портфолио, поможет с реализацией.",
+  "buttonFindProjectMain": "Найти проект",
+  "buttonProposeIdeaMain": "Предложить идею",
+  "h4MyTasks": "Мои задачи",
   "description": "Это компонент, не относящийся к странице, для которого требуется собственное пространство имен",
   "languageSwitcher": "Переключиться с <1>{{lng}}</1> на: "
 }
