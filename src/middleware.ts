@@ -15,11 +15,12 @@ export default withAuth(
   async (request: NextRequest): Promise<NextResponse | undefined> => {
     await handleAuth(request, authRoutes, verifyRoutes, guestRoutes);
     // console.log('Запрос:', request.headers);
-    const response = handleLanguage(request, 'i18next', 'lng');
+    // const response = handleLanguage(request, 'i18next', 'lng');
     // if (response) {
     //   console.log('Ответ:', response.headers);
     // }
-    return response;
+    // return response;
+    return handleLanguage(request, 'i18next', 'lng');
   },
   {
     callbacks: {
