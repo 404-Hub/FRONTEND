@@ -7,5 +7,7 @@
   "blog": {
     "text": "Check out the corresponding <1>blog post</1> describing this example.",
     "link": "https://locize.com/blog/next-app-dir-i18n/"
-  }
+  },
+  "description": "This is a non-page component that requires its own namespace",
+  "languageSwitcher": "Switch from <1>{{lng}}</1> to: "
 }

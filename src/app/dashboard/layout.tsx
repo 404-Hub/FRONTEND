@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import UserNavigation from '@/components/auth/user-navigation';
+// import UserNavigation from '@/components/auth/user-navigation';
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div>
           <Link href="/">Logo</Link>
 
-          <UserNavigation />
+          {/*<UserNavigation />*/}
         </div>
       </header>
 
