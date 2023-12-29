@@ -25,8 +25,8 @@ const Theme = {
     MuiContainer: {
       styleOverrides: {
       },
-    }
+    },
   },
-}
+};
 
 export { Theme };

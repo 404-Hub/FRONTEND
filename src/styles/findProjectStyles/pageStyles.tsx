@@ -2,7 +2,7 @@ const findPageStyles = {
   pageTitle: {
     display: {
       xs: 'none',
-      md: 'block'
+      md: 'block',
     },
     marginTop: '16px',
     marginBottom: '31px',
@@ -28,13 +28,12 @@ const findPageStyles = {
   container: {
     display: 'flex',
     alignItems: 'center',
-    padding: { xs: '16px', md: '0px', },
+    padding: { xs: '16px', md: '0px' },
     background: {
       xs: '#FFFFFF',
       md: 'transparent',
     },
   },
-
   icon: {
     padding: '0px',
     display: {
@@ -42,7 +41,6 @@ const findPageStyles = {
       md: 'none',
     },
   },
-
   arrowBack: {
     width: 24,
     height: 24,
@@ -67,20 +65,18 @@ const findPageStyles = {
   link: {
     display: {
       md: 'none',
-    }
+    },
   },
-
   optionsContainer: {
     padding: {
       xs: '17px',
-      md: '0'
+      md: '0',
     },
   },
-
   mainOptions: {
     margin: '0 auto',
     paddingTop: {
-      md: '40px'
+      md: '40px',
     },
     fontWeight: '600',
     fontSize: '20px',
@@ -89,35 +85,29 @@ const findPageStyles = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(47%, 1fr))',
     gap: '16px',
   },
-
   buttons: {
     aspectRatio: '1',
     color: 'white',
     width: '100%',
     borderRadius: '16px',
-    textTransform: "none",
+    textTransform: 'none',
     fontSize: 20,
     lineHeight: 1.6,
     paddingLeft: '12px',
     paddingRight: '12px',
   },
-
   subscribes: {
     backgroundColor: '#8D40FB',
   },
-
   fromSvyat: {
     backgroundColor: '#FC573A',
   },
-
   bests: {
     backgroundColor: '#2FC362',
   },
-
   changeInfo: {
     backgroundColor: '#1EB8D7',
   },
-
   addOptions: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -126,7 +116,6 @@ const findPageStyles = {
     margin: '40px auto',
     maxWidth: '578px',
   },
+};
 
-
-}
-export default findPageStyles
+export default findPageStyles;

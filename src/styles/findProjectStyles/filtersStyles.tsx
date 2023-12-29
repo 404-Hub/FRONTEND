@@ -2,26 +2,26 @@ const filtersStyles = {
   filterMainContainer: {
     backgroundColor: {
       xs: '#F9FAFB',
-      md: 'transparent'
+      md: 'transparent',
     },
     filterContainer: {
       display: {
-        xs: 'block', md: 'flex'
+        xs: 'block', md: 'flex',
       },
       flexDirection: 'row',
     },
     height: {
       xs: '100vh',
-      md: 'auto'
+      md: 'auto',
     },
     position: {
       xs: 'fixed',
-      md: 'static'
+      md: 'static',
     },
     zIndex: 1000,
     overflow: {
       xs: 'hidden',
-      md: 'visible'
+      md: 'visible',
     },
     width: '100%',
   },
@@ -34,11 +34,9 @@ const filtersStyles = {
       md: 'none',
     },
   },
-  
   iconButton: {
     padding: 0,
   },
-  
   filtersReset: {
     display: {
       xs: 'none',
@@ -49,13 +47,11 @@ const filtersStyles = {
     justifyContent: 'space-between',
     gap: '34px',
   },
-
   button: {
     border: 1,
     borderRadius: '6px',
     textTransform: 'none',
   },
-
   buttonReset: {
     borderColor: '#FFF2E6',
     color: '#FC573A',
@@ -65,11 +61,10 @@ const filtersStyles = {
     height: '36px',
     fontSize: '16px',
   },
-
   searchSelection: {
     display: {
       xs: 'none',
-      md: 'block'
+      md: 'block',
     },
     marginTop: '16px',
     marginBottom: {
@@ -78,7 +73,6 @@ const filtersStyles = {
     fontSize: '24px',
     fontWeight: '600',
   },
-
   filtersBox: {
     boxSizing: 'border-box',
     display: 'flex',
@@ -94,9 +88,8 @@ const filtersStyles = {
     padding: { xs: '0', md: '16px' },
     backgroundColor: {
       md: '#ffffff',
-    }
+    },
   },
-  
   filterContainer: {
     width: '100%',
     height: {
@@ -113,7 +106,6 @@ const filtersStyles = {
     },
     boxSizing: 'border-box',
   },
-  
   filterBlock: {
     display: 'flex',
     flexDirection: 'column',
@@ -122,7 +114,6 @@ const filtersStyles = {
       md: '13px',
     },
   },
-
   filterBlockLabel: {
     marginBottom: {
       xs: '18px',
@@ -130,31 +121,27 @@ const filtersStyles = {
     },
     textTransform: {
       xs: 'none',
-      md: 'uppercase'
+      md: 'uppercase',
     },
     fontSize: {
       md: '12px',
-    }
+    },
   },
-
   filterLabel: {
     marginBottom: {
       xs: '27px',
       md: '19px',
     },
   },
-  
   formControlLabel: {
-    "& .MuiFormControlLabel-label": { ml: '19px' },
+    '& .MuiFormControlLabel-label': { ml: '19px' },
   },
-
   formSelect: {
     color: '#C4CDD5',
     height: 0,
-    '& .MuiSvgIcon-root': { fontSize: 20, },
+    '& .MuiSvgIcon-root': { fontSize: 20 },
     '&.Mui-checked': { color: '#18A670' },
   },
-
   buttonBox: {
     display: { xs: 'flex', md: 'none' },
     flexDirection: 'row',
@@ -163,10 +150,9 @@ const filtersStyles = {
     padding: '16px',
     justifyContent: 'space-between',
   },
-  
   buttonCancel: {
-    color: "#18A670",
-    borderColor: "#18A670",
+    color: '#18A670',
+    borderColor: '#18A670',
     height: '48px',
     flex: 1,
     mr: 2,
@@ -175,8 +161,8 @@ const filtersStyles = {
 
   buttonConfirm: {
     fontSize: '16px',
-    color: "#FFFFFF",
-    backgroundColor: "#18A670",
+    color: '#FFFFFF',
+    backgroundColor: '#18A670',
     flex: 1,
   },
 };
