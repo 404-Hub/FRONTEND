@@ -48,7 +48,7 @@ export default function LoginForm() {
       email: '',
       name: '',
       password: '',
-      passwordConfirm: '',
+      password_confirmation: '',
     },
   });
 
@@ -148,11 +148,11 @@ export default function LoginForm() {
         />
 
         <Controller
-          name="passwordConfirm"
+          name="password_confirmation"
           control={control}
           render={({ field }) => (
             <TextField
-              name="passwordConfirm"
+              name="password_confirmation"
               label="Подтверждение пароля"
               type={showPassword ? 'text' : 'password'}
               InputProps={{
@@ -169,8 +169,8 @@ export default function LoginForm() {
               }}
               value={field.value}
               onChange={field.onChange}
-              error={!!errors.passwordConfirm?.message}
-              helperText={errors.passwordConfirm?.message}
+              error={!!errors.password_confirmation?.message}
+              helperText={errors.password_confirmation?.message}
             />
           )}
         />
