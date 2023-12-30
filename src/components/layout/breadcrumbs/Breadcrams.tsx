@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Options } from '../../../Types/Types';
+import React from 'react';
+import { Options } from '../../../../types/findProjects';
 
 type Props = {
   options: Options

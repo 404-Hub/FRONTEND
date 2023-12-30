@@ -1,36 +1,37 @@
 'use client';
 
+import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
 import { Box, Button, Typography } from '@mui/material';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
-import filtersStyles from '../../../styles/findProjectStyles/filtersStyles';
-import { AllFilters } from '../../../Types/Types';
-import searchResults from '../../../mockups/searchResultsData.json';
+import { AllFilters, Project } from '../../../types/findProjects';
+import searchResults from '../../mockups/searchResultsData.json';
+import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
 import ProjectCard from './ProjectCard';
 
 type Props = {
-  projectType: string;
+  projectType: string | null;
   allFilters: AllFilters;
   setShowFilters: Dispatch<SetStateAction<boolean>>;
   showFilters: boolean;
 };
 
 const ProjectsList: React.FC<Props> = (props) => {
-  const [projects, setProjects] = useState<{ rating: string; number: number; name: string; description: string; }[]>([]);
+  const [projects, setProjects] = useState<Project[]>();
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [prevPage, setPrevPage] = useState(currentPage - 1);
 
+  // eslint-disable-next-line no-unused-vars
   const fetchProjects = async (page: number, projectType: string) => {
     try {
       const items = searchResults.searchResults.find((el) => el.currentPage === currentPage);
-      setProjects(projects.concat(items!.results));
+      setProjects(projects!.concat(items!.results));
       setTotal(items!.totalCount);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
       setPrevPage(page - 1);
+      // throw new Error('An error occurred during try to load more projects', { cause: error });
     }
   };
 

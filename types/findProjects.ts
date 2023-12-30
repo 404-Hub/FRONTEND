@@ -26,6 +26,22 @@ type SelectedFilters = {
   type: string;
 };
 
+type FormDataValue = {
+  name: string;
+  value: string;
+  type: string;
+  checked: boolean;
+};
+
+type Project = {
+  rating: string;
+  number: number;
+  name: string;
+  description: string;
+};
+
 type HandleValueType = (name: string, value: string, type: string, checked: boolean,) => any;
 
-export type { Options, AllFilters, SelectedFilters, HandleValueType };
+export type {
+  Options, AllFilters, SelectedFilters, HandleValueType, FormDataValue, Project,
+};

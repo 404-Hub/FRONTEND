@@ -8,9 +8,9 @@ import Link from 'next/link';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import { AllFilters } from '../../../Types/Types';
-import filtersStyles from '../../../styles/findProjectStyles/filtersStyles';
-import findPageStyles from '../../../styles/findProjectStyles/pageStyles';
+import { AllFilters } from '../../../types/findProjects';
+import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
+import findPageStyles from '../../styles/findProjectStyles/pageStyles';
 import RenderFilters from './RenderFilters';
 
 type Props = {

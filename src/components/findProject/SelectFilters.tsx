@@ -1,25 +1,30 @@
+import selectFiltersStyles from '@/styles/findProjectStyles/selectFiltersStyles';
 import ClearIcon from '@mui/icons-material/Clear';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Box, Button } from '@mui/material';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import selectFiltersStyles from '@/styles/findProjectStyles/selectFiltersStyles';
-import { AllFilters, HandleValueType, SelectedFilters } from '../../../Types/Types';
+import {
+  AllFilters, FormDataValue, HandleValueType, SelectedFilters,
+} from '../../../types/findProjects';
 
 type Props = {
   projectType: string | null;
   allFilters: AllFilters;
-  setShowFilters: Dispatch<SetStateAction<boolean>>;
   showFilters: boolean;
-  allValues: string[];
+  allValues: FormDataValue[];
   handleChange: HandleValueType;
+  setShowFilters: Dispatch<SetStateAction<boolean>>;
 };
 const getCheckedOptions = (ob: AllFilters): any[] => {
   const checkedOptions: any[] = [];
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const item of ob) {
-    const options = item.options.filter((option: any) => option.checked === true).map((el) => ({ ...el, filter: item.name, type: item.type }));
+    const filteredOptions = item.options.filter((option) => option.checked === true);
+    const options = filteredOptions.map((el) => ({ ...el, filter: item.name, type: item.type }));
+
     checkedOptions.push(...options);
   }
   return checkedOptions;

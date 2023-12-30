@@ -4,8 +4,8 @@ import {
   Box, Checkbox, FormControlLabel, Radio, RadioGroup, Typography,
 } from '@mui/material';
 import React from 'react';
-import { AllFilters, HandleValueType } from '../../../Types/Types';
-import filtersStyles from '../../../styles/findProjectStyles/filtersStyles';
+import { AllFilters, HandleValueType } from '../../../types/findProjects';
+import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
 
 type Props = {
   allFilters: AllFilters;
