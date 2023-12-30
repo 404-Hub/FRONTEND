@@ -18,7 +18,7 @@ type Props = {
 };
 
 const ProjectsList: React.FC<Props> = (props) => {
-  const [projects, setProjects] = useState<Project[]>();
+  const [projects, setProjects] = useState<Project[]>([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [prevPage, setPrevPage] = useState(currentPage - 1);
@@ -31,13 +31,13 @@ const ProjectsList: React.FC<Props> = (props) => {
       setTotal(items!.totalCount);
     } catch (error) {
       setPrevPage(page - 1);
-      // throw new Error('An error occurred during try to load more projects', { cause: error });
+      throw new Error('An error occurred during try to load more projects', { cause: error });
     }
   };
 
   useEffect(() => {
     if (currentPage !== prevPage) {
-      fetchProjects(currentPage, props.projectType);
+      fetchProjects(currentPage, props.projectType || '');
     }
   }, [currentPage]);
 

@@ -17,8 +17,8 @@ type Props = {
   handleChange: HandleValueType;
   setShowFilters: Dispatch<SetStateAction<boolean>>;
 };
-const getCheckedOptions = (ob: AllFilters): any[] => {
-  const checkedOptions: any[] = [];
+const getCheckedOptions = (ob: AllFilters) => {
+  const checkedOptions = [];
 
   // eslint-disable-next-line no-restricted-syntax
   for (const item of ob) {

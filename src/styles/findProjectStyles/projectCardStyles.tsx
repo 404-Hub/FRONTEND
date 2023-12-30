@@ -11,6 +11,11 @@ const projectCardStyles = {
       xs: '380px',
       md: '264px',
     },
+    cursor: 'pointer',
+    transition: 'box-shadow 0.2s ease-in-out',
+    '&:hover': {
+      boxShadow: '0px 6px 12px -4px #454F5A',
+    },
   },
   title: {
     fontWeight: '600',

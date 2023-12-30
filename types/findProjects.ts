@@ -14,7 +14,7 @@ type AllFilters = {
   options: {
     label: string;
     name: string;
-    checked?: boolean
+    checked: boolean
   }[]
 }[];
 
@@ -40,7 +40,8 @@ type Project = {
   description: string;
 };
 
-type HandleValueType = (name: string, value: string, type: string, checked: boolean,) => any;
+// eslint-disable-next-line no-unused-vars
+type HandleValueType = (name: string, value: string, type: string, checked: boolean) => void;
 
 export type {
   Options, AllFilters, SelectedFilters, HandleValueType, FormDataValue, Project,

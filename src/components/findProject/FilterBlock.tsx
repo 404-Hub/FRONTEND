@@ -8,14 +8,14 @@ import Link from 'next/link';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import { AllFilters } from '../../../types/findProjects';
+import { AllFilters, FormDataValue, HandleValueType } from '../../../types/findProjects';
 import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
 import findPageStyles from '../../styles/findProjectStyles/pageStyles';
 import RenderFilters from './RenderFilters';
 
 type Props = {
-  setFormData: Dispatch<SetStateAction<{ name: string; value: string; type: string; checked: boolean }[]>>;
-  handleChange: (name: string, value: string, type: string, checked: boolean) => any;
+  setFormData: Dispatch<SetStateAction<FormDataValue[]>>;
+  handleChange: HandleValueType;
   setShowFilters: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   showFilters: boolean;
@@ -66,61 +66,59 @@ const FilterBlock: React.FC<Props> = (props) => {
   }, [props.allFilters]);
 
   return (
-    <Box>
-      <Box >
-        <Box sx={filtersStyles.filtersBox}>
-          <Box sx={filtersStyles.filtersReset}>
-            <Typography variant={'h6'}>фильтр</Typography>
-            {filterExist ? <Button
-              onClick={props.resetFilters}
-              sx={[filtersStyles.button, filtersStyles.buttonReset]}>
-              Сбросить</Button>
-              : ''}
-          </Box>
+    <Box >
+      <Box sx={filtersStyles.filtersBox}>
+        <Box sx={filtersStyles.filtersReset}>
+          <Typography variant={'h6'}>фильтр</Typography>
+          {filterExist ? <Button
+            onClick={props.resetFilters}
+            sx={[filtersStyles.button, filtersStyles.buttonReset]}>
+            Сбросить</Button>
+            : ''}
+        </Box>
 
-          <Box sx={{ ...findPageStyles.container, display: { md: 'none', xs: 'flex' } }}>
-            <Link href={{ pathname: '/find-project' }} passHref>
-              <Icon sx={findPageStyles.icon} aria-label="back" style={findPageStyles.backlLink}>
-                <ArrowBack sx={findPageStyles.arrowBack} />
-              </Icon>
-            </Link>
-            <Typography variant={'h6'} sx={findPageStyles.title}>Поиск проекта</Typography>
-          </Box>
-          <Box
-            sx={{ ...filtersStyles.filterMainContainer, display: { xs: isShowFilter ? 'block' : 'none', md: 'block' } }}
+        <Box sx={{ ...findPageStyles.container, display: { md: 'none', xs: 'flex' } }}>
+          <Link href={{ pathname: '/find-project' }} passHref>
+            <Icon sx={findPageStyles.icon} aria-label="back" style={findPageStyles.backlLink}>
+              <ArrowBack sx={findPageStyles.arrowBack} />
+            </Icon>
+          </Link>
+          <Typography variant={'h6'} sx={findPageStyles.title}>Поиск проекта</Typography>
+        </Box>
+        <Box
+          sx={{ ...filtersStyles.filterMainContainer, display: { xs: isShowFilter ? 'block' : 'none', md: 'block' } }}
+        >
+          <Box sx={{
+            transform: { xs: isSlideEffect ? 'translateX(0)' : 'translateX(100%)', md: 'translateX(0)' },
+            transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            height: {
+              xs: '100%',
+              md: 'auto',
+            },
+          }}
           >
-            <Box sx={{
-              transform: { xs: isSlideEffect ? 'translateX(0)' : 'translateX(100%)', md: 'translateX(0)' },
-              transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              height: {
-                xs: '100%',
-                md: 'auto',
-              },
-            }}
-            >
-              <Box sx={[findPageStyles.container, filtersStyles.filterTitle]}>
-                <IconButton onClick={() => { props.setShowFilters(false); }}
-                  color='inherit' aria-label="back" sx={filtersStyles.iconButton} >
-                  <ArrowBack sx={findPageStyles.arrowBack} />
-                </IconButton>
-                <Typography variant={'h6'} sx={findPageStyles.title}>Фильтр</Typography>
-              </Box>
+            <Box sx={[findPageStyles.container, filtersStyles.filterTitle]}>
+              <IconButton onClick={() => { props.setShowFilters(false); }}
+                color='inherit' aria-label="back" sx={filtersStyles.iconButton} >
+                <ArrowBack sx={findPageStyles.arrowBack} />
+              </IconButton>
+              <Typography variant={'h6'} sx={findPageStyles.title}>Фильтр</Typography>
+            </Box>
 
-              <RenderFilters
-                showFilters={props.showFilters}
-                handleChange={props.handleChange}
-                allFilters={props.allFilters}></RenderFilters>
+            <RenderFilters
+              showFilters={props.showFilters}
+              handleChange={props.handleChange}
+              allFilters={props.allFilters}></RenderFilters>
 
-              <Box sx={filtersStyles.buttonBox}>
-                <Button
-                  onClick={cancel}
-                  sx={[filtersStyles.button, filtersStyles.buttonCancel]}
-                >Отмена</Button>
-                <Button sx={[filtersStyles.button, filtersStyles.buttonConfirm]} >Сохранить</Button>
-              </Box>
+            <Box sx={filtersStyles.buttonBox}>
+              <Button
+                onClick={cancel}
+                sx={[filtersStyles.button, filtersStyles.buttonCancel]}
+              >Отмена</Button>
+              <Button sx={[filtersStyles.button, filtersStyles.buttonConfirm]} >Сохранить</Button>
             </Box>
           </Box>
         </Box>

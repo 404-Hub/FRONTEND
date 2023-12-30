@@ -1,17 +1,18 @@
 'use client';
 
 import {
-  Box, ThemeProvider, Typography, createTheme,
+  Box,
+  Typography, createTheme,
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { AllFilters, FormDataValue, Options } from '../../../types/findProjects';
 import filters from '../../mockups/filters.json';
 import findPageStyles from '../../styles/findProjectStyles/pageStyles';
+import { Theme } from '../../styles/findProjectStyles/theme';
 import FilterBlock from './FilterBlock';
 import ProjectsList from './ProjectsList';
 import SelectFilters from './SelectFilters';
-import { Theme } from '../../styles/findProjectStyles/theme';
 
 const theme = createTheme(Theme);
 type Props = {
@@ -21,6 +22,7 @@ type Props = {
 const ProjectsAndFilters: React.FC<Props> = (props) => {
   const [allFilters, setAllFilters] = useState<AllFilters>([]);
   const [formData, setFormData] = useState<FormDataValue[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const fetchAllFilters = () => {
     try {
@@ -53,21 +55,19 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
   if (!projectType) {
     router.push('/find-project');
   }
-  // const handleSubmit = (event: { preventDefault: () => void; }) => {
-  //   event.preventDefault();
-  // };
 
   const onSetFormData = (value: SetStateAction<FormDataValue[]>) => {
     if (value.length) {
       setFormData(value);
-    } else {
-      // fetchAllFilters()s
     }
   };
-  const updateFilter = (name: string, value: string, checked: boolean) => {
+  const updateFilter = (name: string, value: string, checked: boolean, type: string) => {
     const updatedOb = allFilters.map((item) => {
       if (item.name === name) {
         const updatedOptions = item.options.map((option) => {
+          if (type === 'radio' && option.name !== value) {
+            return { ...option, checked: false };
+          }
           if (option.name === value) {
             return { ...option, checked };
           }
@@ -83,10 +83,10 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
 
   const handleChange = (name: string, value: string, type: string, checked: boolean) => {
     if (type === 'checkbox') {
-      let nameIn: any;
+      let nameIn: FormDataValue[];
       if ([name] in formData) {
         nameIn = formData[name].includes(value) ? {
-          [name]: formData[name].filter((item: any) => item !== value)
+          [name]: formData[name].filter((item: any) => item !== value),
         }
           : { [name]: [...formData[name], value] };
       } else {
@@ -97,18 +97,15 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
     if (type === 'radio') {
       setFormData((prevState) => ({ ...prevState, [name]: value }));
     }
-    setAllFilters(updateFilter(name, value, checked));
+    setAllFilters(updateFilter(name, value, checked, type));
   };
 
   const allValues = Object.values(formData).flat();
 
-  const [showFilters, setShowFilters] = useState(false);
-
   return (
-    <>
+    <Box>
       {/* <ThemeProvider theme={theme}> */}
       {projectType ? <Typography sx={findPageStyles.pageTitle} variant={'h5'}>{props.options[projectType]}</Typography> : ''}
-
       <Box sx={findPageStyles.centralContainer}>
 
         <FilterBlock
@@ -138,7 +135,7 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
 
       </Box>
       {/* </ThemeProvider> */}
-    </>
+    </Box>
   );
 };
 

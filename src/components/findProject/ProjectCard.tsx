@@ -7,14 +7,10 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from '@mui/material';
 import projectCardStyles from '@/styles/findProjectStyles/projectCardStyles';
+import { Project } from '../../../types/findProjects';
 
 type Props = {
-  project: {
-    rating: string,
-    number: number,
-    name: string,
-    description: string
-  },
+  project: Project,
 };
 
 const ProjectCard: React.FC<Props> = (props) => (
