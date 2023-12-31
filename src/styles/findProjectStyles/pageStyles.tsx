@@ -55,7 +55,7 @@ const findPageStyles = {
     paddingLeft: { xs: '24px', md: '0px' },
     marginTop: {
       xs: '0',
-      md: '30px',
+      md: '24px',
     },
     fontSize: {
       xs: '20px',

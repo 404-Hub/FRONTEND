@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import findPageStyles from '../../styles/findProjectStyles/pageStyles';
 import { publicSans } from '../../utils/fonts';
+import Subcategory from './Subcategory';
 
 export default function Categories() {
   const router = useRouter();
@@ -48,17 +49,7 @@ export default function Categories() {
         </Button>
       </Box>
       {visible ? (
-        <Box sx={findPageStyles.addOptions}>
-          <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]} onClick={() => handleClick('training')}>
-            Тренировочный
-          </Button>
-          <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]} onClick={() => handleClick('advanced')}>
-            Продвинутый
-          </Button>
-          <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]} onClick={() => handleClick('complex')}>
-            Комплексный
-          </Button>
-        </Box>
+       <Subcategory handleClick={handleClick} />
       ) : (null)}
     </Box>);
 }
