@@ -1,0 +1,9 @@
+{
+  "h4Main": "Hi! It's 404Hub \uD83E\uDD16",
+  "descriptionMain": "Here you can \uD83D\uDD0D find or \uD83D\uDCC3 propose a project idea. Tell us about the service you're missing, and a developer looking for pet projects and experience for their portfolio will help with implementation.",
+  "buttonFindProjectMain": "Find a Project",
+  "buttonProposeIdeaMain": "Propose an Idea",
+  "h4MyTasks": "My tasks",
+  "description": "This is a non-page component that requires its own namespace",
+  "languageSwitcher": "Switch from <1>{{lng}}</1> to: "
+}

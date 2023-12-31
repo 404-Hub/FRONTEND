@@ -1,6 +1,8 @@
 'use client';
 
-import { FC, useCallback, useMemo, useState } from 'react';
+import {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,13 +17,20 @@ import Link from 'next/link';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useViewport } from '@/providers/ViewportProvider';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Typography from '@mui/material/Typography';
 import { theme } from '@/theme';
 
 type HeaderLink = {
   label: string;
   value: string;
+};
+
+const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
+  '/': 'main',
+  '/my-tasks': 'myTasks',
+  '/find-project': 'findProject',
+  '/propose-idea': 'proposeIdea',
 };
 
 const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
@@ -33,12 +42,12 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
       flexGrow: 1,
       ...(type === 'mobile'
         ? {
-            padding: 2,
-            '& > *': {
-              flex: 1,
-              width: '50%',
-            },
-          }
+          padding: 2,
+          '& > *': {
+            flex: 1,
+            width: '50%',
+          },
+        }
         : {}),
     }}
   >
@@ -70,54 +79,66 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
 const HeaderDesktop: FC<{
   links: HeaderLink[];
   activeLink: HeaderLink['value'];
-}> = ({ links, activeLink }) => (
-  <Container maxWidth="lg">
-    <AppBar
-      position="sticky"
-      color={'transparent'}
-      sx={{
-        boxShadow: 'none',
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
-      <Toolbar
+}> = ({ links, activeLink }) => {
+  const router = useRouter();
+  const handleTabClick = (value: string) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find((key) => pathToLinkSlugMap[key] === value);
+    if (pathKey) {
+      router.push(pathKey);
+    } else {
+      console.error('Нет соответствующего ключа для значения:', value);
+    }
+  };
+
+  return (
+    <Container maxWidth="lg">
+      <AppBar
+        position="sticky"
+        color={'transparent'}
         sx={{
+          boxShadow: 'none',
           display: 'flex',
-          justifyContent: 'space-between',
-          flexGrow: 1,
-          maxWidth: '1440px',
+          justifyContent: 'center',
         }}
       >
-        <Logo />
-        {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
-        <Tabs value={activeLink || false}>
-          {links.map(({ label, value }) => (
-            <Tab
-              key={value}
-              label={label}
-              value={value}
-              sx={{
-                fontSize: theme.typography.pxToRem(12),
-                padding: 1,
-              }}
-            />
-          ))}
-        </Tabs>
-        <Box sx={{ display: 'flex', gap: 3 }}>
-          <Button
-            color="inherit"
-            sx={{ display: 'flex', gap: 1 }}
-          >
-            Telegram
-            <TelegramIcon />
-          </Button>
-          <AuthBlock type={'desktop'} />
-        </Box>
-      </Toolbar>
-    </AppBar>
-  </Container>
-);
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexGrow: 1,
+            maxWidth: '1440px',
+          }}
+        >
+          <Logo/>
+          {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
+          <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
+            {links.map(({ label, value }) => (
+              <Tab
+                key={value}
+                label={label}
+                value={value}
+                sx={{
+                  fontSize: theme.typography.pxToRem(12),
+                  padding: 1,
+                }}
+              />
+            ))}
+          </Tabs>
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <Button
+              color="inherit"
+              sx={{ display: 'flex', gap: 1 }}
+            >
+              Telegram
+              <TelegramIcon/>
+            </Button>
+            <AuthBlock type={'desktop'}/>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Container>
+  );
+};
 
 const HeaderMobile: FC<{
   links: HeaderLink[];
@@ -128,6 +149,16 @@ const HeaderMobile: FC<{
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuExpanded(!isMobileMenuExpanded);
   }, [isMobileMenuExpanded, setIsMobileMenuExpanded]);
+
+  const router = useRouter();
+  const handleTabClick = (value: string) => {
+    const pathKey = Object.keys(pathToLinkSlugMap).find((key) => pathToLinkSlugMap[key] === value);
+    if (pathKey) {
+      router.push(pathKey);
+    } else {
+      console.error('Нет соответствующего ключа для значения:', value);
+    }
+  };
 
   return (
     <>
@@ -149,9 +180,9 @@ const HeaderMobile: FC<{
             }}
           >
             <IconButton onClick={toggleMobileMenu}>
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
-            <Logo />
+            <Logo/>
           </Toolbar>
         </AppBar>
       </Container>
@@ -183,7 +214,7 @@ const HeaderMobile: FC<{
               Menu
             </Typography>
           </Box>
-          <AuthBlock type={'mobile'} />
+          <AuthBlock type={'mobile'}/>
           <Box
             sx={{
               display: 'flex',
@@ -192,7 +223,7 @@ const HeaderMobile: FC<{
             }}
           >
             {links.map((tab) => (
-              <Button key={tab.value}>
+              <Button key={tab.value} onClick={() => handleTabClick(tab.value)}>
                 <Typography
                   variant={'body2'}
                   align={'left'}
@@ -207,13 +238,6 @@ const HeaderMobile: FC<{
       </Drawer>
     </>
   );
-};
-
-const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
-  '/': 'main',
-  '/my-tasks': 'myTasks',
-  '/find-project': 'findProject',
-  '/propose-idea': 'proposeIdea',
 };
 
 export const Navigation: FC = () => {
@@ -242,9 +266,8 @@ export const Navigation: FC = () => {
         value: 'proposeIdea',
       },
     ],
-    []
+    [],
   );
-
   return mdOrLess ? (
     <HeaderMobile
       activeLink={activeLink}
