@@ -1,7 +1,7 @@
-import { forwardRef } from 'react';
+import { SX } from '@/types/sx';
 import { Icon } from '@iconify/react';
 import Box from '@mui/material/Box';
-import { SX } from '../../../../types/sx';
+import { forwardRef } from 'react';
 
 export type IconifyProps = {
   sx?: SX;

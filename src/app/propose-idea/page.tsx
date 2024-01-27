@@ -18,8 +18,8 @@ import SvgIcon from '@mui/material/SvgIcon';
 import AddIcon from '@mui/icons-material/Add';
 import LensIcon from '@mui/icons-material/Lens';
 import RemoveIcon from '@mui/icons-material/Remove';
-import stepDataRu from './stepDataRu.json';
-import stepDataEn from './stepDataEn.json';
+import stepDataRu from '@/app/propose-idea/stepDataRu.json';
+import stepDataEn from '@/app/propose-idea/stepDataEn.json';
 
 interface OneStepData {
   label: string;

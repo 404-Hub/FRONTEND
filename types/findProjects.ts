@@ -5,17 +5,19 @@ type Options = {
   training: string;
   advanced: string;
   complex: string;
-}
+};
+
+type AllFiltersOptions = {
+  label: string;
+  name: string;
+  checked: boolean
+}[];
 
 type AllFilters = {
   type: string;
   name: string;
   label: string;
-  options: {
-    label: string;
-    name: string;
-    checked: boolean
-  }[]
+  options: AllFiltersOptions;
 }[];
 
 type SelectedFilters = {
@@ -40,9 +42,8 @@ type Project = {
   description: string;
 };
 
-// eslint-disable-next-line no-unused-vars
 type HandleValueType = (name: string, value: string, type: string, checked: boolean) => void;
 
 export type {
-  Options, AllFilters, SelectedFilters, HandleValueType, FormDataValue, Project,
+  Options, AllFilters, AllFiltersOptions, SelectedFilters, HandleValueType, FormDataValue, Project,
 };

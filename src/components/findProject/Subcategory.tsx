@@ -2,7 +2,7 @@
 
 import { Box, Button } from '@mui/material';
 import React from 'react';
-import findPageStyles from '../../styles/findProjectStyles/pageStyles';
+import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 
 type Props = {
   handleClick: (value: string) => void;

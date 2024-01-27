@@ -3,9 +3,9 @@
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import findPageStyles from '../../styles/findProjectStyles/pageStyles';
-import { publicSans } from '../../utils/fonts';
-import Subcategory from './Subcategory';
+import findPageStyles from '@/styles/findProjectStyles/pageStyles';
+import { publicSans } from '@/utils/fonts';
+import Subcategory from '@/components/findProject/Subcategory';
 
 export default function Categories() {
   const router = useRouter();

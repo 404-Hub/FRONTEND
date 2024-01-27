@@ -1,5 +1,7 @@
 'use client';
 
+import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
+import { AllFilters, FormDataValue, HandleValueType } from '@/types/findProjects';
 import { ArrowBack } from '@mui/icons-material';
 import {
   Box, Button, Icon, IconButton, Typography,
@@ -8,10 +10,8 @@ import Link from 'next/link';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import { AllFilters, FormDataValue, HandleValueType } from '../../../types/findProjects';
-import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
-import findPageStyles from '../../styles/findProjectStyles/pageStyles';
-import RenderFilters from './RenderFilters';
+import findPageStyles from '@/styles/findProjectStyles/pageStyles';
+import RenderFilters from '@/components/findProject/RenderFilters';
 
 type Props = {
   setFormData: Dispatch<SetStateAction<FormDataValue[]>>;
@@ -43,18 +43,12 @@ const FilterBlock: React.FC<Props> = (props) => {
       hideFilter();
     }
   };
-  const hasCheckedTrue = (obj: string | any[]) => {
-    for (let i = 0; i < obj.length; i += 1) {
-      const item = obj[i];
-      for (let j = 0; j < item.options.length; j += 1) {
-        const option = item.options[j];
-        if (option.checked) {
-          return true;
-        }
-      }
-    }
-    return false;
+  const hasCheckedTrue = (obj: AllFilters) => {
+    return obj.some((item: AllFilters) =>
+      item.options.some((option: { checked: boolean; }) => option.checked)
+    );
   };
+
   const cancel = () => {
     props.setShowFilters(false);
     props.resetFilters();

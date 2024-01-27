@@ -5,10 +5,10 @@ import { Box, Button, Typography } from '@mui/material';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import { AllFilters, Project } from '../../../types/findProjects';
+import { AllFilters, Project } from '@/types/findProjects';
 import searchResults from '../../mockups/searchResultsData.json';
-import filtersStyles from '../../styles/findProjectStyles/filtersStyles';
-import ProjectCard from './ProjectCard';
+import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
+import ProjectCard from '@/components/findProject/ProjectCard';
 
 type Props = {
   projectType: string | null;

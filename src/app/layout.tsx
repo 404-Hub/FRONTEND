@@ -4,7 +4,7 @@ import { ViewportProvider } from '@/providers/ViewportProvider';
 import '@/styles/index.scss';
 import { ThemeProvider } from '@/theme';
 import { dir } from 'i18next';
-import { detectLanguage } from './i18n';
+import { detectLanguage } from '@/app/i18n';
 
 export const metadata = {
   title: '404 Hub',

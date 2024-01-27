@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {
   AllFilters, FormDataValue, HandleValueType, SelectedFilters,
-} from '../../../types/findProjects';
+} from '@/types/findProjects';
 
 type Props = {
   projectType: string | null;

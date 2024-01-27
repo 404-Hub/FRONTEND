@@ -1,7 +1,7 @@
 import { Footer as AnyFooter } from '@/components/Footer';
 import { useTranslation } from '@/app/i18n';
 import { Navigation } from '@/components/layout/Navigation';
-import { MainCover as AnyMainCover } from '../components/MainCover';
+import { MainCover as AnyMainCover } from '@/components/MainCover';
 
 const Footer = AnyFooter as any;
 const MainCover = AnyMainCover as any;

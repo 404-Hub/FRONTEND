@@ -2,19 +2,17 @@
 
 import {
   Box,
-  Typography, createTheme,
+  Typography
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { SetStateAction, useEffect, useState } from 'react';
-import { AllFilters, FormDataValue, Options } from '../../../types/findProjects';
+import { AllFilters, FormDataValue, Options } from '@/types/findProjects';
 import filters from '../../mockups/filters.json';
-import findPageStyles from '../../styles/findProjectStyles/pageStyles';
-import { Theme } from '../../styles/findProjectStyles/theme';
-import FilterBlock from './FilterBlock';
-import ProjectsList from './ProjectsList';
-import SelectFilters from './SelectFilters';
+import findPageStyles from '@/styles/findProjectStyles/pageStyles';
+import FilterBlock from '@/components/findProject/FilterBlock';
+import ProjectsList from '@/components/findProject//ProjectsList';
+import SelectFilters from '@/components/findProject//SelectFilters';
 
-const theme = createTheme(Theme);
 type Props = {
   options: Options;
 };
@@ -86,7 +84,7 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
       let nameIn: FormDataValue[];
       if ([name] in formData) {
         nameIn = formData[name].includes(value) ? {
-          [name]: formData[name].filter((item: any) => item !== value),
+          [name]: formData[name].filter((item: string) => item !== value),
         }
           : { [name]: [...formData[name], value] };
       } else {

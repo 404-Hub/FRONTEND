@@ -3,7 +3,7 @@
 import { ArrowBack } from '@mui/icons-material';
 import { Box, Icon, Typography } from '@mui/material';
 import Link from 'next/link';
-import findPageStyles from '../../styles/findProjectStyles/pageStyles';
+import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 
 export default function PageTitle() {
   return (
