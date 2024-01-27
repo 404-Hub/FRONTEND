@@ -11,7 +11,7 @@ export default async function Page() {
   console.log(t('h4Main'));
   return (
     <>
-      <Navigation/>
+      <Navigation isHome={true} />
       <main style={{
         display: 'flex',
         justifyContent: 'center',
