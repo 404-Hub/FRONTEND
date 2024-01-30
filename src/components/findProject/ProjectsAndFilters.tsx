@@ -51,7 +51,7 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
 
   const projectType = searchParams.get('value');
   if (!projectType) {
-    router.push('/find-project');
+    // router.push('/find-project');
   }
 
   const onSetFormData = (value: SetStateAction<FormDataValue[]>) => {

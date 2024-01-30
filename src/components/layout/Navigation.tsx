@@ -30,6 +30,7 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/my-tasks': 'myTasks',
   '/find-project': 'findProject',
   '/propose-idea': 'proposeIdea',
+  '/find-project/subscribers': 'subscribers'
 };
 
 const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
@@ -240,7 +241,7 @@ const HeaderMobile: FC<{
 };
 
 type Props = {
-  isHome: boolean
+  isHome?: boolean
 }
 
 export const Navigation: React.FC<Props> = (props) => {

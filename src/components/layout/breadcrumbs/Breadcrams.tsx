@@ -1,13 +1,14 @@
 'use client';
 
+import { Options } from '@/types/findProjects';
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
-import { Options } from '@/types/findProjects';
 
 type Props = {
-  options: Options
+  options?: Options,
+  subcategory?: string,
 };
 
 const Breadcrams: React.FC<Props> = (props) => {
@@ -18,7 +19,11 @@ const Breadcrams: React.FC<Props> = (props) => {
     <Box sx={breadcrumbs.box}>
       <Breadcrumbs aria-label='breadcrumbs' separator='·'>
         <Link style={breadcrumbs.link} href={{ pathname: '/find-project' }}>Найти проект</Link>
-        {projectType ? <Typography sx={breadcrumbs.active}>{props.options[projectType]}</Typography> : ''}
+        {props.subcategory && !projectType ? <Typography sx={breadcrumbs.active}>{props.subcategory}</Typography> : (null)}
+        {props.subcategory && projectType ? <Link style={breadcrumbs.link} href={{ pathname: '/find-project/subcategories' }}>{props.subcategory}</Link> : (null)}
+        {projectType && props.options ? <Typography sx={breadcrumbs.active}>
+          {props.options[projectType]}
+        </Typography> : (null)}
       </Breadcrumbs>
     </Box>
   );
@@ -36,6 +41,7 @@ const breadcrumbs = {
   link: {
     textDecoration: 'none',
     color: '#161C24',
+    cursor: 'pointer'
   },
   active: {
     color: ' #647380',

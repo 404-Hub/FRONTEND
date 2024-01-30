@@ -1,18 +1,16 @@
 'use client';
 
-import { Box, Button } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { publicSans } from '@/utils/fonts';
-import Subcategory from '@/components/findProject/Subcategory';
+import { Box, Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function Categories() {
   const router = useRouter();
-  const [visible, setVisible] = useState(false);
 
   const onHandleClick = () => {
-    setVisible(!visible);
+    router.push(`/find-project/subcategories`);
   };
 
   const handleClick = (value: string) => {
@@ -48,8 +46,5 @@ export default function Categories() {
           Изменить данные
         </Button>
       </Box>
-      {visible ? (
-       <Subcategory handleClick={handleClick} />
-      ) : (null)}
     </Box>);
 }
