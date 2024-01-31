@@ -13,10 +13,9 @@ export default function VerifyEmailForm() {
     event.preventDefault();
 
     try {
-      const url = searchParams.get('url');
-      const signature = searchParams.get('signature');
-      const pathname = `/api/verify-email/${url}&signature=${signature}`;
+      const pathname = '/api/email/verification-notification';
       const response = await fetchClient({
+        method: 'post',
         url: process.env.NEXT_PUBLIC_BACKEND_API_URL + pathname,
       });
 

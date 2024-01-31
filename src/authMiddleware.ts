@@ -24,7 +24,7 @@ export const handleAuth = async (
 
   if (token) {
     if (!token.email_verified_at && !isVerifyRoute) {
-      return NextResponse.redirect(new URL('/request-email-verification', request.url));
+      return NextResponse.redirect(new URL('/verify-email', request.url));
     }
 
     if (isIndexPage || isGuestRoute || isVerifyRoute) {

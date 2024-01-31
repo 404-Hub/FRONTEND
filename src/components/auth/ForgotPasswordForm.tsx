@@ -19,6 +19,8 @@ export function ForgotPasswordForm() {
       if (!response.ok) {
         throw response;
       }
+
+      localStorage.setItem('UserEmail', formData.get('email') as string);
     } catch (error) {
       if (error instanceof Response) {
         const response = await error.json();
@@ -45,7 +47,7 @@ export function ForgotPasswordForm() {
         id="email"
         name="email"
         type="email"
-        defaultValue="john@avocado-media.nl"
+        placeholder="john@avocado-media.nl"
       />
 
       <button type="submit">Send</button>

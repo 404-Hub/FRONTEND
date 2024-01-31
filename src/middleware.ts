@@ -4,7 +4,7 @@ import { handleAuth } from './authMiddleware';
 import { handleLanguage } from './languageMiddleware';
 
 const authRoutes: string[] = ['/dashboard'];
-const verifyRoutes: string[] = ['/request-email-verification', '/verify-email'];
+const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
 export const config = {
