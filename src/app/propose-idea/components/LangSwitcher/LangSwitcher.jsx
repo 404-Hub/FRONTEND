@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import { useTranslation } from '../../../i18n/client';
+import { useTranslation } from '@/app/i18n/client';
 
 export const LangSwitcher = () => {
   const { i18n } = useTranslation('translation');

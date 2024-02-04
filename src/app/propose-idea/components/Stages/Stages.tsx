@@ -6,12 +6,12 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import { styled, darken } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon';
 import LensIcon from '@mui/icons-material/Lens';
-import { LangSwitcher } from '../LangSwitcher/LangSwitcher';
-import { Stage } from '../Stage/Stage';
-import { StageSummary } from '../StageSummary/StageSummary';
-import { useTranslation } from '../../../i18n/client';
-import stepDataRu from '../../stepDataRu.json';
-import stepDataEn from '../../stepDataEn.json';
+import { useTranslation } from '@/app/i18n/client';
+import { LangSwitcher } from '@/app/propose-idea/components/LangSwitcher/LangSwitcher';
+import { Stage } from '@/app/propose-idea/components/Stage/Stage';
+import { StageSummary } from '@/app/propose-idea/components/StageSummary/StageSummary';
+import stepDataRu from '@/app/propose-idea/stepDataRu.json';
+import stepDataEn from '@/app/propose-idea/stepDataEn.json';
 
 interface ButtonType {
   [key: string]: string;

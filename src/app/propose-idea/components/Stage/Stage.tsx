@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { TextField, Box, Typography } from '@mui/material';
-import { ShowExample } from '../ShowExample/ShowExample';
+import { ShowExample } from '@/app/propose-idea/components/ShowExample/ShowExample';
 
 interface StageData {
   title: string;

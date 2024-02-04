@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { Stages } from './components/Stages/Stages';
+import { Stages } from '@/app/propose-idea/components/Stages/Stages';
 
 export default function Page() {
   return (
