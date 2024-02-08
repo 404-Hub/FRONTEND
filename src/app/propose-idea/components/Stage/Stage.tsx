@@ -1,20 +1,22 @@
 import React, { ChangeEvent } from 'react';
 import { TextField, Box, Typography } from '@mui/material';
 import { ShowExample } from '@/app/propose-idea/components/ShowExample/ShowExample';
+import { OneStepData } from '../Stages/Stages';
 
-interface StageData {
-  title: string;
-  labelTitle: string;
-  showExample: string;
-  exampleText: string;
-  isMultiline: boolean;
-}
+// interface StageData {
+//   title: string;
+//   labelTitle: string;
+//   showExample: string;
+//   exampleText: string;
+//   isMultiline: boolean;
+// }
 
 interface StageProps {
   children: React.ReactNode;
-  stageData: StageData;
+  stageData: OneStepData;
   inputValue: string;
   handleInputChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  activeStep: number;
 }
 
 export const Stage = ({ children, stageData, inputValue, handleInputChange }: StageProps) => {

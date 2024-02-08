@@ -15,16 +15,17 @@ export async function MainCover(): Promise<any> {
       }}
     >
       <Typography variant={'h4'}>{t('h4Main')}</Typography>
-      <Typography variant={'body1'}>{t('descriptionMain')}
-      </Typography>
+      <Typography variant={'body1'}>{t('descriptionMain')}</Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Button
-          variant={'contained'}
+          variant={'outlined'}
+          color={'success'}
           sx={{ flexGrow: 1 }}
         >
           {t('buttonFindProjectMain')}
         </Button>
         <Button sx={{ flexGrow: 1 }}>{t('buttonProposeIdeaMain')}</Button>
       </Box>
-    </Box>);
+    </Box>
+  );
 }

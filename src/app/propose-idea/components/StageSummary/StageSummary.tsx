@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import { OneStepData } from '../Stages/Stages';
 
 interface StageProps {
   children: React.ReactNode;
@@ -7,20 +8,6 @@ interface StageProps {
   userInputs: {
     [key: string]: string;
   };
-}
-
-interface OneStepData {
-  label: string;
-  header: string;
-  title: string;
-  fieldName: string;
-  labelTitle: string;
-  showExample: string;
-  exampleText: string;
-  descriptionTitle?: string;
-  additionalTitle?: string;
-  projectTitle?: string;
-  isCorrectTitle?: string;
 }
 
 export const StageSummary = ({ children, stageData, userInputs }: StageProps) => {

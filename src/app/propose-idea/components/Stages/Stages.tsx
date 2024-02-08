@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Stepper, Step, StepLabel } from '@mui/material';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { styled, darken } from '@mui/material/styles';
-import SvgIcon from '@mui/material/SvgIcon';
-import LensIcon from '@mui/icons-material/Lens';
+import { Button, Box, Typography } from '@mui/material';
 import { useTranslation } from '@/app/i18n/client';
 import { LangSwitcher } from '@/app/propose-idea/components/LangSwitcher/LangSwitcher';
 import { Stage } from '@/app/propose-idea/components/Stage/Stage';
 import { StageSummary } from '@/app/propose-idea/components/StageSummary/StageSummary';
+import { Stepper } from '@/app/propose-idea/components/Stepper/Stepper';
 import stepDataRu from '@/app/propose-idea/stepDataRu.json';
 import stepDataEn from '@/app/propose-idea/stepDataEn.json';
 
@@ -17,7 +14,7 @@ interface ButtonType {
   [key: string]: string;
 }
 
-interface OneStepData {
+export interface OneStepData {
   label: string;
   header: string;
   title: string;
@@ -33,78 +30,18 @@ interface OneStepData {
   buttons: ButtonType[];
 }
 
-interface ColorlibStepIconProps {
-  active: boolean;
-  completed: boolean;
-}
-
-interface BoldCheckIcon {
-  style?: React.CSSProperties;
-}
-
-function BoldCheckIcon(props: BoldCheckIcon) {
-  return (
-    <SvgIcon {...props}>
-      <path
-        d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-      />
-    </SvgIcon>
-  );
-}
-
-const activeColor = '#2FC362';
-const inactiveColor = '#DFE3E8';
-
-const ColorlibConnector = styled(StepConnector)(() => ({
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: activeColor,
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: activeColor,
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 1,
-    border: 0,
-    backgroundColor: inactiveColor,
-    borderRadius: 1,
-  },
-}));
-
-function ColorlibStepIcon(props: ColorlibStepIconProps) {
-  const { active, completed } = props;
-
-  const iconStyle = {
-    color: completed || active ? activeColor : inactiveColor,
-    fontSize: '12px',
-  };
-
-  if (completed) {
-    return <div>{<BoldCheckIcon style={iconStyle} />}</div>;
-  }
-  return <div>{active ? <LensIcon style={iconStyle} /> : <LensIcon style={iconStyle} />}</div>;
-}
-
 const commonOutlinedStyle = {
   variant: 'outlined',
+  color: 'success',
   sx: {
-    borderColor: '#18A670',
-    color: '#18A670',
     margin: '4px',
   },
 };
 
 const commonContainedStyle = {
   variant: 'contained',
+  color: 'success',
   sx: {
-    backgroundColor: '#18A670',
-    '&:hover': { backgroundColor: darken('#18A670', 0.2) },
     margin: '4px',
   },
 };
@@ -202,7 +139,7 @@ export const Stages = () => {
       })}
     </Box>
   );
-
+  // console.log(stepData);
   return (
     <>
       <Box
@@ -265,19 +202,9 @@ export const Stages = () => {
             </Typography>
           </Box>
           <Stepper
-            alternativeLabel
             activeStep={activeStep}
-            connector={<ColorlibConnector />}
-          >
-            {stepData.map((step) => (
-              <Step
-                key={step.label}
-                sx={{ px: 6 }}
-              >
-                <StepLabel StepIconComponent={ColorlibStepIcon}></StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+            steps={stepData}
+          />
         </Box>
       </Box>
       {activeStep === stepData.length - 1 ? (

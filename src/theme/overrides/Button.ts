@@ -1,4 +1,4 @@
-import { alpha, Theme } from '@mui/material/styles';
+import { alpha, darken, Theme } from '@mui/material/styles';
 
 export default function Button(theme: Theme) {
   return {
@@ -25,11 +25,21 @@ export default function Button(theme: Theme) {
         containedSecondary: {
           boxShadow: theme.shadows.secondary,
         },
+        containedSuccess: {
+          color: theme.palette.success.contrastText,
+          boxShadow: theme.shadows.primary,
+          '&:hover': {
+            backgroundColor: darken(theme.palette.success.main, 0.2),
+          },
+        },
         outlinedInherit: {
           border: `1px solid ${alpha(theme.palette.grey[500], 0.32)}`,
           '&:hover': {
             backgroundColor: theme.palette.action.hover,
           },
+        },
+        outlinedSuccess: {
+          border: `1px solid ${theme.palette.success.main}`,
         },
         textInherit: {
           '&:hover': {
