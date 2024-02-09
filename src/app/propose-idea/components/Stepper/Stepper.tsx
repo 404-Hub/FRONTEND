@@ -65,7 +65,6 @@ function ColorlibStepIcon(props: ColorlibStepIconProps) {
 }
 
 export const Stepper = ({ activeStep, steps }: { activeStep: number; steps: OneStepData[] }) => {
-  console.log(steps);
   return (
     <MuiStepper
       alternativeLabel

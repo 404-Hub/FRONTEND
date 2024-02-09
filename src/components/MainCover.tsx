@@ -18,8 +18,7 @@ export async function MainCover(): Promise<any> {
       <Typography variant={'body1'}>{t('descriptionMain')}</Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Button
-          variant={'outlined'}
-          color={'success'}
+          variant={'contained'}
           sx={{ flexGrow: 1 }}
         >
           {t('buttonFindProjectMain')}

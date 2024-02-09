@@ -11,7 +11,7 @@ import stepDataRu from '@/app/propose-idea/stepDataRu.json';
 import stepDataEn from '@/app/propose-idea/stepDataEn.json';
 
 interface ButtonType {
-  [key: string]: string;
+  [key: string]: string | undefined;
 }
 
 export interface OneStepData {
@@ -139,7 +139,7 @@ export const Stages = () => {
       })}
     </Box>
   );
-  // console.log(stepData);
+
   return (
     <>
       <Box

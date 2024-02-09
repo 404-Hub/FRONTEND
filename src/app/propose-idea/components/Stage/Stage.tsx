@@ -3,14 +3,6 @@ import { TextField, Box, Typography } from '@mui/material';
 import { ShowExample } from '@/app/propose-idea/components/ShowExample/ShowExample';
 import { OneStepData } from '../Stages/Stages';
 
-// interface StageData {
-//   title: string;
-//   labelTitle: string;
-//   showExample: string;
-//   exampleText: string;
-//   isMultiline: boolean;
-// }
-
 interface StageProps {
   children: React.ReactNode;
   stageData: OneStepData;
