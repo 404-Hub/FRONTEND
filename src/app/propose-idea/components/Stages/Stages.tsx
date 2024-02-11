@@ -1,14 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Box, Typography } from '@mui/material';
 import { useTranslation } from '@/app/i18n/client';
 import { LangSwitcher } from '@/app/propose-idea/components/LangSwitcher/LangSwitcher';
 import { Stage } from '@/app/propose-idea/components/Stage/Stage';
 import { StageSummary } from '@/app/propose-idea/components/StageSummary/StageSummary';
 import { Stepper } from '@/app/propose-idea/components/Stepper/Stepper';
-import stepDataRu from '@/app/propose-idea/stepDataRu.json';
-import stepDataEn from '@/app/propose-idea/stepDataEn.json';
 
 interface ButtonType {
   [key: string]: string | undefined;
@@ -58,16 +56,15 @@ const buttonStyles: Record<string, any> = {
 export const Stages = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
-  const {
-    t,
-    i18n: { language },
-  } = useTranslation('translation');
-  const [stepData, setStepData] = useState(stepDataRu);
-  const currentStageData: OneStepData = stepData[activeStep];
+  const { t } = useTranslation('translation');
 
-  useEffect(() => {
-    setStepData(language === 'ru' ? stepDataRu : stepDataEn);
-  }, [language]);
+  const stages: OneStepData[] = t('proposePage.stages', { returnObjects: true });
+
+  const getCurrentStageData = (): OneStepData => {
+    return stages[activeStep];
+  };
+
+  const currentStageData: OneStepData = getCurrentStageData();
 
   const handleCreateProject = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -78,7 +75,7 @@ export const Stages = () => {
   };
 
   const handleNextClick = (): void => {
-    if (activeStep < stepData.length - 1) {
+    if (activeStep < stages.length - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
       console.log('Вы завершили все шаги!');
@@ -114,7 +111,7 @@ export const Stages = () => {
     }));
   };
 
-  const renderButtons = (buttons: ButtonType[]) => (
+  const renderButtons = (buttons: ButtonType[]): JSX.Element => (
     <Box
       sx={{
         display: 'flex',
@@ -171,7 +168,7 @@ export const Stages = () => {
               paddingLeft: '5rem',
             }}
           >
-            {currentStageData.header}
+            {t('proposePage.title')}
           </Typography>
         </Box>
         <LangSwitcher />
@@ -198,16 +195,16 @@ export const Stages = () => {
                 fontWeight: 700,
               }}
             >
-              {stepData[activeStep].label}
+              {currentStageData.label}
             </Typography>
           </Box>
           <Stepper
             activeStep={activeStep}
-            steps={stepData}
+            steps={stages}
           />
         </Box>
       </Box>
-      {activeStep === stepData.length - 1 ? (
+      {activeStep === stages.length - 1 ? (
         <StageSummary
           stageData={currentStageData}
           userInputs={userInputs}
