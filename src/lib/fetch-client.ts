@@ -19,7 +19,7 @@ async function fetchClient({
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: body || undefined,
     });
@@ -36,7 +36,7 @@ async function fetchClient({
       }
 
       if (error.status === 409) {
-        window.location.href = '/request-email-verification';
+        window.location.href = '/verify-email';
       }
 
       throw error;
