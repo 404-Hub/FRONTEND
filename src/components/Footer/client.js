@@ -1,7 +1,7 @@
 'use client';
 
-import { FooterBase } from './FooterBase';
-import { useTranslation } from '../../app/i18n/client';
+import { FooterBase } from '@/components/Footer/FooterBase';
+import { useTranslation } from '@/app/i18n/client';
 
 export const Footer = ({ path }) => {
   const { t, i18n } = useTranslation('translation');

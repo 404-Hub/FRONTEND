@@ -1,7 +1,7 @@
 import { withAuth } from 'next-auth/middleware';
 import { NextRequest, NextResponse } from 'next/server';
-import { handleAuth } from './authMiddleware';
-import { handleLanguage } from './languageMiddleware';
+import { handleAuth } from '@/authMiddleware';
+import { handleLanguage } from '@/languageMiddleware';
 
 const authRoutes: string[] = ['/dashboard'];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];

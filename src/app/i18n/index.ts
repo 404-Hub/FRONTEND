@@ -3,7 +3,7 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { cookies, headers } from 'next/headers';
 import acceptLanguage from 'accept-language';
-import { getOptions, languages, fallbackLng } from './settings';
+import { getOptions, languages, fallbackLng } from '@/app/i18n/settings';
 
 interface TranslationOptions {
   keyPrefix?: string;

@@ -1,25 +1,24 @@
 'use client';
 
+import { Logo } from '@/components/base/logo/Logo';
+import { theme } from '@/theme';
+import MenuIcon from '@mui/icons-material/Menu';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   FC, useCallback, useMemo, useState,
 } from 'react';
-import AppBar from '@mui/material/AppBar';
-import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Logo } from '@/components/base/logo/Logo';
-import Link from 'next/link';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useViewport } from '@/providers/ViewportProvider';
-import { usePathname, useRouter } from 'next/navigation';
-import Typography from '@mui/material/Typography';
-import { theme } from '@/theme';
 
 type HeaderLink = {
   label: string;
@@ -31,6 +30,7 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/my-tasks': 'myTasks',
   '/find-project': 'findProject',
   '/propose-idea': 'proposeIdea',
+  '/find-project/subscribers': 'subscribers'
 };
 
 const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
@@ -91,7 +91,7 @@ const HeaderDesktop: FC<{
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ display: { xs: 'none', md: 'block' } }}>
       <AppBar
         position="sticky"
         color={'transparent'}
@@ -109,7 +109,7 @@ const HeaderDesktop: FC<{
             maxWidth: '1440px',
           }}
         >
-          <Logo/>
+          <Logo />
           {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
           <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
             {links.map(({ label, value }) => (
@@ -130,9 +130,9 @@ const HeaderDesktop: FC<{
               sx={{ display: 'flex', gap: 1 }}
             >
               Telegram
-              <TelegramIcon/>
+              <TelegramIcon />
             </Button>
-            <AuthBlock type={'desktop'}/>
+            <AuthBlock type={'desktop'} />
           </Box>
         </Toolbar>
       </AppBar>
@@ -180,9 +180,9 @@ const HeaderMobile: FC<{
             }}
           >
             <IconButton onClick={toggleMobileMenu}>
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
-            <Logo/>
+            <Logo />
           </Toolbar>
         </AppBar>
       </Container>
@@ -214,7 +214,7 @@ const HeaderMobile: FC<{
               Menu
             </Typography>
           </Box>
-          <AuthBlock type={'mobile'}/>
+          <AuthBlock type={'mobile'} />
           <Box
             sx={{
               display: 'flex',
@@ -240,9 +240,11 @@ const HeaderMobile: FC<{
   );
 };
 
-export const Navigation: FC = () => {
-  const { mdOrLess } = useViewport();
+type Props = {
+  isHome?: boolean
+}
 
+export const Navigation: React.FC<Props> = (props) => {
   const pathname = usePathname();
 
   const activeLink = useMemo(() => pathToLinkSlugMap[pathname], [pathname]);
@@ -268,15 +270,14 @@ export const Navigation: FC = () => {
     ],
     [],
   );
-  return mdOrLess ? (
-    <HeaderMobile
-      activeLink={activeLink}
-      links={links}
-    />
-  ) : (
-    <HeaderDesktop
-      activeLink={activeLink}
-      links={links}
-    />
-  );
+
+  return (
+    <Box >
+      <HeaderDesktop
+        activeLink={activeLink}
+        links={links}
+      />
+      {props.isHome ? <HeaderMobile activeLink={activeLink} links={links} /> : ''}
+    </Box>
+  )
 };

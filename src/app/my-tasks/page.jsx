@@ -1,8 +1,8 @@
 'use client';
 
 import { Container } from '@mui/material';
-import { useTranslation } from '../i18n/client';
-import { Footer } from '../../components/Footer/client';
+import { useTranslation } from '@/app/i18n/client';
+import { Footer } from '@/components/Footer/client';
 
 export default function Page() {
   const { t } = useTranslation('translation');

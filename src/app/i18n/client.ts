@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { getOptions } from './settings';
+import { getOptions } from '@/app/i18n/settings';
 
 i18next
   .use(initReactI18next)
