@@ -5,10 +5,10 @@ import { Box, Button, Typography } from '@mui/material';
 import React, {
   Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
-import { AllFilters, Project } from '@/types/findProjects';
-import searchResults from '../../mockups/searchResultsData.json';
+import { AllFilters, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import ProjectCard from '@/components/findProject/ProjectCard';
+import { getApps } from '@/api/client/apps';
 
 type Props = {
   projectType: string | null;
@@ -18,17 +18,18 @@ type Props = {
 };
 
 const ProjectsList: React.FC<Props> = (props) => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<TProject[]>([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [prevPage, setPrevPage] = useState(currentPage - 1);
 
   // eslint-disable-next-line no-unused-vars
-  const fetchProjects = async (page: number, projectType: string) => {
+  const fetchProjects = async (page: number, categoryId: string) => {
     try {
-      const items = searchResults.searchResults.find((el) => el.currentPage === currentPage);
-      setProjects(projects!.concat(items!.results));
-      setTotal(items!.totalCount);
+      const items = await getApps(currentPage, categoryId);
+      // const items = searchResults.searchResults.find((el) => el.currentPage === currentPage);
+      setProjects(items.items);
+      setTotal(items?.total);
     } catch (error) {
       setPrevPage(page - 1);
       throw new Error('An error occurred during try to load more projects', { cause: error });
@@ -66,9 +67,11 @@ const ProjectsList: React.FC<Props> = (props) => {
           <ProjectCard
             key={index}
             project={{
-              rating: project.rating,
-              number: project.number,
-              name: project.name,
+              upvotes: project.upvotes,
+              downvotes: project.downvotes,
+              rating: (project.upvotes - project.downvotes).toString(),
+              id: project.id,
+              title: project.title,
               description: project.description,
             }}
           />))

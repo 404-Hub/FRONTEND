@@ -7,10 +7,10 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { Project } from '@/types/findProjects';
+import { TProject } from '@/types/findProjects';
 
 type Props = {
-  project: Project,
+  project: TProject,
 };
 
 const ProjectCard: React.FC<Props> = (props) => (
@@ -26,8 +26,8 @@ const ProjectCard: React.FC<Props> = (props) => (
         <KeyboardArrowDownIcon sx={projectCardStyles.passiveArrow} />
       </Button>
     </Box>
-    <Typography sx={projectCardStyles.projectNumber}>№ {props.project.number}</Typography>
-    <Typography sx={projectCardStyles.title}>{props.project.name}</Typography>
+    <Typography sx={projectCardStyles.projectNumber}>№ {props.project.id}</Typography>
+    <Typography sx={projectCardStyles.title}>{props.project.title}</Typography>
     <Typography
       sx={[projectCardStyles.cardText, projectCardStyles.projectDescription]}
     >{props.project.description}</Typography>

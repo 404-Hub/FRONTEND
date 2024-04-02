@@ -49,6 +49,10 @@ const findPageStyles = {
   backlLink: {
     width: '24px',
     height: '24px',
+    display: {
+      xs: 'flex',
+      md: 'none',
+    },
   },
   title: {
     fontWeight: '600',
@@ -56,6 +60,10 @@ const findPageStyles = {
     marginTop: {
       xs: '0',
       md: '24px',
+    },
+    marginBottom: {
+      xs: '0',
+      md: '32px',
     },
     fontSize: {
       xs: '20px',
@@ -74,18 +82,11 @@ const findPageStyles = {
     },
   },
   mainOptions: {
-    margin: '0 auto',
-    paddingTop: {
-      md: '40px',
-    },
     fontWeight: '600',
     fontSize: '20px',
-    maxWidth: 380,
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(47%, 1fr))',
-    gap: '16px',
   },
   buttons: {
+    backgroundColor: '#FFD600',
     aspectRatio: '1',
     color: 'white',
     width: '100%',

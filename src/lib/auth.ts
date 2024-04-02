@@ -4,13 +4,39 @@ import type { NextAuthOptions, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+async function refreshAccessToken(token: JWT) {
+  try {
+    const response = await fetchClient({
+      method: 'POST',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/refresh`,
+      token: token.accessToken,
+    });
+
+    if (!response.ok) throw response;
+
+    const refreshedAccessToken: { access_token: string } = await response.json();
+    const { exp } = jwt.decode(refreshedAccessToken.access_token);
+
+    return {
+      ...token,
+      accessToken: refreshedAccessToken.access_token,
+      exp,
+    };
+  } catch (error) {
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
   session: {
     strategy: 'jwt',
-    maxAge: parseInt(process.env.NEXTAUTH_JWT_AGE!) || 1209600,
+    maxAge: parseInt(process.env.NEXTAUTH_JWT_AGE!, 10) || 1209600,
   },
   providers: [
     CredentialsProvider({
@@ -114,29 +140,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-async function refreshAccessToken(token: JWT) {
-  try {
-    const response = await fetchClient({
-      method: 'POST',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/refresh`,
-      token: token.accessToken,
-    });
-
-    if (!response.ok) throw response;
-
-    const refreshedAccessToken: { access_token: string } = await response.json();
-    const { exp } = jwt.decode(refreshedAccessToken.access_token);
-
-    return {
-      ...token,
-      accessToken: refreshedAccessToken.access_token,
-      exp,
-    };
-  } catch (error) {
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    };
-  }
-}

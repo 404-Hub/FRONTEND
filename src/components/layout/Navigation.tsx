@@ -14,11 +14,11 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   FC, useCallback, useMemo, useState,
 } from 'react';
+import { AuthBlock } from '@/components/layout/navigation/AuthBlock';
 
 type HeaderLink = {
   label: string;
@@ -30,51 +30,8 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/my-tasks': 'myTasks',
   '/find-project': 'findProject',
   '/propose-idea': 'proposeIdea',
-  '/find-project/subscribers': 'subscribers'
+  '/find-project/subscribers': 'subscribers',
 };
-
-const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
-  <Box
-    sx={{
-      display: 'flex',
-      gap: 1,
-      justifyContent: 'stretch',
-      flexGrow: 1,
-      ...(type === 'mobile'
-        ? {
-          padding: 2,
-          '& > *': {
-            flex: 1,
-            width: '50%',
-          },
-        }
-        : {}),
-    }}
-  >
-    <Link href={{ pathname: '/login' }}>
-      <Button
-        sx={{
-          width: '100%',
-        }}
-        color="inherit"
-        variant={'contained'}
-      >
-        Войти
-      </Button>
-    </Link>
-    <Link href={{ pathname: '/register' }}>
-      <Button
-        sx={{
-          width: '100%',
-        }}
-        color="inherit"
-        variant={'contained'}
-      >
-        Регистрация
-      </Button>
-    </Link>
-  </Box>
-);
 
 const HeaderDesktop: FC<{
   links: HeaderLink[];
@@ -162,7 +119,7 @@ const HeaderMobile: FC<{
 
   return (
     <>
-      <Container maxWidth="lg">
+      <Container sx={{ display: { sm: 'block', md: 'none' } }} maxWidth="lg">
         <AppBar
           position="sticky"
           color={'transparent'}
@@ -244,7 +201,7 @@ type Props = {
   isHome?: boolean
 }
 
-export const Navigation: React.FC<Props> = (props) => {
+export const Navigation: FC = () => {
   const pathname = usePathname();
 
   const activeLink = useMemo(() => pathToLinkSlugMap[pathname], [pathname]);
@@ -277,7 +234,7 @@ export const Navigation: React.FC<Props> = (props) => {
         activeLink={activeLink}
         links={links}
       />
-      {props.isHome ? <HeaderMobile activeLink={activeLink} links={links} /> : ''}
+      <HeaderMobile activeLink={activeLink} links={links} />
     </Box>
-  )
+  );
 };

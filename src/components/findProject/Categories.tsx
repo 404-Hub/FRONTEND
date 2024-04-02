@@ -1,50 +1,51 @@
 'use client';
 
-
-import findPageStyles from '@/styles/findProjectStyles/pageStyles';
-import { publicSans } from '@/utils/fonts';
-import { Box, Button } from '@mui/material';
+import { Container } from '@mui/material';
+import { SubCategory } from '@/components/findProject/category/SubCategory';
+import { useCallback, useMemo, useState } from 'react';
+import type { TCategory, TCategoryProps } from '@/types/findProjects';
+import Category from '@/components/findProject/category/Category';
 import { useRouter } from 'next/navigation';
 
-export default function Categories() {
+export default function Categories(props: TCategoryProps) {
+  const { categories } = props;
   const router = useRouter();
 
-  const onHandleClick = () => {
-    router.push(`/find-project/subcategories`);
+  const [currentCategory, setCurrentCategory] = useState<null | TCategory>(null);
+  const setCategoryCallBack = (category: TCategory | null) => {
+    setCurrentCategory(category);
   };
 
-  const handleClick = (value: string) => {
-    router.push(`/find-project/foundProjects?value=${value}`);
-  };
+  const onCategorySelect = useCallback((category: TCategory) => {
+    router.push(`/find-project/apps?value=${category.id}`);
+  }, [router]);
+
+  const subCategory: TCategory = useMemo(() => {
+    if (currentCategory === null) {
+      return {} as TCategory;
+    }
+
+    return categories.find(
+      (item) => parseInt(item.id, 10) === parseInt(currentCategory.id, 10),
+    ) ?? {} as TCategory;
+  }, [categories, currentCategory]);
 
   return (
-    <Box sx={findPageStyles.optionsContainer}>
-      <Box sx={findPageStyles.mainOptions}>
-        <Button
-          className={publicSans.className}
-          fullWidth
-          onClick={() => handleClick('subscribers')}
-          sx={[findPageStyles.buttons, findPageStyles.subscribes]}
-        >
-          От подписчиков
-        </Button>
-        <Button
-          sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
-          onClick={onHandleClick}
-        >
-          От Свята
-        </Button>
-        <Button
-          sx={[findPageStyles.buttons, findPageStyles.bests]}
-          onClick={() => handleClick('bests')}>
-          Лучшие
-        </Button>
-        <Button
-          onClick={() => handleClick('changeInfo')}
-          sx={[findPageStyles.buttons, findPageStyles.changeInfo]}
-        >
-          Изменить данные
-        </Button>
-      </Box>
-    </Box>);
+        <Container>
+            {currentCategory === null && (
+                <Category
+                    categories={categories}
+                    onCategorySelect={onCategorySelect}
+                    setCurrentCategory={setCategoryCallBack}
+                />
+            )}
+            {currentCategory !== null && (
+                <SubCategory
+                    category={subCategory}
+                    onCategorySelect={onCategorySelect}
+                    setCurrentCategory={setCategoryCallBack}
+                />
+            )}
+        </Container>
+  );
 }
