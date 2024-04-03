@@ -63,3 +63,6 @@ Contents:
 In this project we're using power of server components to make all necessary fetch requests and data manipulation right on server and provide to client only ready-to-use data.
 Of course, sometimes we need to fetch some data on client side, but in most cases we should avoid it.
 
+If component doesn't require any client specific API like onClick, useState or useEffect, it should be a server component.
+
+Please, use `useTranslations` hook only at server components, to avoid sending translations to client.
