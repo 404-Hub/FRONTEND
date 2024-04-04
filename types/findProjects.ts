@@ -10,15 +10,15 @@ type Options = {
 type AllFiltersOptions = {
   label: string;
   name: string;
-  checked: boolean
-}[];
+  checked: boolean;
+};
 
 type AllFilters = {
   type: string;
   name: string;
   label: string;
-  options: AllFiltersOptions;
-}[];
+  options: AllFiltersOptions[];
+};
 
 type SelectedFilters = {
   label: string;
@@ -47,22 +47,28 @@ type TProject = {
 type HandleValueType = (name: string, value: string, type: string, checked: boolean) => void;
 
 export type {
-  Options, AllFilters, AllFiltersOptions, SelectedFilters, HandleValueType, FormDataValue, TProject,
+  Options,
+  AllFilters,
+  AllFiltersOptions,
+  SelectedFilters,
+  HandleValueType,
+  FormDataValue,
+  TProject,
 };
 
 export type TCategory = {
-    id: string;
-    name: string;
-    children: TCategory[];
+  id: string;
+  name: string;
+  children: TCategory[];
 };
 
 export type TCategoryProps = {
-  categories: TCategory[],
+  categories: TCategory[];
   onCategorySelect?: (category: TCategory) => void;
   setCurrentCategory?: (category: TCategory | null) => void;
 };
 export type TSubCategoryProps = {
-  category: TCategory,
+  category: TCategory;
   onCategorySelect?: (category: TCategory) => void;
   setCurrentCategory?: (category: TCategory | null) => void;
 };
@@ -71,4 +77,4 @@ export type TCardProps = {
   category: TCategory;
   onCategorySelect?: (category: TCategory) => void;
   setCurrentCategory?: (category: TCategory | null) => void;
-}
+};

@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Typography
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { AllFilters, FormDataValue, Options } from '@/types/findProjects';
@@ -18,7 +15,7 @@ type Props = {
 };
 
 const ProjectsAndFilters: React.FC<Props> = (props) => {
-  const [allFilters, setAllFilters] = useState<AllFilters>([]);
+  const [allFilters, setAllFilters] = useState<AllFilters[]>([]);
   const [formData, setFormData] = useState<FormDataValue[]>([]);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -83,9 +80,10 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
     if (type === 'checkbox') {
       let nameIn: FormDataValue[];
       if ([name] in formData) {
-        nameIn = formData[name].includes(value) ? {
-          [name]: formData[name].filter((item: string) => item !== value),
-        }
+        nameIn = formData[name].includes(value)
+          ? {
+              [name]: formData[name].filter((item: string) => item !== value),
+            }
           : { [name]: [...formData[name], value] };
       } else {
         nameIn = { [name]: [value] };
@@ -103,9 +101,15 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
   return (
     <Box>
       {/* <ThemeProvider theme={theme}> */}
-      {projectType ? <Typography sx={findPageStyles.pageTitle} variant={'h5'}>{props.options[projectType]}</Typography> : ''}
+      {projectType && (
+        <Typography
+          sx={findPageStyles.pageTitle}
+          variant={'h5'}
+        >
+          {props.options[projectType]}
+        </Typography>
+      )}
       <Box sx={findPageStyles.centralContainer}>
-
         <FilterBlock
           handleChange={handleChange}
           setFormData={onSetFormData}
@@ -130,7 +134,6 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
           setShowFilters={setShowFilters}
           showFilters={showFilters}
         />
-
       </Box>
       {/* </ThemeProvider> */}
     </Box>

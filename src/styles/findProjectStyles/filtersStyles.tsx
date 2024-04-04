@@ -6,7 +6,8 @@ const filtersStyles = {
     },
     filterContainer: {
       display: {
-        xs: 'block', md: 'flex',
+        xs: 'block',
+        md: 'flex',
       },
       flexDirection: 'row',
     },
@@ -18,7 +19,8 @@ const filtersStyles = {
       xs: 'fixed',
       md: 'static',
     },
-    zIndex: 1000,
+    top: 0,
+    zIndex: 1100,
     overflow: {
       xs: 'hidden',
       md: 'visible',
