@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession, signOut } from 'next-auth/react';
 import { Logo } from '@/components/base/logo/Logo';
 import { theme } from '@/theme';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,9 +17,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  FC, useCallback, useMemo, useState,
-} from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 
 type HeaderLink = {
   label: string;
@@ -30,7 +29,7 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/my-tasks': 'myTasks',
   '/find-project': 'findProject',
   '/propose-idea': 'proposeIdea',
-  '/find-project/subscribers': 'subscribers'
+  '/find-project/subscribers': 'subscribers',
 };
 
 const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
@@ -42,12 +41,12 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
       flexGrow: 1,
       ...(type === 'mobile'
         ? {
-          padding: 2,
-          '& > *': {
-            flex: 1,
-            width: '50%',
-          },
-        }
+            padding: 2,
+            '& > *': {
+              flex: 1,
+              width: '50%',
+            },
+          }
         : {}),
     }}
   >
@@ -91,7 +90,10 @@ const HeaderDesktop: FC<{
   };
 
   return (
-    <Container maxWidth="lg" sx={{ display: { xs: 'none', md: 'block' } }}>
+    <Container
+      maxWidth="lg"
+      sx={{ display: { xs: 'none', md: 'block' } }}
+    >
       <AppBar
         position="sticky"
         color={'transparent'}
@@ -111,7 +113,10 @@ const HeaderDesktop: FC<{
         >
           <Logo />
           {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
-          <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
+          <Tabs
+            value={activeLink || false}
+            onChange={(_, value) => handleTabClick(value)}
+          >
             {links.map(({ label, value }) => (
               <Tab
                 key={value}
@@ -223,7 +228,10 @@ const HeaderMobile: FC<{
             }}
           >
             {links.map((tab) => (
-              <Button key={tab.value} onClick={() => handleTabClick(tab.value)}>
+              <Button
+                key={tab.value}
+                onClick={() => handleTabClick(tab.value)}
+              >
                 <Typography
                   variant={'body2'}
                   align={'left'}
@@ -241,11 +249,13 @@ const HeaderMobile: FC<{
 };
 
 type Props = {
-  isHome?: boolean
-}
+  isHome?: boolean;
+};
 
 export const Navigation: React.FC<Props> = (props) => {
   const pathname = usePathname();
+  const session = useSession();
+  console.log(session);
 
   const activeLink = useMemo(() => pathToLinkSlugMap[pathname], [pathname]);
 
@@ -263,21 +273,35 @@ export const Navigation: React.FC<Props> = (props) => {
         label: 'Найти проект',
         value: 'findProject',
       },
-      {
-        label: 'Предложить идею для проекта',
-        value: 'proposeIdea',
-      },
+      ...(session.status === 'authenticated'
+        ? [
+            {
+              label: 'Предложить идею для проекта',
+              value: 'proposeIdea',
+            },
+          ]
+        : []),
     ],
-    [],
+    [session]
   );
 
   return (
-    <Box >
+    <Box>
       <HeaderDesktop
         activeLink={activeLink}
         links={links}
       />
-      {props.isHome ? <HeaderMobile activeLink={activeLink} links={links} /> : ''}
+      {session.status === 'authenticated' ? (
+        <button onClick={() => signOut({ callbackUrl: '/' })}>Sign OUT</button>
+      ) : null}
+      {props.isHome ? (
+        <HeaderMobile
+          activeLink={activeLink}
+          links={links}
+        />
+      ) : (
+        ''
+      )}
     </Box>
-  )
+  );
 };

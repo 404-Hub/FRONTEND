@@ -7,6 +7,7 @@ import { LangSwitcher } from '@/app/propose-idea/components/LangSwitcher/LangSwi
 import { Stage } from '@/app/propose-idea/components/Stage/Stage';
 import { StageSummary } from '@/app/propose-idea/components/StageSummary/StageSummary';
 import { Stepper } from '@/app/propose-idea/components/Stepper/Stepper';
+import { getSession, signOut } from 'next-auth/react';
 
 interface ButtonType {
   [key: string]: string | undefined;
@@ -91,8 +92,53 @@ export const Stages = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleApproveData = () => {
-    console.log('userInputs', userInputs);
+  const handleApproveData = async () => {
+    const session = await getSession();
+    const accessToken = session?.accessToken;
+    if (!accessToken) {
+      console.error('No access token available. User must be logged in.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('category_id', '1');
+    formData.append('title', userInputs.title);
+    formData.append('description', userInputs.description);
+    formData.append('additional', userInputs.additional);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Success:', data);
+      } else {
+        const errorData = await response.json();
+        console.error('Server Error:', errorData);
+      }
+    } catch (error) {
+      if (error instanceof Response) {
+        const errorData = await error.json();
+        console.error('Server responded with status:', error.status, 'and message:', errorData);
+        if (error.status === 401) {
+          signOut();
+        }
+
+        if (error.status === 409) {
+          window.location.href = '/verify-email';
+        }
+
+        throw error;
+      }
+
+      throw new Error('Failed to fetch data', { cause: error });
+    }
   };
 
   const buttonActions: Record<string, () => void> = {

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { handleAuth } from '@/authMiddleware';
 import { handleLanguage } from '@/languageMiddleware';
 
-const authRoutes: string[] = ['/dashboard'];
+const authRoutes: string[] = ['/dashboard', '/propose-idea'];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
@@ -28,5 +28,5 @@ export default withAuth(
         return true;
       },
     },
-  },
+  }
 );
