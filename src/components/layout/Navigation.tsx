@@ -255,7 +255,6 @@ type Props = {
 export const Navigation: React.FC<Props> = (props) => {
   const pathname = usePathname();
   const session = useSession();
-  console.log(session);
 
   const activeLink = useMemo(() => pathToLinkSlugMap[pathname], [pathname]);
 
@@ -291,9 +290,6 @@ export const Navigation: React.FC<Props> = (props) => {
         activeLink={activeLink}
         links={links}
       />
-      {session.status === 'authenticated' ? (
-        <button onClick={() => signOut({ callbackUrl: '/' })}>Sign OUT</button>
-      ) : null}
       {props.isHome ? (
         <HeaderMobile
           activeLink={activeLink}
