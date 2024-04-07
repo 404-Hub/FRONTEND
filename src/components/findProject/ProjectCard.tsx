@@ -10,28 +10,37 @@ import React from 'react';
 import { TProject } from '@/types/findProjects';
 
 type Props = {
-  project: TProject,
+  project: TProject;
+  projectRef?: string;
 };
 
-const ProjectCard: React.FC<Props> = (props) => (
-  <Box sx={[projectCardStyles.container]}>
-    <Box sx={projectCardStyles.ratingContainer}>
-      <Button sx={[projectCardStyles.arrowButtons, projectCardStyles.activeArrow]} color='inherit'>
-        <KeyboardArrowUpIcon />
-      </Button>
-      <Typography
-        sx={[projectCardStyles.cardText, projectCardStyles.cardRating]}
-      >{props.project.rating}</Typography>
-      <Button sx={projectCardStyles.arrowButtons}>
-        <KeyboardArrowDownIcon sx={projectCardStyles.passiveArrow} />
-      </Button>
+const ProjectCard: React.FC<Props> = (props) => {
+  const { project } = props;
+  const { title, rating, id, description } = project as TProject;
+
+  return (
+    <Box sx={[projectCardStyles.container]}>
+      <Box sx={projectCardStyles.ratingContainer}>
+        <Button
+          sx={[projectCardStyles.arrowButtons, projectCardStyles.activeArrow]}
+          color="inherit"
+        >
+          <KeyboardArrowUpIcon />
+        </Button>
+        <Typography sx={[projectCardStyles.cardText, projectCardStyles.cardRating]}>
+          {rating}
+        </Typography>
+        <Button sx={projectCardStyles.arrowButtons}>
+          <KeyboardArrowDownIcon sx={projectCardStyles.passiveArrow} />
+        </Button>
+      </Box>
+      <Typography sx={projectCardStyles.projectNumber}>№ {id}</Typography>
+      <Typography sx={projectCardStyles.title}>{title}</Typography>
+      <Typography sx={[projectCardStyles.cardText, projectCardStyles.projectDescription]}>
+        {description}
+      </Typography>
     </Box>
-    <Typography sx={projectCardStyles.projectNumber}>№ {props.project.id}</Typography>
-    <Typography sx={projectCardStyles.title}>{props.project.title}</Typography>
-    <Typography
-      sx={[projectCardStyles.cardText, projectCardStyles.projectDescription]}
-    >{props.project.description}</Typography>
-  </Box>
-);
+  );
+};
 
 export default ProjectCard;

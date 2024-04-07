@@ -3,25 +3,23 @@
 import { Box, Typography } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { SetStateAction, useEffect, useState } from 'react';
-import { AllFilters, FormDataValue, Options } from '@/types/findProjects';
+import { Filters, ActualFilter, FilterChangeArgs } from '@/types/findProjects';
 import filters from '../../mockups/filters.json';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import FilterBlock from '@/components/findProject/FilterBlock';
 import ProjectsList from '@/components/findProject//ProjectsList';
 import SelectFilters from '@/components/findProject//SelectFilters';
 
-type Props = {
-  options: Options;
-};
-
-const ProjectsAndFilters: React.FC<Props> = (props) => {
-  const [allFilters, setAllFilters] = useState<AllFilters[]>([]);
-  const [formData, setFormData] = useState<FormDataValue[]>([]);
+const ProjectsAndFilters = () => {
+  const [allFilters, setAllFilters] = useState<Filters>([]);
+  const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [defaultFilters, setDefaultFilters] = useState(filters.filters);
 
   const fetchAllFilters = () => {
     try {
-      setAllFilters(filters.filters);
+      const filtersFromJSON = filters.filters;
+      setAllFilters(filtersFromJSON);
     } catch (error) {
       throw new Error('An error occurred during try to display the filters', { cause: error });
     }
@@ -31,16 +29,9 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
     fetchAllFilters();
   }, []);
 
-  const uncheckAll = () => {
-    const newObj = allFilters.map((item) => {
-      const newOptions = item.options.map((option) => ({ ...option, checked: false }));
-      return { ...item, options: newOptions };
-    });
-    return newObj;
-  };
   const resetFilters = () => {
-    setAllFilters(uncheckAll());
-    setFormData([]);
+    setAllFilters(defaultFilters);
+    setActualFilters([]);
   };
 
   const router = useRouter();
@@ -51,15 +42,19 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
     // router.push('/find-project');
   }
 
-  const onSetFormData = (value: SetStateAction<FormDataValue[]>) => {
+  const onSetActualFilters = (value: SetStateAction<ActualFilter[]>) => {
     if (value.length) {
-      setFormData(value);
+      setActualFilters(value);
     }
   };
-  const updateFilter = (name: string, value: string, checked: boolean, type: string) => {
-    const updatedOb = allFilters.map((item) => {
-      if (item.name === name) {
-        const updatedOptions = item.options.map((option) => {
+  const updateFilter = (args: FilterChangeArgs) => {
+    const { type, name, value, checked } = args;
+
+    const newFilters = allFilters.map((filter) => {
+      const { options } = filter;
+
+      if (filter.name === name) {
+        const updatedOptions = options.map((option) => {
           if (type === 'radio' && option.name !== value) {
             return { ...option, checked: false };
           }
@@ -69,34 +64,63 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
           return option;
         });
 
-        return { ...item, options: updatedOptions };
+        return { ...filter, options: updatedOptions };
       }
-      return item;
+      return filter;
     });
-    return updatedOb;
+    return newFilters;
   };
 
-  const handleChange = (name: string, value: string, type: string, checked: boolean) => {
-    if (type === 'checkbox') {
-      let nameIn: FormDataValue[];
-      if ([name] in formData) {
-        nameIn = formData[name].includes(value)
-          ? {
-              [name]: formData[name].filter((item: string) => item !== value),
-            }
-          : { [name]: [...formData[name], value] };
+  const handleChange = (args: FilterChangeArgs) => {
+    const { type, name, value, checked } = args;
+
+    setActualFilters((prev) => {
+      let newPrev: ActualFilter | ActualFilter[] = {
+        filterName: name,
+        filterType: type,
+        actualRadioOptions: type === 'radio' ? value : '',
+        actualCheckboxOptions: type === 'checkbox' ? [value] : [''],
+      };
+      const filterInd = prev.findIndex((filter) => {
+        return filter.filterName === name;
+      });
+      const hasFilter = filterInd !== -1;
+
+      if (prev.length === 0) {
+        return [newPrev];
+      } else if (!hasFilter) {
+        newPrev = [...prev, newPrev];
       } else {
-        nameIn = { [name]: [value] };
+        newPrev = prev.map((filter) => {
+          if (filter.filterName === name) {
+            if (type === 'radio') {
+              filter.actualRadioOptions = value;
+            }
+            if (type === 'checkbox') {
+              console.log(checked, value);
+              if (checked) {
+                if (!filter.actualCheckboxOptions.includes(value)) {
+                  filter.actualCheckboxOptions.push(value);
+                }
+              } else {
+                if (filter.actualCheckboxOptions.includes(value)) {
+                  filter.actualCheckboxOptions.splice(
+                    filter.actualCheckboxOptions.indexOf(value),
+                    1
+                  );
+                }
+              }
+            }
+          }
+          return filter;
+        });
       }
-      setFormData((prevState) => ({ ...prevState, ...nameIn }));
-    }
-    if (type === 'radio') {
-      setFormData((prevState) => ({ ...prevState, [name]: value }));
-    }
-    setAllFilters(updateFilter(name, value, checked, type));
-  };
+      console.log([...newPrev]);
+      return [...newPrev];
+    });
 
-  const allValues = Object.values(formData).flat();
+    setAllFilters(updateFilter(args));
+  };
 
   return (
     <Box>
@@ -106,13 +130,13 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
           sx={findPageStyles.pageTitle}
           variant={'h5'}
         >
-          {props.options[projectType]}
+          {projectType}
         </Typography>
       )}
       <Box sx={findPageStyles.centralContainer}>
         <FilterBlock
           handleChange={handleChange}
-          setFormData={onSetFormData}
+          setFormData={onSetActualFilters}
           setShowFilters={setShowFilters}
           resetFilters={resetFilters}
           showFilters={showFilters}
@@ -121,7 +145,6 @@ const ProjectsAndFilters: React.FC<Props> = (props) => {
 
         <SelectFilters
           handleChange={handleChange}
-          allValues={allValues}
           projectType={projectType}
           allFilters={allFilters}
           setShowFilters={setShowFilters}

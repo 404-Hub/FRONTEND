@@ -3,19 +3,16 @@
 import { Container } from '@mui/material';
 import { SubCategory } from '@/components/findProject/category/SubCategory';
 import { useCallback, useMemo, useState } from 'react';
-import type { TCategory, TCategoryProps } from '@/types/findProjects';
+import type { TCategory, TCategoryProps, TSetCategoryCallback } from '@/types/findProjects';
 import Category from '@/components/findProject/category/Category';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 function Categories(props: TCategoryProps) {
-  const { categories } = props;
+  const { categories, SetCategoryCallback } = props;
   const router = useRouter();
 
   const [currentCategory, setCurrentCategory] = useState<null | TCategory>(null);
-  const setCategoryCallBack: (category: TCategory | null) => void = (
-    category: TCategory | null
-  ) => {
+  const setCategoryCallBack: TSetCategoryCallback = (category: TCategory | null) => {
     setCurrentCategory(category);
   };
 
@@ -30,7 +27,6 @@ function Categories(props: TCategoryProps) {
     if (currentCategory === null) {
       return {} as TCategory;
     }
-
     return (
       categories.find((item) => parseInt(item.id, 10) === parseInt(currentCategory.id, 10)) ??
       ({} as TCategory)

@@ -16,7 +16,7 @@ export default function FoundProjects() {
   return (
     <>
       <Box sx={findPageStyles.mainContainer}>
-        <ProjectsAndFilters options={options} />
+        <ProjectsAndFilters />
       </Box>
     </>
   );

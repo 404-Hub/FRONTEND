@@ -1,7 +1,7 @@
 'use client';
 
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
-import { AllFilters, FormDataValue, HandleValueType } from '@/types/findProjects';
+import { Filters, Filter, FilterBlockProps } from '@/types/findProjects';
 import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, Icon, IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -9,16 +9,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import RenderFilters from '@/components/findProject/RenderFilters';
 
-type Props = {
-  setFormData: Dispatch<SetStateAction<FormDataValue[]>>;
-  handleChange: HandleValueType;
-  setShowFilters: Dispatch<SetStateAction<boolean>>;
-  resetFilters: () => void;
-  showFilters: boolean;
-  allFilters: AllFilters[];
-};
-
-const FilterBlock: React.FC<Props> = (props) => {
+const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   const { setFormData, handleChange, setShowFilters, resetFilters, showFilters, allFilters } =
     props;
 
@@ -26,8 +17,8 @@ const FilterBlock: React.FC<Props> = (props) => {
   const [isSlideEffect, setIsSlideEffect] = useState(showFilters);
   const [isShowFilter, setIsShowFilter] = useState(showFilters);
 
-  const hasOptionsChecked = (filters: AllFilters[]) => {
-    return filters.some((filter: AllFilters) =>
+  const hasOptionsChecked = (filters: Filters) => {
+    return filters.some((filter: Filter) =>
       filter.options.some((option: { checked: boolean }) => option.checked)
     );
   };

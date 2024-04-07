@@ -25,7 +25,7 @@ export const CategoryCard = (props: TCardProps) => {
   return (
     <Grid
       item
-      xs={6}
+      xs={3}
       key={category.id}
     >
       <Card>

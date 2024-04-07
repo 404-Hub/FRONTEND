@@ -6,6 +6,7 @@ const findPageStyles = {
     },
     marginTop: '16px',
     marginBottom: '31px',
+    fontWeight: 800,
   },
   mainContainer: {
     margin: '0 auto',
