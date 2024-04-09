@@ -2,7 +2,7 @@
 
 import { Box, Typography } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Filters, ActualFilter, FilterChangeArgs } from '@/types/findProjects';
 import filters from '../../mockups/filters.json';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
@@ -10,29 +10,16 @@ import FilterBlock from '@/components/findProject/FilterBlock';
 import ProjectsList from '@/components/findProject//ProjectsList';
 import SelectFilters from '@/components/findProject//SelectFilters';
 
-const ProjectsAndFilters = () => {
-  const [allFilters, setAllFilters] = useState<Filters>([]);
+const AppsList = () => {
+  const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
   const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [defaultFilters, setDefaultFilters] = useState(filters.filters);
 
-  const fetchAllFilters = () => {
-    try {
-      const filtersFromJSON = filters.filters;
-      setAllFilters(filtersFromJSON);
-    } catch (error) {
-      throw new Error('An error occurred during try to display the filters', { cause: error });
-    }
-  };
-
-  useEffect(() => {
-    fetchAllFilters();
-  }, []);
-
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setAllFilters(defaultFilters);
     setActualFilters([]);
-  };
+  }, [allFilters, actualFilters]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,62 +29,67 @@ const ProjectsAndFilters = () => {
     // router.push('/find-project');
   }
 
-  const onSetActualFilters = (value: SetStateAction<ActualFilter[]>) => {
-    if (value.length) {
-      setActualFilters(value);
-    }
-  };
-  const updateFilter = (args: FilterChangeArgs) => {
-    const { type, name, value, checked } = args;
-
-    const newFilters = allFilters.map((filter) => {
-      const { options } = filter;
-
-      if (filter.name === name) {
-        const updatedOptions = options.map((option) => {
-          if (type === 'radio' && option.name !== value) {
-            return { ...option, checked: false };
-          }
-          if (option.name === value) {
-            return { ...option, checked };
-          }
-          return option;
-        });
-
-        return { ...filter, options: updatedOptions };
+  const onSetActualFilters = useCallback(
+    (value: SetStateAction<ActualFilter[]>) => {
+      if (value.length) {
+        setActualFilters(value);
       }
-      return filter;
-    });
-    return newFilters;
-  };
+    },
+    [actualFilters]
+  );
 
-  const handleChange = (args: FilterChangeArgs) => {
-    const { type, name, value, checked } = args;
+  const updateFilter = useCallback(
+    (args: FilterChangeArgs) => {
+      const { type, name, value, checked } = args;
 
-    setActualFilters((prev) => {
-      let newPrev: ActualFilter | ActualFilter[] = {
+      const newFilters = allFilters.map((filter) => {
+        const { options } = filter;
+
+        if (filter.name === name) {
+          const updatedOptions = options.map((option) => {
+            if (type === 'radio' && option.name !== value) {
+              return { ...option, checked: false };
+            }
+            if (option.name === value) {
+              return { ...option, checked };
+            }
+            return option;
+          });
+
+          return { ...filter, options: updatedOptions };
+        }
+        return filter;
+      });
+      return newFilters;
+    },
+    [actualFilters]
+  );
+
+  const changeFilters = useCallback(
+    (filtersValues: ActualFilter[], newFilterValues: FilterChangeArgs) => {
+      const { type, name, value, checked } = newFilterValues;
+      let newFilter: ActualFilter | ActualFilter[] = {
         filterName: name,
         filterType: type,
         actualRadioOptions: type === 'radio' ? value : '',
         actualCheckboxOptions: type === 'checkbox' ? [value] : [''],
       };
-      const filterInd = prev.findIndex((filter) => {
+      const filterInd = filtersValues.findIndex((filter) => {
         return filter.filterName === name;
       });
       const hasFilter = filterInd !== -1;
 
-      if (prev.length === 0) {
-        return [newPrev];
+      if (filtersValues.length === 0) {
+        return [newFilter];
       } else if (!hasFilter) {
-        newPrev = [...prev, newPrev];
+        newFilter = [...filtersValues, newFilter];
       } else {
-        newPrev = prev.map((filter) => {
+        newFilter = filtersValues.map((filter) => {
           if (filter.filterName === name) {
             if (type === 'radio') {
               filter.actualRadioOptions = value;
             }
             if (type === 'checkbox') {
-              console.log(checked, value);
               if (checked) {
                 if (!filter.actualCheckboxOptions.includes(value)) {
                   filter.actualCheckboxOptions.push(value);
@@ -115,12 +107,18 @@ const ProjectsAndFilters = () => {
           return filter;
         });
       }
-      console.log([...newPrev]);
-      return [...newPrev];
-    });
+      return [...newFilter];
+    },
+    [actualFilters, allFilters]
+  );
 
-    setAllFilters(updateFilter(args));
-  };
+  const handleChange = useCallback(
+    (args: FilterChangeArgs) => {
+      setActualFilters((prev) => changeFilters(prev, args));
+      setAllFilters(updateFilter(args));
+    },
+    [actualFilters, allFilters]
+  );
 
   return (
     <Box>
@@ -153,9 +151,7 @@ const ProjectsAndFilters = () => {
 
         <ProjectsList
           projectType={projectType}
-          allFilters={allFilters}
-          setShowFilters={setShowFilters}
-          showFilters={showFilters}
+          filters={actualFilters}
         />
       </Box>
       {/* </ThemeProvider> */}
@@ -163,4 +159,4 @@ const ProjectsAndFilters = () => {
   );
 };
 
-export default ProjectsAndFilters;
+export default AppsList;

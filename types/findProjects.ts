@@ -48,6 +48,17 @@ type TProject = {
   description: string;
 };
 
+type ProjectsListProps = {
+  projectType: string | null;
+  filters: ActualFilter[];
+};
+
+type GetAppsProps = {
+  page: number;
+  category: string | null;
+  filters?: ActualFilter[];
+};
+
 type FilterChangeArgs = {
   name: string;
   value: string;
@@ -131,4 +142,6 @@ export type {
   FilterChange,
   ActualFilter,
   TProject,
+  ProjectsListProps,
+  GetAppsProps,
 };

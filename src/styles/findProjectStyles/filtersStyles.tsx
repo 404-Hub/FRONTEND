@@ -48,6 +48,7 @@ const filtersStyles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: '34px',
+    maxHeight: '90%',
   },
   button: {
     border: 1,
@@ -79,6 +80,10 @@ const filtersStyles = {
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
+    maxHeight: {
+      xs: 'none',
+      md: '90vh',
+    },
     gap: {
       xs: '32px',
       md: 0,
@@ -148,7 +153,7 @@ const filtersStyles = {
     display: { xs: 'flex', md: 'none' },
     flexDirection: 'row',
     marginRight: '0',
-    marginTop: '68px',
+    marginTop: '8px',
     padding: '16px',
     justifyContent: 'space-between',
   },

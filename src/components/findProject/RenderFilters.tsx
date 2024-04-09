@@ -32,4 +32,4 @@ const RenderFilters: React.FC<RenderFiltersProps> = (props) => {
   );
 };
 
-export default React.memo(RenderFilters);
+export default RenderFilters;

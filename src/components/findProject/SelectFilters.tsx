@@ -16,7 +16,7 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const filter of filters) {
       const options = filter.options;
-      options.map((option) => {
+      options.forEach((option) => {
         if (option.checked) {
           filtersWithCheckedOpt.push({ ...option, filter: filter.name, type: filter.type });
         }
@@ -39,7 +39,7 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
         sx={selectFiltersStyles.filtersContainer}
         style={{ justifyContent: filtersExist ? 'space-between' : 'flex-end' }}
       >
-        {selectedFilters.length && (
+        {selectedFilters.length > 0 && (
           <Box sx={{ display: !showFilters ? 'flex' : 'none', gap: '12px', overflow: 'auto' }}>
             {selectedFilters.map((item) => {
               const { filter, name, type, checked, label } = item;
