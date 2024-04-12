@@ -35,6 +35,8 @@ const ProjectCard: React.FC<Props> = (props) => {
         height: height,
         overflowY: 'hidden',
         textOverflow: 'ellipsis',
+        marginX: 1,
+        cursor: 'pointer',
       }}
     >
       <Paper

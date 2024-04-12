@@ -27,7 +27,7 @@ type Filters = Filter[];
 type SelectedFilters = {
   label: string;
   name: string;
-  checked: boolean;
+  checked?: boolean;
   filter: string;
   type: string;
 };
@@ -35,8 +35,9 @@ type SelectedFilters = {
 type ActualFilter = {
   filterName: string;
   filterType: string;
-  actualRadioOptions: string;
+  actualRadioOption: string;
   actualCheckboxOptions: string[];
+  actualLabel: string;
 };
 
 type TProject = {
@@ -61,6 +62,7 @@ type GetAppsProps = {
 
 type FilterChangeArgs = {
   name: string;
+  label: string;
   value: string;
   type: string;
   checked: boolean;
@@ -102,7 +104,6 @@ type RenderFiltersProps = {
 };
 
 type FilterBlockProps = {
-  setFormData: Dispatch<SetStateAction<ActualFilter[]>>;
   handleChange: FilterChange;
   setShowFilters: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
@@ -112,7 +113,7 @@ type FilterBlockProps = {
 
 type SelectFiltersProps = {
   projectType: string | null;
-  allFilters: Filters;
+  actualFilters: ActualFilter[];
   showFilters: boolean;
   handleChange: FilterChange;
   setShowFilters: Dispatch<SetStateAction<boolean>>;

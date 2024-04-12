@@ -25,6 +25,10 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
     [allFilters]
   );
 
+  const handleUpVoteClick = useCallback(() => {
+    console.log('upvote');
+  }, []);
+
   const cancel = useCallback(() => {
     setShowFilters(false);
     resetFilters();
@@ -42,19 +46,34 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   }, [allFilters]);
 
   return (
-    <Paper sx={filtersStyles.filtersBox}>
-      <Box sx={filtersStyles.filtersReset}>
-        <Typography variant={'h6'}>фильтр</Typography>
+    <Paper
+      sx={{
+        padding: 2,
+        whiteSpace: 'nowrap',
+        height: '90%',
+        width: '100vw',
+        maxWidth: { md: '25%' },
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography
+          variant={'h6'}
+          sx={{ display: { xs: 'none', sm: 'block' }, paddingRight: 2 }}
+        >
+          Фильтры
+        </Typography>
         {isFilterExist && (
           <Button
             onClick={resetFilters}
-            sx={[filtersStyles.button, filtersStyles.buttonReset]}
+            variant="outlined"
+            color="error"
+            sx={{ display: { xs: 'none', md: 'block' } }}
           >
             Сбросить
           </Button>
         )}
       </Box>
-      <Box sx={{ ...findPageStyles.container, display: { md: 'none', xs: 'flex' } }}>
+      <Box sx={{ display: { md: 'none', xs: 'flex' }, alignItems: 'center' }}>
         <Link
           href={{ pathname: '/find-project' }}
           passHref
@@ -73,12 +92,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
           Поиск проекта
         </Typography>
       </Box>
-      <Box
-        sx={{
-          ...filtersStyles.filterMainContainer,
-          display: { xs: isShowFilter ? 'block' : 'none', md: 'block' },
-        }}
-      >
+      <Box>
         <Box
           sx={{
             transform: {
@@ -86,16 +100,25 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               md: 'translateX(0)',
             },
             transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-            width: '100%',
+            width: { xs: '100vw', md: '20%' },
+            position: { md: 'static', xs: 'fixed' },
+            left: { xs: 0, md: 'none' },
+            top: { xs: '10%', md: 'none' },
+            zIndex: 1000,
+            backgroundColor: { xs: '#F9FAFB', md: 'red' },
             display: 'flex',
             flexDirection: 'column',
-            height: {
-              xs: '100%',
-              md: 'auto',
-            },
+            height: { xs: '90%', md: 'auto' },
           }}
         >
-          <Box sx={[findPageStyles.container, filtersStyles.filterTitle]}>
+          <Box
+            sx={{
+              backgroundColor: '#ffffff',
+              display: { xs: 'flex', md: 'none' },
+              alignItems: 'center',
+              padding: 2,
+            }}
+          >
             <IconButton
               onClick={() => {
                 setShowFilters(false);
@@ -118,14 +141,48 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
             handleChange={handleChange}
             allFilters={allFilters}
           ></RenderFilters>
-          <Box sx={filtersStyles.buttonBox}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 2,
+              gap: 2,
+            }}
+          >
             <Button
               onClick={cancel}
-              sx={[filtersStyles.button, filtersStyles.buttonCancel]}
+              variant="outlined"
+              color="success"
+              sx={{
+                width: '48%',
+              }}
             >
-              Отмена
+              <Typography
+                sx={{
+                  textTransform: 'capitalize',
+                }}
+              >
+                Отмена
+              </Typography>
             </Button>
-            <Button sx={[filtersStyles.button, filtersStyles.buttonConfirm]}>Сохранить</Button>
+            <Button
+              onClick={handleUpVoteClick}
+              variant="contained"
+              color="success"
+              sx={{
+                width: '48%',
+              }}
+            >
+              <Typography
+                sx={{
+                  textTransform: 'capitalize',
+                }}
+              >
+                Сохранить
+              </Typography>
+            </Button>
           </Box>
         </Box>
       </Box>

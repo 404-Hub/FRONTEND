@@ -31,6 +31,7 @@ const CheckBoxFilter = (props: FilterProps) => {
                   value: option.name,
                   type: type,
                   checked: !option.checked,
+                  label: option.label,
                 })
               }
             />

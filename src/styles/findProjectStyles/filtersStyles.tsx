@@ -48,7 +48,6 @@ const filtersStyles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: '34px',
-    maxHeight: '90%',
   },
   button: {
     border: 1,
@@ -80,10 +79,7 @@ const filtersStyles = {
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: {
-      xs: 'none',
-      md: '90vh',
-    },
+    whiteSpace: 'nowrap',
     gap: {
       xs: '32px',
       md: 0,

@@ -7,11 +7,11 @@ export const getApps = async (props: GetAppsProps) => {
     let queryString = '?';
     filters
       ? filters.forEach((filter) => {
-          const { filterName, filterType, actualCheckboxOptions, actualRadioOptions } = filter;
+          const { filterName, filterType, actualCheckboxOptions, actualRadioOption } = filter;
           queryString = `${queryString === '?' ? '?' : queryString + '&'}${
             filterType === 'checkbox' ? filterName + '[]' : filterName
           }=${filterType === 'checkbox' ? [] : ''}${
-            filterType === 'radio' ? actualRadioOptions : actualCheckboxOptions.join('&') + '[]'
+            filterType === 'radio' ? actualRadioOption : actualCheckboxOptions.join('&') + '[]'
           }`;
         })
       : (queryString = '');

@@ -1,12 +1,13 @@
 'use client';
 
 import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Filters, ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import ProjectCard from '@/components/findProject/ProjectCard';
 import { getApps } from '@/api/client/apps';
+import Paper from '@mui/material/Paper';
 
 const ProjectsList = (props: ProjectsListProps) => {
   const { projectType, filters } = props;
@@ -16,6 +17,7 @@ const ProjectsList = (props: ProjectsListProps) => {
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const WORD_IN_TITLE = 'проект';
+  const maxOfProjectsOnPage = 9;
 
   // eslint-disable-next-line no-unused-vars
 
@@ -74,29 +76,61 @@ const ProjectsList = (props: ProjectsListProps) => {
   }, []);
 
   return (
-    <Box sx={projectsListStyles.searchContainer}>
-      <Typography sx={[projectsListStyles.searchAmount, projectsListStyles.title]}>
+    <Box sx={{ paddingBottom: 2 }}>
+      <Typography
+        sx={{ paddingLeft: 2, paddingBottom: 2 }}
+        variant="h6"
+      >
         Найдено {total} {caseWord(total, WORD_IN_TITLE)}
       </Typography>
-      <Box sx={projectsListStyles.projectCardContainer}>
-        {projects.length > 0 ? (
-          projects.slice(0, 9 * lastRequestCurrentPage).map((project, index) => (
-            <ProjectCard
-              key={index}
-              project={{
-                upvotes: project.upvotes,
-                downvotes: project.downvotes,
-                rating: (project.upvotes - project.downvotes).toString(),
-                id: project.id,
-                title: project.title,
-                description: project.description,
-              }}
-            />
-          ))
-        ) : (
-          <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography>
-        )}
-      </Box>
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={{ xs: 0, sm: 2 }}
+      >
+        {projects.length > 0
+          ? projects
+              .slice(0, maxOfProjectsOnPage * lastRequestCurrentPage)
+              .map((project, index) => {
+                const { upvotes, downvotes, id, title, description } = project;
+                return (
+                  <Grid
+                    key={index}
+                    item
+                    xs={12}
+                    sm={4}
+                  >
+                    <ProjectCard
+                      project={{
+                        upvotes: upvotes,
+                        downvotes: downvotes,
+                        rating: (upvotes - downvotes).toString(),
+                        id: id,
+                        title: title,
+                        description: description,
+                      }}
+                    />
+                  </Grid>
+                );
+              })
+          : [...Array(maxOfProjectsOnPage)].map((_, index) => (
+              <Grid
+                key={index}
+                item
+                xs={12}
+                sm={4}
+              >
+                <Skeleton
+                  key={index}
+                  variant="rectangular"
+                  sx={{ width: { xs: '96%', md: 250 }, marginX: 'auto' }}
+                  height={288}
+                />
+              </Grid>
+            ))}
+        {/* <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography> */}
+      </Grid>
+
       {hasAnotherProjects && (
         <Button
           onClick={onLoadClick}
