@@ -105,7 +105,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
             left: { xs: 0, md: 'none' },
             top: { xs: '10%', md: 'none' },
             zIndex: 1000,
-            backgroundColor: { xs: '#F9FAFB', md: 'red' },
+            backgroundColor: { xs: '#F9FAFB', md: 'transparent' },
             display: 'flex',
             flexDirection: 'column',
             height: { xs: '90%', md: 'auto' },
@@ -143,7 +143,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
           ></RenderFilters>
           <Box
             sx={{
-              display: 'flex',
+              display: { xs: 'flex', md: 'none' },
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
