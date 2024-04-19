@@ -1,28 +1,25 @@
 'use client';
 
-import projectCardStyles from '@/styles/findProjectStyles/projectCardStyles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button, Paper } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
-import { TProject } from '@/types/findProjects';
+import React, { useCallback, useState } from 'react';
+import { ProjectCardProps, TProject } from '@/types/findProjects';
+import { useRouter } from 'next/navigation';
 
-type Props = {
-  project: TProject;
-  projectRef?: string;
-};
-
-const ProjectCard: React.FC<Props> = (props) => {
+const ProjectCard: React.FC<ProjectCardProps> = (props) => {
   const { project } = props;
   const { title, rating, id, description } = project as TProject;
   const [elevation, setElevation] = useState(3);
   const height = 288;
 
-  const handleUpVoteClick = () => {
+  const handleUpVoteClick = useCallback(() => {
     console.log('upvote');
-  };
+  }, []);
+
+  const router = useRouter();
 
   return (
     <Paper
@@ -38,6 +35,9 @@ const ProjectCard: React.FC<Props> = (props) => {
         marginX: 1,
         cursor: 'pointer',
       }}
+      onClick={() => {
+        router.push(`/find-project/project-page?appid=${id}`);
+      }}
     >
       <Paper
         sx={{
@@ -49,17 +49,15 @@ const ProjectCard: React.FC<Props> = (props) => {
         }}
       >
         <Button
-          sx={[projectCardStyles.arrowButtons, projectCardStyles.activeArrow]}
+          sx={{ backgroundColor: '#F4F6F8', width: '28px', height: '28px', minWidth: '28px' }}
           color="inherit"
           onClick={handleUpVoteClick}
         >
           <KeyboardArrowUpIcon />
         </Button>
-        <Typography sx={[projectCardStyles.cardText, projectCardStyles.cardRating]}>
-          {rating}
-        </Typography>
+        <Typography align="center">{rating}</Typography>
         <Button
-          sx={projectCardStyles.arrowButtons}
+          sx={{ width: '28px', height: '28px', minWidth: '28px', margin: 0 }}
           onClick={handleUpVoteClick}
         >
           <KeyboardArrowDownIcon sx={{ color: '#647380' }} />

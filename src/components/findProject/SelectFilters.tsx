@@ -1,8 +1,8 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Badge, Box, Button, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { ActualFilter, Filters, SelectedFilters, SelectFiltersProps } from '@/types/findProjects';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActualFilter, SelectedFilters, SelectFiltersProps } from '@/types/findProjects';
 
 const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
   const { actualFilters, showFilters, handleChange, setShowFilters } = props;
@@ -12,25 +12,15 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
     (filters: ActualFilter[]) => {
       const filtersWithCheckedOpt: SelectedFilters[] = [];
       filters.forEach((filter) => {
-        const { filterName, filterType, actualCheckboxOptions, actualRadioOption, actualLabel } =
+        const { filterName, filterType, actualCheckboxOption, actualRadioOption, actualLabel } =
           filter;
-        if (filterType === 'radio') {
-          filtersWithCheckedOpt.push({
-            label: actualLabel,
-            name: filterName,
-            type: filterType,
-            filter: actualRadioOption,
-          });
-        } else if (filterType === 'checkbox') {
-          actualCheckboxOptions.forEach((option) => {
-            filtersWithCheckedOpt.push({
-              label: actualLabel,
-              name: filterName,
-              type: filterType,
-              filter: option,
-            });
-          });
-        }
+
+        filtersWithCheckedOpt.push({
+          label: actualLabel,
+          name: filterName,
+          type: filterType,
+          filter: filterType !== 'checkbox' ? actualRadioOption : actualCheckboxOption,
+        });
       });
       return filtersWithCheckedOpt;
     },

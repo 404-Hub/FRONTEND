@@ -7,7 +7,7 @@ import { Filters, ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import ProjectCard from '@/components/findProject/ProjectCard';
 import { getApps } from '@/api/client/apps';
-import Paper from '@mui/material/Paper';
+import { useRouter } from 'next/navigation';
 
 const ProjectsList = (props: ProjectsListProps) => {
   const { projectType, filters } = props;
@@ -16,6 +16,7 @@ const ProjectsList = (props: ProjectsListProps) => {
   const [total, setTotal] = useState(0);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const router = useRouter();
   const WORD_IN_TITLE = 'проект';
   const maxOfProjectsOnPage = 9;
 
@@ -38,11 +39,7 @@ const ProjectsList = (props: ProjectsListProps) => {
   const fetchProjects = useCallback(
     async (categoryId: string) => {
       try {
-        const appsInf = await getApps({
-          page: currentPage,
-          category: categoryId,
-          filters: filters,
-        });
+        const appsInf = await getApps(currentPage, categoryId, filters);
         if (lastRequestCurrentPage !== appsInf.current_page) {
           setProjects((prev) => projectsCheck(prev, appsInf.items));
           setCurrentPage((prev) => prev + 1);
@@ -56,12 +53,12 @@ const ProjectsList = (props: ProjectsListProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [lastRequestCurrentPage, currentPage, projects]
+    [lastRequestCurrentPage, currentPage, filters]
   );
 
   const onLoadClick = useCallback(() => {
     fetchProjects(projectType || '');
-  }, [lastRequestCurrentPage, currentPage, projects]);
+  }, [projectType, filters, projects]);
 
   useEffect(() => {
     onLoadClick();

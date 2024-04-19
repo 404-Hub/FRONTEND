@@ -36,7 +36,7 @@ type ActualFilter = {
   filterName: string;
   filterType: string;
   actualRadioOption: string;
-  actualCheckboxOptions: string[];
+  actualCheckboxOption: string;
   actualLabel: string;
 };
 
@@ -47,6 +47,7 @@ type TProject = {
   id: number;
   title: string;
   description: string;
+  additional?: string;
 };
 
 type ProjectsListProps = {
@@ -54,10 +55,8 @@ type ProjectsListProps = {
   filters: ActualFilter[];
 };
 
-type GetAppsProps = {
-  page: number;
-  category: string | null;
-  filters?: ActualFilter[];
+type ProjectCardProps = {
+  project: TProject;
 };
 
 type FilterChangeArgs = {
@@ -108,6 +107,7 @@ type FilterBlockProps = {
   setShowFilters: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   showFilters: boolean;
+  actualFilters: ActualFilter[];
   allFilters: Filters;
 };
 
@@ -122,6 +122,26 @@ type SelectFiltersProps = {
 type FilterProps = {
   filter: Filter;
   handleChange: FilterChange;
+};
+
+type TFoundAppProps = {
+  isAppTaken?: boolean;
+  voteByThisUser?: -1 | 0 | 1;
+};
+
+type TFoundProject = {
+  id: number;
+  created_by: number | string;
+  category_id: number;
+  title: string;
+  description: string;
+  upvotes: number;
+  downvotes: number;
+  inprogress: number;
+  done: number;
+  created_at: string;
+  updated_at: string;
+  additional: string;
 };
 
 export type {
@@ -144,5 +164,7 @@ export type {
   ActualFilter,
   TProject,
   ProjectsListProps,
-  GetAppsProps,
+  ProjectCardProps,
+  TFoundAppProps,
+  TFoundProject,
 };

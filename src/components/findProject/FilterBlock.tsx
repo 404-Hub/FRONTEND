@@ -1,6 +1,5 @@
 'use client';
 
-import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import { Filters, Filter, FilterBlockProps } from '@/types/findProjects';
 import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, Icon, IconButton, Paper, Typography } from '@mui/material';
@@ -10,24 +9,12 @@ import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import RenderFilters from '@/components/findProject/RenderFilters';
 
 const FilterBlock: React.FC<FilterBlockProps> = (props) => {
-  const { handleChange, setShowFilters, resetFilters, showFilters, allFilters } = props;
+  const { handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters } =
+    props;
 
   const [isFilterExist, setIsFilterExist] = useState(false);
   const [isSlideEffect, setIsSlideEffect] = useState(showFilters);
   const [isShowFilter, setIsShowFilter] = useState(showFilters);
-
-  const hasOptionsChecked = useCallback(
-    (filters: Filters) => {
-      return filters.some((filter: Filter) =>
-        filter.options.some((option: { checked: boolean }) => option.checked)
-      );
-    },
-    [allFilters]
-  );
-
-  const handleUpVoteClick = useCallback(() => {
-    console.log('upvote');
-  }, []);
 
   const cancel = useCallback(() => {
     setShowFilters(false);
@@ -41,9 +28,8 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   }, [showFilters]);
 
   useEffect(() => {
-    const hasCheckedOptions = hasOptionsChecked(allFilters);
-    setIsFilterExist(hasCheckedOptions);
-  }, [allFilters]);
+    setIsFilterExist(actualFilters.length > 0);
+  }, [actualFilters]);
 
   return (
     <Paper
@@ -58,7 +44,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
         <Typography
           variant={'h6'}
-          sx={{ display: { xs: 'none', sm: 'block' }, paddingRight: 2 }}
+          sx={{ display: { xs: 'none', md: 'block' }, paddingRight: 2 }}
         >
           Фильтры
         </Typography>
@@ -78,11 +64,8 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
           href={{ pathname: '/find-project' }}
           passHref
         >
-          <Icon
-            sx={findPageStyles.icon}
-            aria-label="back"
-          >
-            <ArrowBack sx={findPageStyles.arrowBack} />
+          <Icon aria-label="back">
+            <ArrowBack sx={{ width: 24, height: 24, color: '#161C24' }} />
           </Icon>
         </Link>
         <Typography
@@ -99,16 +82,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               xs: isSlideEffect ? 'translateX(0)' : 'translateX(100%)',
               md: 'translateX(0)',
             },
-            transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-            width: { xs: '100vw', md: '20%' },
-            position: { md: 'static', xs: 'fixed' },
-            left: { xs: 0, md: 'none' },
-            top: { xs: '10%', md: 'none' },
-            zIndex: 1000,
-            backgroundColor: { xs: '#F9FAFB', md: 'transparent' },
-            display: 'flex',
-            flexDirection: 'column',
-            height: { xs: '90%', md: 'auto' },
+            ...findPageStyles.container,
           }}
         >
           <Box
@@ -125,9 +99,8 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               }}
               color="inherit"
               aria-label="back"
-              sx={filtersStyles.iconButton}
             >
-              <ArrowBack sx={findPageStyles.arrowBack} />
+              <ArrowBack />
             </IconButton>
             <Typography
               variant={'h6'}
@@ -168,7 +141,9 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               </Typography>
             </Button>
             <Button
-              onClick={handleUpVoteClick}
+              onClick={() => {
+                setShowFilters(false);
+              }}
               variant="contained"
               color="success"
               sx={{

@@ -1,4 +1,3 @@
-import React from 'react';
 import AppsList from '@/components/findProject/AppsList';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Options } from '@/types/findProjects';
@@ -15,11 +14,9 @@ function FoundProjects() {
   };
 
   return (
-    <>
-      <Box sx={findPageStyles.mainContainer}>
-        <AppsList />
-      </Box>
-    </>
+    <Box sx={findPageStyles.mainContainer}>
+      <AppsList />
+    </Box>
   );
 }
 

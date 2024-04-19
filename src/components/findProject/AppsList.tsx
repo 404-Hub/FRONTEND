@@ -64,20 +64,16 @@ const AppsList = () => {
         filterName: name,
         filterType: type,
         actualRadioOption: type === 'radio' ? value : '',
-        actualCheckboxOptions: type === 'checkbox' ? [value] : [''],
+        actualCheckboxOption: type === 'checkbox' ? value : '',
         actualLabel: label,
       };
-
       const isInclude = !!filtersValues.find((f) => f.filterName === name);
-
       if (type === 'radio' && checked && isInclude) {
         return [...filtersValues.filter((f) => f.filterName !== name), newFilter];
       }
-
       if (!checked) {
         return filtersValues.filter((f) => f.actualLabel !== newFilter.actualLabel);
       }
-
       return [...filtersValues, newFilter];
     },
     [actualFilters]
@@ -108,9 +104,10 @@ const AppsList = () => {
         <FilterBlock
           handleChange={handleChange}
           setShowFilters={setShowFilters}
-          resetFilters={resetFilters}
+          actualFilters={actualFilters}
           showFilters={showFilters}
           allFilters={allFilters}
+          resetFilters={resetFilters}
         />
 
         <SelectFilters
