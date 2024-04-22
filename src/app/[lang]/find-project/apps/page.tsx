@@ -1,9 +1,9 @@
-import ProjectsAndFilters from '@/components/findProject/ProjectsAndFilters';
+import AppsList from '@/components/findProject/AppsList';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Options } from '@/types/findProjects';
 import { Box } from '@mui/material';
 
-export default function FoundProjects() {
+function FoundProjects() {
   const options: Options = {
     subscribers: 'От Подписчиков',
     changeInfo: 'Изменить данные',
@@ -14,10 +14,10 @@ export default function FoundProjects() {
   };
 
   return (
-    <>
-      <Box sx={findPageStyles.mainContainer}>
-        <ProjectsAndFilters options={options} />
-      </Box>
-    </>
+    <Box sx={findPageStyles.mainContainer}>
+      <AppsList />
+    </Box>
   );
 }
+
+export default FoundProjects;

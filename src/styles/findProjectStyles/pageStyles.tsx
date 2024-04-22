@@ -6,6 +6,7 @@ const findPageStyles = {
     },
     marginTop: '16px',
     marginBottom: '31px',
+    fontWeight: 800,
   },
   mainContainer: {
     margin: '0 auto',
@@ -26,13 +27,16 @@ const findPageStyles = {
     },
   },
   container: {
+    transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+    width: { xs: '100vw', md: '20%' },
+    position: { md: 'static', xs: 'fixed' },
+    left: { xs: 0, md: 'none' },
+    top: { xs: '10%', md: 'none' },
+    zIndex: 1000,
+    backgroundColor: { xs: '#F9FAFB', md: 'transparent' },
     display: 'flex',
-    alignItems: 'center',
-    padding: { xs: '16px', md: '0px' },
-    background: {
-      xs: '#FFFFFF',
-      md: 'transparent',
-    },
+    flexDirection: 'column',
+    height: { xs: '90%', md: 'auto' },
   },
   icon: {
     padding: '0px',
@@ -75,16 +79,6 @@ const findPageStyles = {
       md: 'none',
     },
   },
-  optionsContainer: {
-    padding: {
-      xs: '17px',
-      md: '0',
-    },
-  },
-  mainOptions: {
-    fontWeight: '600',
-    fontSize: '20px',
-  },
   buttons: {
     backgroundColor: '#FFD600',
     aspectRatio: '1',
@@ -96,9 +90,6 @@ const findPageStyles = {
     lineHeight: 1.6,
     paddingLeft: '12px',
     paddingRight: '12px',
-  },
-  subscribes: {
-    backgroundColor: '#8D40FB',
   },
   fromSvyat: {
     backgroundColor: '#FC573A',

@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 type Options = {
   subscribers?: string;
   changeInfo?: string;
@@ -7,32 +9,35 @@ type Options = {
   complex?: string;
 };
 
-type AllFiltersOptions = {
+type FilterOption = {
   label: string;
   name: string;
-  checked: boolean
-}[];
+  checked: boolean;
+};
 
-type AllFilters = {
+type Filter = {
   type: string;
   name: string;
   label: string;
-  options: AllFiltersOptions;
-}[];
+  options: FilterOption[];
+};
+
+type Filters = Filter[];
 
 type SelectedFilters = {
   label: string;
   name: string;
-  checked: boolean;
+  checked?: boolean;
   filter: string;
   type: string;
 };
 
-type FormDataValue = {
-  name: string;
-  value: string;
-  type: string;
-  checked: boolean;
+type ActualFilter = {
+  filterName: string;
+  filterType: string;
+  actualRadioOption: string;
+  actualCheckboxOption: string;
+  actualLabel: string;
 };
 
 type TProject = {
@@ -42,33 +47,124 @@ type TProject = {
   id: number;
   title: string;
   description: string;
+  additional?: string;
 };
 
-type HandleValueType = (name: string, value: string, type: string, checked: boolean) => void;
-
-export type {
-  Options, AllFilters, AllFiltersOptions, SelectedFilters, HandleValueType, FormDataValue, TProject,
+type ProjectsListProps = {
+  projectType: string | null;
+  filters: ActualFilter[];
 };
 
-export type TCategory = {
-    id: string;
-    name: string;
-    children: TCategory[];
+type ProjectCardProps = {
+  project: TProject;
 };
 
-export type TCategoryProps = {
-  categories: TCategory[],
+type FilterChangeArgs = {
+  name: string;
+  label: string;
+  value: string;
+  type: string;
+  checked: boolean;
+};
+
+type FilterChange = (args: FilterChangeArgs) => void;
+type TSetCategoryCallback = (category: TCategory | null) => void;
+
+type TCategory = {
+  id: string;
+  name: string;
+  children: TCategory[];
+};
+
+type TCategoryProps = {
+  categories: TCategory[];
   onCategorySelect?: (category: TCategory) => void;
   setCurrentCategory?: (category: TCategory | null) => void;
+  SetCategoryCallback?: TSetCategoryCallback;
 };
-export type TSubCategoryProps = {
-  category: TCategory,
-  onCategorySelect?: (category: TCategory) => void;
-  setCurrentCategory?: (category: TCategory | null) => void;
-};
-
-export type TCardProps = {
+type TSubCategoryProps = {
   category: TCategory;
   onCategorySelect?: (category: TCategory) => void;
   setCurrentCategory?: (category: TCategory | null) => void;
-}
+  SetCategoryCallback?: TSetCategoryCallback;
+};
+
+type TCardProps = {
+  category: TCategory;
+  onCategorySelect?: (category: TCategory) => void;
+  setCurrentCategory?: (category: TCategory | null) => void;
+  SetCategoryCallback?: TSetCategoryCallback;
+};
+
+type RenderFiltersProps = {
+  showFilters: boolean;
+  allFilters: Filters;
+  handleChange: FilterChange;
+};
+
+type FilterBlockProps = {
+  handleChange: FilterChange;
+  setShowFilters: Dispatch<SetStateAction<boolean>>;
+  resetFilters: () => void;
+  showFilters: boolean;
+  actualFilters: ActualFilter[];
+  allFilters: Filters;
+};
+
+type SelectFiltersProps = {
+  projectType: string | null;
+  actualFilters: ActualFilter[];
+  showFilters: boolean;
+  handleChange: FilterChange;
+  setShowFilters: Dispatch<SetStateAction<boolean>>;
+};
+
+type FilterProps = {
+  filter: Filter;
+  handleChange: FilterChange;
+};
+
+type TFoundAppProps = {
+  isAppTaken?: boolean;
+  voteByThisUser?: -1 | 0 | 1;
+};
+
+type TFoundProject = {
+  id: number;
+  created_by: number | string;
+  category_id: number;
+  title: string;
+  description: string;
+  upvotes: number;
+  downvotes: number;
+  inprogress: number;
+  done: number;
+  created_at: string;
+  updated_at: string;
+  additional: string;
+};
+
+export type {
+  RenderFiltersProps,
+  SelectFiltersProps,
+  FilterProps,
+  FilterBlockProps,
+  TSetCategoryCallback,
+  TCategory,
+  TCategoryProps,
+  TSubCategoryProps,
+  TCardProps,
+  FilterChangeArgs,
+  Options,
+  Filter,
+  Filters,
+  FilterOption,
+  SelectedFilters,
+  FilterChange,
+  ActualFilter,
+  TProject,
+  ProjectsListProps,
+  ProjectCardProps,
+  TFoundAppProps,
+  TFoundProject,
+};

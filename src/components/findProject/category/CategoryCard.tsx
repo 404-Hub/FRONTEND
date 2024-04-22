@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
 import type { TCategory, TCardProps } from '@/types/findProjects';
 
 const styles = {
@@ -29,16 +23,18 @@ export const CategoryCard = (props: TCardProps) => {
     }
   };
   return (
-        <Grid item xs={3} key={category.id}>
-            <Card>
-                <CardActionArea sx={styles.card}>
-                    <CardContent
-                        onClick={() => handleClick(category)}
-                    >
-                        <Typography>{category.name}</Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        </Grid>
+    <Grid
+      item
+      xs={3}
+      key={category.id}
+    >
+      <Card>
+        <CardActionArea sx={styles.card}>
+          <CardContent onClick={() => handleClick(category)}>
+            <Typography>{category.name}</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
   );
 };

@@ -26,6 +26,10 @@ const projectsListStyles = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr) )',
     gridAutoRows: 'minmax(100px, auto)',
     gap: '12px',
+    margin: {
+      xs: 0,
+      md: '16px 0',
+    },
   },
   loadButton: {
     display: 'block',
