@@ -20,12 +20,14 @@ const FoundApp = (props: TFoundAppProps) => {
   const [vote, setVote] = useState(voteByThisUser);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const PAGE_TITLE = 'Детали проекта';
   const RATING = 'Рейтинг';
   const ADDITIONAL = 'Для кого';
   const DETAILS = 'Детали';
   const BACK = 'Назад';
+  const REJECTION = 'Отказаться';
   const TAKE_OR_PASS = isTaken ? 'Сдать задачу' : 'Взять на себя';
   const ratingColorsVariant = {
     positive: '#1C8C59',
@@ -36,6 +38,7 @@ const FoundApp = (props: TFoundAppProps) => {
     (upvotes: number, downvotes: number) => {
       let rating = upvotes - downvotes;
       rating = rating + vote;
+      if (rating === 0) return '0';
       return `${rating < 0 ? rating.toString() : '+' + rating.toString()}`;
     },
     [vote, projectInf]
@@ -70,8 +73,13 @@ const FoundApp = (props: TFoundAppProps) => {
     },
     [projectInf]
   );
+  const handleIsAppTakenChange = () => {
+    setIsTaken((prev) => !prev);
+  };
 
-  const router = useRouter();
+  const handleUpVoteClick = useCallback(() => {
+    console.log('upvote');
+  }, []);
 
   useEffect(() => {
     fetchProject(Number(searchParams.get('appid')));
@@ -80,10 +88,6 @@ const FoundApp = (props: TFoundAppProps) => {
   useEffect(() => {
     if (projectInf) changeRatingInf(projectInf.upvotes, projectInf.downvotes);
   }, [vote, projectInf, ratingColor]);
-
-  const handleUpVoteClick = useCallback(() => {
-    console.log('upvote');
-  }, []);
 
   return (
     <Paper
@@ -262,23 +266,33 @@ const FoundApp = (props: TFoundAppProps) => {
             background: '#F9FAFB',
           }}
         >
-          <Button
-            variant="outlined"
-            color="success"
-            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={() => {
-              router.back();
-            }}
-          >
-            {BACK}
-          </Button>
+          {!isTaken ? (
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
+              onClick={() => {
+                router.back();
+              }}
+            >
+              {BACK}
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              color="error"
+              sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
+              onClick={handleIsAppTakenChange}
+            >
+              {REJECTION}
+            </Button>
+          )}
+
           <Button
             variant="contained"
             color="success"
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={() => {
-              setIsTaken((prev) => !prev);
-            }}
+            onClick={handleIsAppTakenChange}
           >
             {TAKE_OR_PASS}
           </Button>
