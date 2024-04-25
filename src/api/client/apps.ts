@@ -3,10 +3,12 @@ import { ActualFilter } from '@/types/findProjects';
 
 export const getApps = async (page: number, category: string, filters?: ActualFilter[]) => {
   try {
-    const params: Record<string, string> = { page: page.toString(), category: category };
+    const params: Record<string, string> = { page: page.toString(), category };
     if (filters) {
       filters.forEach((filter) => {
-        const { filterName, filterType, actualRadioOption, actualCheckboxOption } = filter;
+        const {
+          filterName, filterType, actualRadioOption, actualCheckboxOption,
+        } = filter;
         const value = filterType === 'radio' ? actualRadioOption : actualCheckboxOption;
         if (!(filterName in params)) {
           params[filterName] = value;
@@ -17,7 +19,7 @@ export const getApps = async (page: number, category: string, filters?: ActualFi
     }
 
     const queryString = Object.keys(params)
-      .map((key) => key + '=' + params[key])
+      .map((key) => `${key}=${params[key]}`)
       .join('&');
 
     const response = await fetchClient({

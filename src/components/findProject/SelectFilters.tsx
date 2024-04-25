@@ -1,19 +1,24 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Badge, Box, Button, Typography } from '@mui/material';
+import {
+  Badge, Box, Button, Typography,
+} from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActualFilter, SelectedFilters, SelectFiltersProps } from '@/types/findProjects';
 
 const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
-  const { actualFilters, showFilters, handleChange, setShowFilters } = props;
+  const {
+    actualFilters, showFilters, handleChange, setShowFilters,
+  } = props;
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters[]>([]);
 
   const getCheckedOptFilters = useCallback(
     (filters: ActualFilter[]) => {
       const filtersWithCheckedOpt: SelectedFilters[] = [];
       filters.forEach((filter) => {
-        const { filterName, filterType, actualCheckboxOption, actualRadioOption, actualLabel } =
-          filter;
+        const {
+          filterName, filterType, actualCheckboxOption, actualRadioOption, actualLabel,
+        } = filter;
 
         filtersWithCheckedOpt.push({
           label: actualLabel,
@@ -24,13 +29,11 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
       });
       return filtersWithCheckedOpt;
     },
-    [actualFilters]
+    [actualFilters],
   );
   useEffect(() => {
     const filtersWithCheckedOpt = getCheckedOptFilters(actualFilters);
-    setSelectedFilters(() => {
-      return filtersWithCheckedOpt;
-    });
+    setSelectedFilters(() => filtersWithCheckedOpt);
     return () => {
       setSelectedFilters([]);
     };
@@ -60,7 +63,9 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
               }}
             >
               {selectedFilters.map((selectedFilter) => {
-                const { filter, name, type, label } = selectedFilter;
+                const {
+                  filter, name, type, label,
+                } = selectedFilter;
                 return (
                   <Box
                     key={label}
@@ -81,10 +86,10 @@ const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
                         e.preventDefault();
                         handleChange({
                           value: filter,
-                          name: name,
-                          type: type,
+                          name,
+                          type,
                           checked: false,
-                          label: label,
+                          label,
                         });
                       }}
                       sx={{ paddingLeft: 1, minWidth: 23, margin: 0 }}

@@ -90,9 +90,9 @@ export const authOptions: NextAuthOptions = {
             url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user`,
             token: token.accessToken,
           });
-          const user = await response.json();
+          const fetchedUser = await response.json();
 
-          return { ...token, ...user };
+          return { ...token, ...fetchedUser };
         }
 
         return { ...token, ...session };
@@ -112,6 +112,7 @@ export const authOptions: NextAuthOptions = {
       const accessTokenHasExpired = currentUnixTimestamp > accessTokenExpires;
 
       if (accessTokenHasExpired) {
+        // eslint-disable-next-line no-return-await
         return await refreshAccessToken(token);
       }
 
@@ -122,9 +123,14 @@ export const authOptions: NextAuthOptions = {
         throw new Error('Refresh token has expired');
       }
 
+      // @todo: разобраться с ошибками eslint
+      // eslint-disable-next-line no-param-reassign
       session.accessToken = token.accessToken;
+      // eslint-disable-next-line no-param-reassign
       session.user.name = token.name || '';
+      // eslint-disable-next-line no-param-reassign
       session.user.email = token.email || '';
+      // eslint-disable-next-line no-param-reassign
       session.user.email_verified_at = token.email_verified_at;
 
       return session;

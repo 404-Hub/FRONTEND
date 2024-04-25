@@ -4,13 +4,13 @@ export type TButtonType = {
 
 export type TOneStepData = {
     label: string;
-    header: string;
+    header?: string;
     title: string;
-    fieldName: string;
-    labelTitle: string;
+    fieldName?: string;
+    labelTitle?: string;
     isMultiline?: boolean;
-    showExample: string;
-    exampleText: string;
+    showExample?: string;
+    exampleText?: string;
     descriptionTitle?: string;
     additionalTitle?: string;
     projectTitle?: string;

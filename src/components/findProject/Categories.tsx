@@ -8,7 +8,7 @@ import Category from '@/components/findProject/category/Category';
 import { useRouter } from 'next/navigation';
 
 function Categories(props: TCategoryProps) {
-  const { categories, SetCategoryCallback } = props;
+  const { categories } = props;
   const router = useRouter();
 
   const [currentCategory, setCurrentCategory] = useState<null | TCategory>(null);
@@ -20,7 +20,7 @@ function Categories(props: TCategoryProps) {
     (category: TCategory) => {
       router.push(`/find-project/apps?value=${category.id}`);
     },
-    [router]
+    [router],
   );
 
   const subCategory: TCategory = useMemo(() => {
@@ -28,8 +28,8 @@ function Categories(props: TCategoryProps) {
       return {} as TCategory;
     }
     return (
-      categories.find((item) => parseInt(item.id, 10) === parseInt(currentCategory.id, 10)) ??
-      ({} as TCategory)
+      categories.find((item) => parseInt(item.id, 10) === parseInt(currentCategory.id, 10))
+      ?? ({} as TCategory)
     );
   }, [categories, currentCategory]);
 

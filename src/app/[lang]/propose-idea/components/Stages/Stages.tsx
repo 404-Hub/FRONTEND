@@ -38,7 +38,51 @@ export const Stages = () => {
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
   const t = useTranslations('translation');
 
-  const stages: TOneStepData[] = t('proposePage.stages', { returnObjects: true });
+  const stages: TOneStepData[] = [
+    {
+      label: 'STEP 1',
+      title: 'What needs to be done?',
+      fieldName: 'description',
+      isMultiline: true,
+      labelTitle: 'Describe what needs to be done',
+      showExample: 'Show example',
+      exampleText: 'A service where I can send a link to a track from any streaming service. In response, a list of links to the same track on all possible streaming platforms, including YouTube, is generated.',
+      buttons: [{ Cancel: 'Cancel' }, { Next: 'Next' }],
+    },
+    {
+      label: 'STEP 2',
+      title: 'Who is Your Client',
+      fieldName: 'additional',
+      isMultiline: true,
+      labelTitle: 'Describe your clients',
+      showExample: 'Show example',
+      exampleText: 'Example text for STEP 2.',
+      buttons: [{ Back: 'Back' }, { Next: 'Next' }],
+    },
+    {
+      label: 'STEP 3',
+      title: 'Specify the Project Name',
+      fieldName: 'title',
+      isMultiline: false,
+      labelTitle: 'Project Name',
+      showExample: 'Show example',
+      exampleText: 'Example text for STEP 3.',
+      buttons: [{ Back: 'Back' }, { CreateProject: 'Create Project' }],
+    },
+    {
+      label: 'STEP 4',
+      title: "Let's Summarize 😊",
+      descriptionTitle: 'You want to receive:',
+      additionalTitle: 'For whom:',
+      projectTitle: 'Project Name:',
+      isCorrectTitle: 'Is everything correct?',
+      buttons: [
+        { EditData: 'Edit Data' },
+        { Cancel: 'Cancel' },
+        { Approve: 'Yes, all correct' },
+      ],
+    },
+  ];
 
   const getCurrentStageData = (): TOneStepData => stages[activeStep];
 
@@ -89,7 +133,7 @@ export const Stages = () => {
     }));
   };
 
-  const renderButtons = (buttons: TButtonType[]): JSX.Element => (
+  const renderButtons = (buttons: TButtonType[]) => (
     <Box
       sx={{
         display: 'flex',
@@ -222,8 +266,8 @@ export const Stages = () => {
       ) : (
         <Stage
           stageData={currentStageData}
-          inputValue={userInputs[currentStageData.fieldName]}
-          handleInputChange={(e) => handleInputChange(currentStageData.fieldName, e.target.value)}
+          inputValue={userInputs[currentStageData.fieldName ?? '']}
+          handleInputChange={(e) => handleInputChange(currentStageData.fieldName ?? '', e.target.value)}
           activeStep={activeStep}
         >
           {renderButtons(currentStageData.buttons)}

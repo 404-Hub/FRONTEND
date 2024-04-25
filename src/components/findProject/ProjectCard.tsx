@@ -11,7 +11,9 @@ import { useRouter } from 'next/navigation';
 
 const ProjectCard: React.FC<ProjectCardProps> = (props) => {
   const { project } = props;
-  const { title, rating, id, description } = project as TProject;
+  const {
+    title, rating, id, description,
+  } = project as TProject;
   const [elevation, setElevation] = useState(3);
   const height = 288;
 
@@ -29,7 +31,7 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
       sx={{
         padding: 2,
         paddingBottom: 4,
-        height: height,
+        height,
         overflowY: 'hidden',
         textOverflow: 'ellipsis',
         marginX: 1,
@@ -49,7 +51,9 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
         }}
       >
         <Button
-          sx={{ backgroundColor: '#F4F6F8', width: '28px', height: '28px', minWidth: '28px' }}
+          sx={{
+            backgroundColor: '#F4F6F8', width: '28px', height: '28px', minWidth: '28px',
+          }}
           color="inherit"
           onClick={handleUpVoteClick}
         >
@@ -57,7 +61,9 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
         </Button>
         <Typography align="center">{rating}</Typography>
         <Button
-          sx={{ width: '28px', height: '28px', minWidth: '28px', margin: 0 }}
+          sx={{
+            width: '28px', height: '28px', minWidth: '28px', margin: 0,
+          }}
           onClick={handleUpVoteClick}
         >
           <KeyboardArrowDownIcon sx={{ color: '#647380' }} />
@@ -66,7 +72,9 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
       <Divider />
       <Typography sx={{ paddingTop: 2, fontSize: 14 }}>№ {id}</Typography>
       <Typography
-        sx={{ paddingTop: 2, paddingBottom: 2, fontWeight: 600, fontSize: 20, color: '#161C24' }}
+        sx={{
+          paddingTop: 2, paddingBottom: 2, fontWeight: 600, fontSize: 20, color: '#161C24',
+        }}
       >
         {title}
       </Typography>

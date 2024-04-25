@@ -10,8 +10,7 @@ const RenderFilters: React.FC<RenderFiltersProps> = (props) => {
   const { handleChange } = props;
   return (
     <Box sx={filtersStyles.filterContainer}>
-      {props.allFilters.map((filter) => {
-        return (
+      {props.allFilters.map((filter) => (
           <div key={filter.name}>
             {filter.type === 'checkbox' && (
               <CheckBoxFilter
@@ -26,8 +25,7 @@ const RenderFilters: React.FC<RenderFiltersProps> = (props) => {
               />
             )}
           </div>
-        );
-      })}
+      ))}
     </Box>
   );
 };

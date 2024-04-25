@@ -1,20 +1,22 @@
 'use client';
 
-import { Filters, Filter, FilterBlockProps } from '@/types/findProjects';
+import { FilterBlockProps } from '@/types/findProjects';
 import { ArrowBack } from '@mui/icons-material';
-import { Box, Button, Icon, IconButton, Paper, Typography } from '@mui/material';
+import {
+  Box, Button, Icon, IconButton, Paper, Typography,
+} from '@mui/material';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import RenderFilters from '@/components/findProject/RenderFilters';
 
 const FilterBlock: React.FC<FilterBlockProps> = (props) => {
-  const { handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters } =
-    props;
+  const {
+    handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters,
+  } = props;
 
   const [isFilterExist, setIsFilterExist] = useState(false);
   const [isSlideEffect, setIsSlideEffect] = useState(showFilters);
-  const [isShowFilter, setIsShowFilter] = useState(showFilters);
 
   const cancel = useCallback(() => {
     setShowFilters(false);
@@ -23,8 +25,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
 
   useEffect(() => {
     const msInSlideEffect = showFilters ? 0 : 300;
-    setIsSlideEffect((prev) => !prev);
-    setTimeout(() => setIsShowFilter((prev) => !prev), msInSlideEffect);
+    setTimeout(() => setIsSlideEffect((prev) => !prev), msInSlideEffect);
   }, [showFilters]);
 
   useEffect(() => {

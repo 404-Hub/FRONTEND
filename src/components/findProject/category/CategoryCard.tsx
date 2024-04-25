@@ -1,4 +1,6 @@
-import { Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
+import {
+  Card, CardActionArea, CardContent, Grid, Typography,
+} from '@mui/material';
 import type { TCategory, TCardProps } from '@/types/findProjects';
 
 const styles = {

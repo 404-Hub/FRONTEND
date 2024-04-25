@@ -1,27 +1,28 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, {
+  useCallback, useState,
+} from 'react';
 import { Filters, ActualFilter, FilterChangeArgs } from '@/types/findProjects';
-import filters from '../../mockups/filters.json';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import FilterBlock from '@/components/findProject/FilterBlock';
 import ProjectsList from '@/components/findProject//ProjectsList';
 import SelectFilters from '@/components/findProject//SelectFilters';
+import filters from '../../mockups/filters.json';
 
 const AppsList = () => {
   const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
   const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [defaultFilters, setDefaultFilters] = useState(filters.filters);
+  const [defaultFilters] = useState(filters.filters);
 
   const resetFilters = useCallback(() => {
     setAllFilters(defaultFilters);
     setActualFilters([]);
   }, [allFilters, actualFilters]);
 
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const projectType = searchParams.get('value');
@@ -31,7 +32,9 @@ const AppsList = () => {
 
   const updateFilter = useCallback(
     (args: FilterChangeArgs) => {
-      const { type, name, value, checked } = args;
+      const {
+        type, name, value, checked,
+      } = args;
 
       const newFilters = allFilters.map((filter) => {
         const { options } = filter;
@@ -53,14 +56,16 @@ const AppsList = () => {
       });
       return newFilters;
     },
-    [allFilters]
+    [allFilters],
   );
 
   const changeFilters = useCallback(
     (filtersValues: ActualFilter[], newFilterValues: FilterChangeArgs) => {
-      const { type, name, value, checked, label } = newFilterValues;
+      const {
+        type, name, value, checked, label,
+      } = newFilterValues;
 
-      let newFilter: ActualFilter = {
+      const newFilter: ActualFilter = {
         filterName: name,
         filterType: type,
         actualRadioOption: type === 'radio' ? value : '',
@@ -76,17 +81,15 @@ const AppsList = () => {
       }
       return [...filtersValues, newFilter];
     },
-    [actualFilters]
+    [actualFilters],
   );
 
   const handleChange = useCallback(
     (args: FilterChangeArgs) => {
-      setActualFilters((prev) => {
-        return changeFilters(prev, args);
-      });
+      setActualFilters((prev) => changeFilters(prev, args));
       setAllFilters(updateFilter(args));
     },
-    [actualFilters, allFilters]
+    [actualFilters, allFilters],
   );
 
   return (

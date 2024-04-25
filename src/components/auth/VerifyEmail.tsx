@@ -1,9 +1,4 @@
-'use client';
-
-import fetchClient from '@/lib/fetch-client';
-// import { useSession } from 'next-auth/react';
-// import { useRouter } from 'next/navigation';
-// import React from 'react';
+import fetchServer from '@/lib/fetch-server';
 
 export default async function VerifyEmail(props: { token: string }) {
   // const router = useRouter();
@@ -17,7 +12,7 @@ export default async function VerifyEmail(props: { token: string }) {
   // eslint-disable-next-line no-console
   // console.log('Test: ', props.token);
 
-  const response = await fetchClient({
+  const response = await fetchServer({
     method: 'post',
     url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/verify-email/${props.token}`,
   });

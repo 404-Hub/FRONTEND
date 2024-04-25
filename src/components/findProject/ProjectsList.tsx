@@ -1,13 +1,16 @@
 'use client';
 
 import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
-import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { Filters, ProjectsListProps, TProject } from '@/types/findProjects';
+import {
+  Box, Button, Grid, Skeleton, Typography,
+} from '@mui/material';
+import React, {
+  useCallback, useEffect, useState,
+} from 'react';
+import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import ProjectCard from '@/components/findProject/ProjectCard';
 import { getApps } from '@/api/client/apps';
-import { useRouter } from 'next/navigation';
 
 const ProjectsList = (props: ProjectsListProps) => {
   const { projectType, filters } = props;
@@ -16,7 +19,6 @@ const ProjectsList = (props: ProjectsListProps) => {
   const [total, setTotal] = useState(0);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const router = useRouter();
   const WORD_IN_TITLE = 'проект';
   const maxOfProjectsOnPage = 9;
 
@@ -24,16 +26,15 @@ const ProjectsList = (props: ProjectsListProps) => {
 
   const projectsCheck = (relevantProj: TProject[], newProj: TProject[]) => {
     if (
-      relevantProj.length > 0 &&
-      newProj.length > 0 &&
-      relevantProj[relevantProj.length - 1].id !== newProj[newProj.length - 1].id
+      relevantProj.length > 0
+      && newProj.length > 0
+      && relevantProj[relevantProj.length - 1].id !== newProj[newProj.length - 1].id
     ) {
       return [...relevantProj, ...newProj];
-    } else if (relevantProj.length === 0 && newProj.length > 0) {
+    } if (relevantProj.length === 0 && newProj.length > 0) {
       return [...newProj];
-    } else {
-      return [...relevantProj];
     }
+    return [...relevantProj];
   };
 
   const fetchProjects = useCallback(
@@ -53,7 +54,7 @@ const ProjectsList = (props: ProjectsListProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [lastRequestCurrentPage, currentPage, filters]
+    [lastRequestCurrentPage, currentPage, filters],
   );
 
   const onLoadClick = useCallback(() => {
@@ -66,9 +67,9 @@ const ProjectsList = (props: ProjectsListProps) => {
 
   const caseWord = useCallback((projectsAmount: number, word: string) => {
     const numBeforeWord = Math.abs(projectsAmount) % 100;
-    if ((numBeforeWord > 4 && numBeforeWord <= 20) || numBeforeWord === 0) return word + 'ов';
+    if ((numBeforeWord > 4 && numBeforeWord <= 20) || numBeforeWord === 0) return `${word}ов`;
     const lastDigitInNum = numBeforeWord % 10;
-    if (lastDigitInNum > 1 && lastDigitInNum <= 4) return word + 'а';
+    if (lastDigitInNum > 1 && lastDigitInNum <= 4) return `${word}а`;
     return word;
   }, []);
 
@@ -87,10 +88,12 @@ const ProjectsList = (props: ProjectsListProps) => {
       >
         {projects.length > 0
           ? projects
-              .slice(0, maxOfProjectsOnPage * lastRequestCurrentPage)
-              .map((project, index) => {
-                const { upvotes, downvotes, id, title, description } = project;
-                return (
+            .slice(0, maxOfProjectsOnPage * lastRequestCurrentPage)
+            .map((project, index) => {
+              const {
+                upvotes, downvotes, id, title, description,
+              } = project;
+              return (
                   <Grid
                     key={index}
                     item
@@ -99,17 +102,17 @@ const ProjectsList = (props: ProjectsListProps) => {
                   >
                     <ProjectCard
                       project={{
-                        upvotes: upvotes,
-                        downvotes: downvotes,
+                        upvotes,
+                        downvotes,
                         rating: (upvotes - downvotes).toString(),
-                        id: id,
-                        title: title,
-                        description: description,
+                        id,
+                        title,
+                        description,
                       }}
                     />
                   </Grid>
-                );
-              })
+              );
+            })
           : [...Array(maxOfProjectsOnPage)].map((_, index) => (
               <Grid
                 key={index}
@@ -124,7 +127,7 @@ const ProjectsList = (props: ProjectsListProps) => {
                   height={288}
                 />
               </Grid>
-            ))}
+          ))}
         {/* <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography> */}
       </Grid>
 

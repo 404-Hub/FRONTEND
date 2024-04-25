@@ -84,7 +84,7 @@ export default function LoginForm() {
 
       throw new Error('An error has occurred during registration request');
     }
-  }, []);
+  }, [router, error]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

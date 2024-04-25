@@ -48,8 +48,8 @@ export const Stage = ({
         onChange={handleInputChange}
       />
       <ShowExample
-        title={showExample}
-        content={exampleText}
+        title={showExample ?? ''}
+        content={exampleText ?? ''}
       />
       <Box
         sx={{

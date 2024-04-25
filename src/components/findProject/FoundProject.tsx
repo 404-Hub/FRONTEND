@@ -1,17 +1,18 @@
 'use client';
 
 import { TFoundAppProps, TFoundProject } from '@/types/findProjects';
-import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
+import {
+  Paper, Box, Typography, Button, Icon, Skeleton,
+} from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { getApp } from '@/api/client/apps';
-import { useSearchParams } from 'next/navigation';
 
 const FoundApp = (props: TFoundAppProps) => {
-  //пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
+  // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
   const { isAppTaken = false, voteByThisUser = 0 } = props;
   const [projectInf, setProjectInf] = useState<TFoundProject>();
   const [rating, setRating] = useState<string>();
@@ -34,23 +35,25 @@ const FoundApp = (props: TFoundAppProps) => {
     negative: '#B52020',
   };
 
+  // @TODO: слишком сложно. можно один раз посчитать рейтинг и обращаться к этому значению
+
   const changeRatingNums = useCallback(
     (upvotes: number, downvotes: number) => {
-      let rating = upvotes - downvotes;
-      rating = rating + vote;
-      if (rating === 0) return '0';
-      return `${rating < 0 ? rating.toString() : '+' + rating.toString()}`;
+      let calculatedRating = upvotes - downvotes;
+      calculatedRating += vote;
+      if (calculatedRating === 0) return '0';
+      return `${calculatedRating < 0 ? calculatedRating.toString() : `+${calculatedRating.toString()}`}`;
     },
-    [vote, projectInf]
+    [vote, projectInf],
   );
 
   const changeRatingColor = useCallback(
     (upvotes: number, downvotes: number) => {
-      let rating = upvotes - downvotes;
-      rating = rating + vote;
-      return rating < 0 ? ratingColorsVariant.negative : ratingColorsVariant.positive;
+      let calculatedRating = upvotes - downvotes;
+      calculatedRating += vote;
+      return calculatedRating < 0 ? ratingColorsVariant.negative : ratingColorsVariant.positive;
     },
-    [vote, projectInf]
+    [vote, projectInf],
   );
 
   const changeRatingInf = useCallback(
@@ -58,7 +61,7 @@ const FoundApp = (props: TFoundAppProps) => {
       setRating(() => changeRatingNums(upvotes, downvotes));
       setRatingColor(() => changeRatingColor(upvotes, downvotes));
     },
-    [vote, projectInf, ratingColor]
+    [vote, projectInf, ratingColor],
   );
 
   const fetchProject = useCallback(
@@ -71,7 +74,7 @@ const FoundApp = (props: TFoundAppProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [projectInf]
+    [projectInf],
   );
   const handleIsAppTakenChange = () => {
     setIsTaken((prev) => !prev);

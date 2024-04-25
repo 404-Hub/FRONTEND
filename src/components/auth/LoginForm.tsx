@@ -54,7 +54,7 @@ export default function LoginForm() {
     await signIn('credentials', { ...data, callbackUrl });
 
     router.push('/');
-  }, []);
+  }, [searchParams]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

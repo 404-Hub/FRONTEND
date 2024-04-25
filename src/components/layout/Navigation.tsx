@@ -197,10 +197,6 @@ const HeaderMobile: FC<{
   );
 };
 
-type Props = {
-  isHome?: boolean
-}
-
 export const Navigation: FC = () => {
   const pathname = usePathname();
 
