@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: "20.x"
 
+      - name: Add env file
+        run: echo "{{ secrets.ENV }}" > .env
+
       - name: Install Dependencies
         run: npm install
  
@@ -36,3 +39,9 @@ jobs:
 
       - name: Deploy with rsync
         run: rsync -avz --delete . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIRECTORY }}
+
+      - name: Restart Server
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }}
+          cd ${{ secrets.TARGET_DIRECTORY }}
+          pm2 restart all
