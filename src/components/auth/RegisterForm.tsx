@@ -69,9 +69,7 @@ export default function LoginForm() {
         password: data.password,
       };
 
-      await signIn('credentials', credentials);
-
-      router.push('/');
+      await signIn('credentials', { ...credentials, callbackUrl: '/' });
     } catch (err) {
       // todo: handle error
       if (err instanceof Response) {

@@ -7,7 +7,9 @@ export default async function Page() {
           marginTop: '12px',
           marginBottom: '120px',
         }}>
-            <MainCover/>
+            <div>
+                <MainCover/>
+            </div>
         </Container>
   );
 }

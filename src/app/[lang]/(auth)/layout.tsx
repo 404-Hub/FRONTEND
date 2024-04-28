@@ -2,8 +2,8 @@
 
 import { styled } from '@mui/material/styles';
 import { Container } from '@mui/material';
-import { Logo } from '@/components/base/logo/Logo';
 import { PropsWithChildren } from 'react';
+import { AuthProvider } from '@/providers/AuthProvider';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -24,16 +24,12 @@ const StyledContent = styled('div')(({ theme }) => ({
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <StyledRoot>
-      <Logo
-        sx={{
-          position: 'fixed',
-          top: { xs: 16, sm: 24, md: 40 },
-          left: { xs: 16, sm: 24, md: 40 },
-        }}
-      />
-
       <Container maxWidth="sm">
-        <StyledContent>{children}</StyledContent>
+        <StyledContent>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </StyledContent>
       </Container>
     </StyledRoot>
   );

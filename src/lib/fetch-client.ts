@@ -13,7 +13,6 @@ async function fetchClient({
   method = 'GET', url, body = '', token,
 }: fetchClientProps) {
   try {
-    console.log('inside?');
     const session = await getSession();
     const accessToken = token || session?.accessToken;
 
