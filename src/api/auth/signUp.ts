@@ -1,4 +1,6 @@
-import { InferType, object, ref, string } from 'yup';
+import {
+  InferType, object, ref, string,
+} from 'yup';
 
 export const signUpDtoSchema = object().shape({
   email: string().email().required(),

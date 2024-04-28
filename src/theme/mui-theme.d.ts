@@ -20,10 +20,11 @@ declare module '@mui/material/styles' {
     dropdown?: string;
   }
 
+  // eslint-disable-next-line no-unused-vars
   interface Theme {
     shadows: Shadows;
   }
-
+// eslint-disable-next-line no-unused-vars
   interface ThemeOptions {
     shadows?: Shadows;
   }

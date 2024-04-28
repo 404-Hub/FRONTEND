@@ -52,9 +52,7 @@ export default function LoginForm() {
     const callbackUrl = searchParams.get('callbackUrl') || '/';
 
     await signIn('credentials', { ...data, callbackUrl });
-
-    router.push('/');
-  }, []);
+  }, [searchParams]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

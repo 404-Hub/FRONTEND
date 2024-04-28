@@ -10,7 +10,9 @@ export type IconifyProps = {
 };
 
 export const Iconify = forwardRef<unknown, IconifyProps>(
-  ({ icon, width = 20, sx, ...other }, ref) => (
+  ({
+    icon, width = 20, sx, ...other
+  }, ref) => (
     <Box
       ref={ref}
       component={Icon}
@@ -18,5 +20,5 @@ export const Iconify = forwardRef<unknown, IconifyProps>(
       sx={{ width, height: width, ...sx }}
       {...other}
     />
-  )
+  ),
 );

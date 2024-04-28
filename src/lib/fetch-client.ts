@@ -7,6 +7,8 @@ interface fetchClientProps {
   token?: string;
 }
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 async function fetchClient({
   method = 'GET', url, body = '', token,
 }: fetchClientProps) {
@@ -30,6 +32,8 @@ async function fetchClient({
 
     return response;
   } catch (error) {
+    console.log('inside catch');
+    console.log(error);
     if (error instanceof Response) {
       if (error.status === 401) {
         signOut();

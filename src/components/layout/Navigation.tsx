@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Logo } from '@/components/base/logo/Logo';
 import { theme } from '@/theme';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,9 +15,11 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FC, useCallback, useMemo, useState } from 'react';
+import {
+  FC, useCallback, useMemo, useState,
+} from 'react';
+import { AuthBlock } from '@/components/layout/navigation/AuthBlock';
 
 type HeaderLink = {
   label: string;
@@ -31,49 +33,6 @@ const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/propose-idea': 'proposeIdea',
   '/find-project/subscribers': 'subscribers',
 };
-
-const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => (
-  <Box
-    sx={{
-      display: 'flex',
-      gap: 1,
-      justifyContent: 'stretch',
-      flexGrow: 1,
-      ...(type === 'mobile'
-        ? {
-            padding: 2,
-            '& > *': {
-              flex: 1,
-              width: '50%',
-            },
-          }
-        : {}),
-    }}
-  >
-    <Link href={{ pathname: '/login' }}>
-      <Button
-        sx={{
-          width: '100%',
-        }}
-        color="inherit"
-        variant={'contained'}
-      >
-        Войти
-      </Button>
-    </Link>
-    <Link href={{ pathname: '/register' }}>
-      <Button
-        sx={{
-          width: '100%',
-        }}
-        color="inherit"
-        variant={'contained'}
-      >
-        Регистрация
-      </Button>
-    </Link>
-  </Box>
-);
 
 const HeaderDesktop: FC<{
   links: HeaderLink[];
@@ -167,7 +126,7 @@ const HeaderMobile: FC<{
 
   return (
     <>
-      <Container maxWidth="lg">
+      <Container sx={{ display: { sm: 'block', md: 'none' } }} maxWidth="lg">
         <AppBar
           position="sticky"
           color={'transparent'}
@@ -248,11 +207,7 @@ const HeaderMobile: FC<{
   );
 };
 
-type Props = {
-  isHome?: boolean;
-};
-
-export const Navigation: React.FC<Props> = (props) => {
+export const Navigation: FC = () => {
   const pathname = usePathname();
   const session = useSession();
 
@@ -274,14 +229,14 @@ export const Navigation: React.FC<Props> = (props) => {
       },
       ...(session.status === 'authenticated'
         ? [
-            {
-              label: 'Предложить идею для проекта',
-              value: 'proposeIdea',
-            },
-          ]
+          {
+            label: 'Предложить идею для проекта',
+            value: 'proposeIdea',
+          },
+        ]
         : []),
     ],
-    [session]
+    [session],
   );
 
   return (
@@ -290,14 +245,7 @@ export const Navigation: React.FC<Props> = (props) => {
         activeLink={activeLink}
         links={links}
       />
-      {props.isHome ? (
-        <HeaderMobile
-          activeLink={activeLink}
-          links={links}
-        />
-      ) : (
-        ''
-      )}
+      <HeaderMobile activeLink={activeLink} links={links} />
     </Box>
   );
 };

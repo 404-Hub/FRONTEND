@@ -1,14 +1,14 @@
 import { withAuth } from 'next-auth/middleware';
+import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleAuth } from '@/authMiddleware';
-import { handleLanguage } from '@/languageMiddleware';
 
 const authRoutes: string[] = ['/dashboard', '/propose-idea'];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|.*\\..*|assets|favicon.ico|sw.js).*)'],
 };
 
 export default withAuth(
@@ -20,7 +20,25 @@ export default withAuth(
     //   console.log('Ответ:', response.headers);
     // }
     // return response;
-    return handleLanguage(request, 'i18next', 'lng');
+
+    // Step 1: Use the incoming request (example)
+    const defaultLocale = request.headers.get('x-default-locale') || 'en';
+
+    // Step 2: Create and call the next-intl middleware (example)
+    const handleI18nRouting = createIntlMiddleware({
+      locales: ['en', 'de'],
+      localePrefix: 'never',
+      defaultLocale: defaultLocale || 'en',
+      localeDetection: false,
+    });
+    const response = handleI18nRouting(request);
+
+    // Step 3: Alter the response (example)
+    response.headers.set('x-your-custom-locale', defaultLocale);
+
+    return response;
+
+    // return handleLanguage(request, 'i18next', 'lng');
   },
   {
     callbacks: {

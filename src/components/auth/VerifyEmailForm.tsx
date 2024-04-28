@@ -2,14 +2,14 @@
 
 import fetchClient from '@/lib/fetch-client';
 import { useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { FormEvent } from 'react';
 
 export default function VerifyEmailForm() {
   const router = useRouter();
   const { update } = useSession();
-  const searchParams = useSearchParams();
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {

@@ -6,7 +6,8 @@ const filtersStyles = {
     },
     filterContainer: {
       display: {
-        xs: 'block', md: 'flex',
+        xs: 'block',
+        md: 'flex',
       },
       flexDirection: 'row',
     },
@@ -18,7 +19,8 @@ const filtersStyles = {
       xs: 'fixed',
       md: 'static',
     },
-    zIndex: 1000,
+    top: 0,
+    zIndex: 1100,
     overflow: {
       xs: 'hidden',
       md: 'visible',
@@ -77,6 +79,7 @@ const filtersStyles = {
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
+    whiteSpace: 'nowrap',
     gap: {
       xs: '32px',
       md: 0,
@@ -146,7 +149,7 @@ const filtersStyles = {
     display: { xs: 'flex', md: 'none' },
     flexDirection: 'row',
     marginRight: '0',
-    marginTop: '68px',
+    marginTop: '8px',
     padding: '16px',
     justifyContent: 'space-between',
   },

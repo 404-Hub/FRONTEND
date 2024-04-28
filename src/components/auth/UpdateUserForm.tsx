@@ -30,8 +30,8 @@ export default function UpdateUserForm({ user }: UpdateUserFormProps) {
         throw response;
       }
 
-      const user = await response.json();
-      await update(user);
+      const userResp = await response.json();
+      await update(userResp);
 
       router.refresh();
     } catch (error) {
@@ -42,7 +42,7 @@ export default function UpdateUserForm({ user }: UpdateUserFormProps) {
           throw error;
         }
 
-        return Object.keys(response.errors).map((errorKey) => {
+        return Object.keys(response.errors).forEach((errorKey) => {
           const input = document.querySelector(`[name="${errorKey}"]`) as HTMLInputElement;
           input.setCustomValidity(response.errors[errorKey]);
           input.reportValidity();

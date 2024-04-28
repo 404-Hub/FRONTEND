@@ -4,7 +4,6 @@ import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Box, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-
 const Subcategory = () => {
   const router = useRouter();
   const handleClick = (value: string) => {
@@ -24,7 +23,7 @@ const Subcategory = () => {
       onClick={() => handleClick('complex')}>
       Комплексный
     </Button>
-  </Box>)
+  </Box>);
 };
 
 export default Subcategory;

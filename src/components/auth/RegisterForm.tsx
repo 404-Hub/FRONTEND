@@ -69,9 +69,7 @@ export default function LoginForm() {
         password: data.password,
       };
 
-      await signIn('credentials', credentials);
-
-      router.push('/');
+      await signIn('credentials', { ...credentials, callbackUrl: '/' });
     } catch (err) {
       // todo: handle error
       if (err instanceof Response) {
@@ -84,7 +82,7 @@ export default function LoginForm() {
 
       throw new Error('An error has occurred during registration request');
     }
-  }, []);
+  }, [router, error]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

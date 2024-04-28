@@ -1,10 +1,12 @@
+// 'use client';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useTranslation } from '@/app/i18n';
+import { useTranslations } from 'next-intl';
 
-export async function MainCover(): Promise<any> {
-  const { t } = await useTranslation('translation');
+export function MainCover() {
+  const t = useTranslations('home');
   return (
     <Box
       sx={{
@@ -14,8 +16,8 @@ export async function MainCover(): Promise<any> {
         maxWidth: 500,
       }}
     >
-      <Typography variant={'h4'}>{t('h4Main')}</Typography>
-      <Typography variant={'body1'}>{t('descriptionMain')}</Typography>
+      <Typography variant={'h4'}>{t('title')}</Typography>
+      <Typography variant={'body1'}>{t('description')}</Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Button
           variant={'contained'}

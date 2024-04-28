@@ -6,6 +6,7 @@ const findPageStyles = {
     },
     marginTop: '16px',
     marginBottom: '31px',
+    fontWeight: 800,
   },
   mainContainer: {
     margin: '0 auto',
@@ -26,13 +27,16 @@ const findPageStyles = {
     },
   },
   container: {
+    transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+    width: { xs: '100vw', md: '20%' },
+    position: { md: 'static', xs: 'fixed' },
+    left: { xs: 0, md: 'none' },
+    top: { xs: '10%', md: 'none' },
+    zIndex: 1000,
+    backgroundColor: { xs: '#F9FAFB', md: 'transparent' },
     display: 'flex',
-    alignItems: 'center',
-    padding: { xs: '16px', md: '0px' },
-    background: {
-      xs: '#FFFFFF',
-      md: 'transparent',
-    },
+    flexDirection: 'column',
+    height: { xs: '90%', md: 'auto' },
   },
   icon: {
     padding: '0px',
@@ -49,6 +53,10 @@ const findPageStyles = {
   backlLink: {
     width: '24px',
     height: '24px',
+    display: {
+      xs: 'flex',
+      md: 'none',
+    },
   },
   title: {
     fontWeight: '600',
@@ -56,6 +64,10 @@ const findPageStyles = {
     marginTop: {
       xs: '0',
       md: '24px',
+    },
+    marginBottom: {
+      xs: '0',
+      md: '32px',
     },
     fontSize: {
       xs: '20px',
@@ -67,25 +79,8 @@ const findPageStyles = {
       md: 'none',
     },
   },
-  optionsContainer: {
-    padding: {
-      xs: '17px',
-      md: '0',
-    },
-  },
-  mainOptions: {
-    margin: '0 auto',
-    paddingTop: {
-      md: '40px',
-    },
-    fontWeight: '600',
-    fontSize: '20px',
-    maxWidth: 380,
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(47%, 1fr))',
-    gap: '16px',
-  },
   buttons: {
+    backgroundColor: '#FFD600',
     aspectRatio: '1',
     color: 'white',
     width: '100%',
@@ -95,9 +90,6 @@ const findPageStyles = {
     lineHeight: 1.6,
     paddingLeft: '12px',
     paddingRight: '12px',
-  },
-  subscribes: {
-    backgroundColor: '#8D40FB',
   },
   fromSvyat: {
     backgroundColor: '#FC573A',

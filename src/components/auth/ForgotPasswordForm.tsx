@@ -29,7 +29,7 @@ export function ForgotPasswordForm() {
           throw error;
         }
 
-        return Object.keys(response.errors).map((errorKey) => {
+        return Object.keys(response.errors).forEach((errorKey) => {
           const input = document.querySelector(`[name="${errorKey}"]`) as HTMLInputElement;
           input.setCustomValidity(response.errors[errorKey]);
           input.reportValidity();

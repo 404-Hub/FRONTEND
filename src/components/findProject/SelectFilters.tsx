@@ -1,72 +1,133 @@
-import selectFiltersStyles from '@/styles/findProjectStyles/selectFiltersStyles';
 import ClearIcon from '@mui/icons-material/Clear';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Box, Button } from '@mui/material';
-import React, {
-  Dispatch, SetStateAction, useEffect, useState,
-} from 'react';
 import {
-  AllFilters, FormDataValue, HandleValueType, SelectedFilters,
-} from '@/types/findProjects';
+  Badge, Box, Button, Typography,
+} from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActualFilter, SelectedFilters, SelectFiltersProps } from '@/types/findProjects';
 
-type Props = {
-  projectType: string | null;
-  allFilters: AllFilters;
-  showFilters: boolean;
-  allValues: FormDataValue[];
-  handleChange: HandleValueType;
-  setShowFilters: Dispatch<SetStateAction<boolean>>;
-};
-const getCheckedOptions = (ob: AllFilters) => {
-  const checkedOptions = [];
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const item of ob) {
-    const filteredOptions = item.options.filter((option) => option.checked === true);
-    const options = filteredOptions.map((el) => ({ ...el, filter: item.name, type: item.type }));
-
-    checkedOptions.push(...options);
-  }
-  return checkedOptions;
-};
-
-const SelectFilters: React.FC<Props> = (props) => {
-  const [filtersExist, setFiltersExist] = useState<boolean>(false);
+const SelectFilters: React.FC<SelectFiltersProps> = (props) => {
+  const {
+    actualFilters, showFilters, handleChange, setShowFilters,
+  } = props;
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters[]>([]);
 
+  const getCheckedOptFilters = useCallback(
+    (filters: ActualFilter[]) => {
+      const filtersWithCheckedOpt: SelectedFilters[] = [];
+      filters.forEach((filter) => {
+        const {
+          filterName, filterType, actualCheckboxOption, actualRadioOption, actualLabel,
+        } = filter;
+
+        filtersWithCheckedOpt.push({
+          label: actualLabel,
+          name: filterName,
+          type: filterType,
+          filter: filterType !== 'checkbox' ? actualRadioOption : actualCheckboxOption,
+        });
+      });
+      return filtersWithCheckedOpt;
+    },
+    [actualFilters],
+  );
   useEffect(() => {
-    setFiltersExist(selectedFilters.length > 0);
-    setSelectedFilters(getCheckedOptions(props.allFilters));
-  }, [props.allFilters]);
-  useEffect(() => {
-    setFiltersExist(selectedFilters.length > 0);
-  }, [selectedFilters]);
+    const filtersWithCheckedOpt = getCheckedOptFilters(actualFilters);
+    setSelectedFilters(() => filtersWithCheckedOpt);
+    return () => {
+      setSelectedFilters([]);
+    };
+  }, [actualFilters]);
 
   return (
     <>
-      <Box sx={selectFiltersStyles.filtersContainer} style={{ justifyContent: filtersExist ? 'space-between' : 'flex-end' }}>
-        {selectedFilters.length ? (
-          <Box sx={{ display: !props.showFilters ? 'flex' : 'none', gap: '12px', overflow: 'auto' }}>
-            {selectedFilters.map((item, index) => <Box
-              key={index}
-              sx={selectFiltersStyles.selectedFilters}
+      <Box
+        sx={{
+          padding: '16px',
+          display: {
+            xs: 'flex',
+            md: 'none',
+          },
+          flexDirection: 'row',
+          justifyContent: selectedFilters.length > 0 ? 'space-between' : 'flex-end',
+        }}
+      >
+        <>
+          {selectedFilters.length > 0 && (
+            <Box
+              sx={{
+                display: !showFilters ? 'flex' : 'none',
+                gap: '12px',
+                overflow: 'auto',
+                justifyContent: 'flex-start',
+              }}
             >
-              {item.label}
-              <Button
-                onClick={() => props.handleChange(item.filter, item.name, item.type, !item.checked)}
-                sx={selectFiltersStyles.clearButton}>
-                <ClearIcon sx={selectFiltersStyles.clearIcon} />
-              </Button>
-            </Box>)}
-          </Box>)
-          : ''}
+              {selectedFilters.map((selectedFilter) => {
+                const {
+                  filter, name, type, label,
+                } = selectedFilter;
+                return (
+                  <Box
+                    key={label}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      border: '1px solid #DFE3E8',
+                      borderRadius: '8px',
+                      paddingX: '4px',
+                      paddingY: '3px',
+                    }}
+                  >
+                    <Typography sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                      {label}
+                    </Typography>
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleChange({
+                          value: filter,
+                          name,
+                          type,
+                          checked: false,
+                          label,
+                        });
+                      }}
+                      sx={{ paddingLeft: 1, minWidth: 23, margin: 0 }}
+                    >
+                      <ClearIcon
+                        sx={{
+                          alignItems: 'center',
+                          borderRadius: '100%',
+                          backgroundColor: '#919EAA',
+                          color: '#FFFFFF',
+                          padding: '4px',
+                          height: 22,
+                          width: 22,
+                        }}
+                      />
+                    </Button>
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
+        </>
         <Button
-          onClick={() => props.setShowFilters(true)}
-          color='inherit'
-          sx={selectFiltersStyles.filtersButton}
+          onClick={() => setShowFilters(true)}
+          color="inherit"
+          sx={{
+            border: '1px solid #DFE3E8',
+            borderRadius: '8px',
+            minWidth: 44,
+          }}
         >
-          <TuneIcon sx={selectFiltersStyles.tuneIcon} />
-          {filtersExist ? <Box sx={selectFiltersStyles.filtersIndicator} /> : ''}
+          <Badge
+            color="error"
+            variant="dot"
+            invisible={!(selectedFilters.length > 0)}
+          >
+            <TuneIcon sx={{ width: 18 }} />
+          </Badge>
         </Button>
       </Box>
     </>
