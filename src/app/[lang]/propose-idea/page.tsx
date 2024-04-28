@@ -4,7 +4,7 @@ import { Stages } from '@/app/[lang]/propose-idea/components/Stages/Stages';
 import { useTranslations } from 'next-intl';
 
 export default function Page() {
-  const t = useTranslations('translation');
+  const t = useTranslations('proposePage');
   return (
     <>
       <Container
@@ -18,7 +18,7 @@ export default function Page() {
           padding: 0,
         }}
       >
-        <Stages title={t('proposePage.title').toString()} />
+        <Stages title={t('title').toString()} />
       </Container>
     </>
   );

@@ -5,5 +5,8 @@
     "buttonFindProjectMain": "Найти проект",
     "buttonProposeIdeaMain": "Предложить идею",
     "h4MyTasks": "Мои задачи"
+  },
+  "proposePage": {
+    "title": "Предложить идею"
   }
 }

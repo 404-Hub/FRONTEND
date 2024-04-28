@@ -1,5 +1,5 @@
 import fetchClient from '@/lib/fetch-client';
-import { ActualFilter } from '@/types/findProjects';
+import {ActualFilter} from '@/types/findProjects';
 
 export const getApps = async (page: number, category: string, filters?: ActualFilter[]) => {
   try {
@@ -47,6 +47,21 @@ export const getApp = async (appId: number) => {
     const app = await response.json();
 
     return app.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createApp = async (data: {}) => {
+  try {
+    const response = await fetchClient({
+      method: 'POST',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps`,
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
   } catch (error) {
     console.log(error);
   }
