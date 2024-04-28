@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { Logo } from '@/components/base/logo/Logo';
 import { theme } from '@/theme';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -48,7 +49,10 @@ const HeaderDesktop: FC<{
   };
 
   return (
-    <Container maxWidth="lg" sx={{ display: { xs: 'none', md: 'block' } }}>
+    <Container
+      maxWidth="lg"
+      sx={{ display: { xs: 'none', md: 'block' } }}
+    >
       <AppBar
         position="sticky"
         color={'transparent'}
@@ -68,7 +72,10 @@ const HeaderDesktop: FC<{
         >
           <Logo />
           {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
-          <Tabs value={activeLink || false} onChange={(_, value) => handleTabClick(value)}>
+          <Tabs
+            value={activeLink || false}
+            onChange={(_, value) => handleTabClick(value)}
+          >
             {links.map(({ label, value }) => (
               <Tab
                 key={value}
@@ -180,7 +187,10 @@ const HeaderMobile: FC<{
             }}
           >
             {links.map((tab) => (
-              <Button key={tab.value} onClick={() => handleTabClick(tab.value)}>
+              <Button
+                key={tab.value}
+                onClick={() => handleTabClick(tab.value)}
+              >
                 <Typography
                   variant={'body2'}
                   align={'left'}
@@ -199,6 +209,7 @@ const HeaderMobile: FC<{
 
 export const Navigation: FC = () => {
   const pathname = usePathname();
+  const session = useSession();
 
   const activeLink = useMemo(() => pathToLinkSlugMap[pathname], [pathname]);
 
@@ -216,16 +227,20 @@ export const Navigation: FC = () => {
         label: 'Найти проект',
         value: 'findProject',
       },
-      {
-        label: 'Предложить идею для проекта',
-        value: 'proposeIdea',
-      },
+      ...(session.status === 'authenticated'
+        ? [
+          {
+            label: 'Предложить идею для проекта',
+            value: 'proposeIdea',
+          },
+        ]
+        : []),
     ],
-    [],
+    [session],
   );
 
   return (
-    <Box >
+    <Box>
       <HeaderDesktop
         activeLink={activeLink}
         links={links}
