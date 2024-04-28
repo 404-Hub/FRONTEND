@@ -9,7 +9,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { getApp } from '@/api/client/apps';
+import { assignApp, getApp } from '@/api/client/apps';
 
 const FoundApp = (props: TFoundAppProps) => {
   // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
@@ -69,6 +69,9 @@ const FoundApp = (props: TFoundAppProps) => {
       try {
         const appInf: TFoundProject = await getApp(appId);
         setProjectInf(appInf);
+        if (appInf.is_assigned) {
+            setIsTaken(true);
+        }
         changeRatingInf(appInf.upvotes, appInf.downvotes);
       } catch (error) {
         throw new Error('An error occurred during try to load more projects', { cause: error });
@@ -76,8 +79,14 @@ const FoundApp = (props: TFoundAppProps) => {
     },
     [projectInf],
   );
-  const handleIsAppTakenChange = () => {
-    setIsTaken((prev) => !prev);
+  const handleIsAppTakenChange = async () => {
+    const res = await assignApp(Number(searchParams.get('appid')));
+    if (res.success) {
+      if (projectInf) {
+        projectInf.is_assigned = true;
+        setIsTaken((prev) => !prev);
+      }
+    }
   };
 
   const handleUpVoteClick = useCallback(() => {
@@ -93,215 +102,215 @@ const FoundApp = (props: TFoundAppProps) => {
   }, [vote, projectInf, ratingColor]);
 
   return (
-    <Paper
-      sx={{
-        backgroundColor: '#F9FAFB',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 2,
-        height: '90vh',
-        maxWidth: { xs: '100%', md: '70%' },
-        marginX: 'auto',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          paddingX: 2,
-          alignItems: 'center',
-        }}
-        onClick={() => {
-          router.back();
-        }}
-      >
-        <Icon aria-label="back">
-          <ArrowBack sx={{ width: 24, height: 24, color: '#161C24' }} />
-        </Icon>
-        <Typography
-          variant={'h6'}
-          sx={{ padding: 2 }}
-        >
-          {PAGE_TITLE}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '90%',
-        }}
-      >
-        <Typography
-          variant={'h4'}
-          sx={{ padding: 2, fontWeight: '500' }}
-        >
-          {projectInf ? (
-            projectInf.title
-          ) : (
-            <Skeleton
-              animation="wave"
-              sx={{ height: 80 }}
-            />
-          )}
-        </Typography>
         <Paper
-          sx={{
-            backgroundColor: '#F9FAFB',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            height: '100%',
-            overflowY: 'auto',
-          }}
-        >
-          <Paper
             sx={{
-              backgroundColor: 'transparent',
+              backgroundColor: '#F9FAFB',
               display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 2,
+              flexDirection: 'column',
+              padding: 2,
+              height: '90vh',
+              maxWidth: { xs: '100%', md: '70%' },
+              marginX: 'auto',
             }}
-          >
-            <Typography
-              variant={'h6'}
-              sx={{ padding: 2 }}
-            >
-              {`${RATING}:`}
-            </Typography>
-            <Button
-              sx={{
-                width: '28px',
-                height: '28px',
-                minWidth: '28px',
-                color: vote === 1 ? 'black' : 'grey',
-                background: vote === 1 ? '#F4F6F8' : 'transparent',
-              }}
-              color="inherit"
-              onClick={() => {
-                handleUpVoteClick();
-                setVote(1);
-              }}
-            >
-              <KeyboardArrowUpIcon />
-            </Button>
-            <Typography
-              align="center"
-              sx={{ color: ratingColor }}
-            >
-              {projectInf ? (
-                rating
-              ) : (
-                <Skeleton
-                  animation="wave"
-                  sx={{ height: 40, width: 40 }}
-                />
-              )}
-            </Typography>
-            <Button
-              sx={{
-                width: '28px',
-                height: '28px',
-                minWidth: '28px',
-                margin: 0,
-                color: vote === -1 ? 'black' : 'grey',
-                background: vote === -1 ? '#F4F6F8' : 'transparent',
-              }}
-              onClick={() => {
-                handleUpVoteClick();
-                setVote(-1);
-              }}
-            >
-              <KeyboardArrowDownIcon sx={{ color: '#647380' }} />
-            </Button>
-          </Paper>
-          <Box>
-            <Typography
-              variant={'h6'}
-              sx={{ paddingX: 2 }}
-            >
-              {`${ADDITIONAL}:`}
-            </Typography>
-            <Typography
-              variant="inherit"
-              sx={{ padding: 2 }}
-            >
-              {projectInf ? (
-                projectInf.additional
-              ) : (
-                <Skeleton
-                  animation="wave"
-                  sx={{ height: 120 }}
-                />
-              )}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography
-              variant={'h6'}
-              sx={{ paddingX: 2 }}
-            >
-              {`${DETAILS}:`}
-            </Typography>
-            <Typography
-              variant="inherit"
-              sx={{ padding: 2 }}
-            >
-              {projectInf ? (
-                projectInf.description
-              ) : (
-                <Skeleton
-                  animation="wave"
-                  sx={{ height: 120 }}
-                />
-              )}
-            </Typography>
-          </Box>
-        </Paper>
-        <Box
-          sx={{
-            backgroundColor: 'transparent',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 1,
-            background: '#F9FAFB',
-          }}
         >
-          {!isTaken ? (
-            <Button
-              variant="outlined"
-              color="success"
-              sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-              onClick={() => {
-                router.back();
-              }}
+            <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  paddingX: 2,
+                  alignItems: 'center',
+                }}
+                onClick={() => {
+                  router.back();
+                }}
             >
-              {BACK}
-            </Button>
-          ) : (
-            <Button
-              variant="outlined"
-              color="error"
-              sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-              onClick={handleIsAppTakenChange}
+                <Icon aria-label="back">
+                    <ArrowBack sx={{ width: 24, height: 24, color: '#161C24' }}/>
+                </Icon>
+                <Typography
+                    variant={'h6'}
+                    sx={{ padding: 2 }}
+                >
+                    {PAGE_TITLE}
+                </Typography>
+            </Box>
+            <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '90%',
+                }}
             >
-              {REJECTION}
-            </Button>
-          )}
+                <Typography
+                    variant={'h4'}
+                    sx={{ padding: 2, fontWeight: '500' }}
+                >
+                    {projectInf ? (
+                      projectInf.title
+                    ) : (
+                        <Skeleton
+                            animation="wave"
+                            sx={{ height: 80 }}
+                        />
+                    )}
+                </Typography>
+                <Paper
+                    sx={{
+                      backgroundColor: '#F9FAFB',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      height: '100%',
+                      overflowY: 'auto',
+                    }}
+                >
+                    <Paper
+                        sx={{
+                          backgroundColor: 'transparent',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 2,
+                        }}
+                    >
+                        <Typography
+                            variant={'h6'}
+                            sx={{ padding: 2 }}
+                        >
+                            {`${RATING}:`}
+                        </Typography>
+                        <Button
+                            sx={{
+                              width: '28px',
+                              height: '28px',
+                              minWidth: '28px',
+                              color: vote === 1 ? 'black' : 'grey',
+                              background: vote === 1 ? '#F4F6F8' : 'transparent',
+                            }}
+                            color="inherit"
+                            onClick={() => {
+                              handleUpVoteClick();
+                              setVote(1);
+                            }}
+                        >
+                            <KeyboardArrowUpIcon/>
+                        </Button>
+                        <Typography
+                            align="center"
+                            sx={{ color: ratingColor }}
+                        >
+                            {projectInf ? (
+                              rating
+                            ) : (
+                                <Skeleton
+                                    animation="wave"
+                                    sx={{ height: 40, width: 40 }}
+                                />
+                            )}
+                        </Typography>
+                        <Button
+                            sx={{
+                              width: '28px',
+                              height: '28px',
+                              minWidth: '28px',
+                              margin: 0,
+                              color: vote === -1 ? 'black' : 'grey',
+                              background: vote === -1 ? '#F4F6F8' : 'transparent',
+                            }}
+                            onClick={() => {
+                              handleUpVoteClick();
+                              setVote(-1);
+                            }}
+                        >
+                            <KeyboardArrowDownIcon sx={{ color: '#647380' }}/>
+                        </Button>
+                    </Paper>
+                    <Box>
+                        <Typography
+                            variant={'h6'}
+                            sx={{ paddingX: 2 }}
+                        >
+                            {`${ADDITIONAL}:`}
+                        </Typography>
+                        <Typography
+                            variant="inherit"
+                            sx={{ padding: 2 }}
+                        >
+                            {projectInf ? (
+                              projectInf.additional
+                            ) : (
+                                <Skeleton
+                                    animation="wave"
+                                    sx={{ height: 120 }}
+                                />
+                            )}
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant={'h6'}
+                            sx={{ paddingX: 2 }}
+                        >
+                            {`${DETAILS}:`}
+                        </Typography>
+                        <Typography
+                            variant="inherit"
+                            sx={{ padding: 2 }}
+                        >
+                            {projectInf ? (
+                              projectInf.description
+                            ) : (
+                                <Skeleton
+                                    animation="wave"
+                                    sx={{ height: 120 }}
+                                />
+                            )}
+                        </Typography>
+                    </Box>
+                </Paper>
+                <Box
+                    sx={{
+                      backgroundColor: 'transparent',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 1,
+                      background: '#F9FAFB',
+                    }}
+                >
+                    {!isTaken ? (
+                        <Button
+                            variant="outlined"
+                            color="success"
+                            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
+                            onClick={() => {
+                              router.back();
+                            }}
+                        >
+                            {BACK}
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="outlined"
+                            color="error"
+                            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
+                            onClick={handleIsAppTakenChange}
+                        >
+                            {REJECTION}
+                        </Button>
+                    )}
 
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={handleIsAppTakenChange}
-          >
-            {TAKE_OR_PASS}
-          </Button>
-        </Box>
-      </Box>
-    </Paper>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
+                        onClick={handleIsAppTakenChange}
+                    >
+                        {TAKE_OR_PASS}
+                    </Button>
+                </Box>
+            </Box>
+        </Paper>
   );
 };
 

@@ -19,3 +19,19 @@ export const getCategories = async () => {
     // res.status(500).json({ error: 'GetCategoriesError' });
   }
 };
+
+export const getMyApps = async () => {
+  try {
+    const response = await fetchServer({
+      method: 'GET',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/apps`,
+    });
+    if (!response.ok) throw response;
+
+    const apps = await response.json();
+
+    return apps.data;
+  } catch (error) {
+    // res.status(500).json({ error: 'GetCategoriesError' });
+  }
+};

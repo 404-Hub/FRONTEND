@@ -1,5 +1,5 @@
 import fetchClient from '@/lib/fetch-client';
-import {ActualFilter} from '@/types/findProjects';
+import { ActualFilter } from '@/types/findProjects';
 
 export const getApps = async (page: number, category: string, filters?: ActualFilter[]) => {
   try {
@@ -62,6 +62,36 @@ export const createApp = async (data: {}) => {
     if (!response.ok) throw response;
 
     return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const assignApp = async (appId: number) => {
+  try {
+    const response = await fetchClient({
+      method: 'POST',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/assign/${appId}`,
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMyApps = async () => {
+  try {
+    const response = await fetchClient({
+      method: 'GET',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/apps`,
+    });
+    if (!response.ok) throw response;
+
+    const apps = await response.json();
+
+    return apps.data;
   } catch (error) {
     console.log(error);
   }

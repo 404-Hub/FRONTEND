@@ -62,7 +62,7 @@
   },
   {
      "type" : "radio",
-     "name": "complexity",
+     "name": "rate",
      "label": "Сложность",
      "options": [
       {

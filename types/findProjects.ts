@@ -142,6 +142,7 @@ type TFoundProject = {
   created_at: string;
   updated_at: string;
   additional: string;
+  is_assigned: boolean;
 };
 
 export type {

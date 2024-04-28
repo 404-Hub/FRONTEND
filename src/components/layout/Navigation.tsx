@@ -20,6 +20,7 @@ import {
   FC, useCallback, useMemo, useState,
 } from 'react';
 import { AuthBlock } from '@/components/layout/navigation/AuthBlock';
+import Link from 'next/link';
 
 type HeaderLink = {
   label: string;
@@ -89,13 +90,15 @@ const HeaderDesktop: FC<{
             ))}
           </Tabs>
           <Box sx={{ display: 'flex', gap: 3 }}>
-            <Button
-              color="inherit"
-              sx={{ display: 'flex', gap: 1 }}
-            >
-              Telegram
-              <TelegramIcon />
-            </Button>
+              <Link target={'_blank'} href={'https://t.me/svyatamesto'}>
+                  <Button
+                      color="inherit"
+                      sx={{ display: 'flex', gap: 1 }}
+                  >
+                      Telegram
+                      <TelegramIcon />
+                  </Button>
+              </Link>
             <AuthBlock type={'desktop'} />
           </Box>
         </Toolbar>

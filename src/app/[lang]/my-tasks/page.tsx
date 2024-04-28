@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Container } from '@mui/material';
+import React from 'react';
+import { TasksList } from '@/components/my-tasks/TasksList';
 
 export default function Page() {
   const t = useTranslations('home');
@@ -16,6 +18,7 @@ export default function Page() {
         }}
       >
         <h4>{t('h4MyTasks')}</h4>
+         <TasksList />
       </Container>
     </>
   );
