@@ -6,7 +6,6 @@ import { Button, Box, Typography } from '@mui/material';
 import { Stage } from '@/app/[lang]/propose-idea/components/Stage/Stage';
 import { StageSummary } from '@/app/[lang]/propose-idea/components/StageSummary/StageSummary';
 import { Stepper } from '@/app/[lang]/propose-idea/components/Stepper/Stepper';
-import { useTranslations } from 'next-intl';
 
 const commonOutlinedStyle = {
   variant: 'outlined',
@@ -33,10 +32,10 @@ const buttonStyles: Record<string, any> = {
   Approve: commonContainedStyle,
 };
 
-export const Stages = () => {
+export const Stages = (props: {title: string}) => {
+  const { title } = props;
   const [activeStep, setActiveStep] = useState<number>(0);
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
-  const t = useTranslations('translation');
 
   const stages: TOneStepData[] = [
     {
@@ -190,7 +189,7 @@ export const Stages = () => {
               paddingLeft: '5rem',
             }}
           >
-            {t('proposePage.title')}
+            {title}
           </Typography>
         </Box>
         <Box

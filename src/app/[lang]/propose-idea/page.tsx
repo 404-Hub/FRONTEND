@@ -1,8 +1,10 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import { Stages } from '@/app/[lang]/propose-idea/components/Stages/Stages';
+import { useTranslations } from 'next-intl';
 
 export default function Page() {
+  const t = useTranslations('translation');
   return (
     <>
       <Container
@@ -16,7 +18,7 @@ export default function Page() {
           padding: 0,
         }}
       >
-        <Stages />
+        <Stages title={t('proposePage.title').toString()} />
       </Container>
     </>
   );
