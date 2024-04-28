@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -30,7 +30,6 @@ function FormError({ error }: { error: string | null }) {
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 

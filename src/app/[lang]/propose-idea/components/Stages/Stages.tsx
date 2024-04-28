@@ -130,7 +130,7 @@ export const Stages = (props: {title: string}) => {
     });
 
     if (resp.success) {
-        console.log('Project created successfully');
+      console.log('Project created successfully');
     }
   };
 

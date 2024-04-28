@@ -70,7 +70,7 @@ const FoundApp = (props: TFoundAppProps) => {
         const appInf: TFoundProject = await getApp(appId);
         setProjectInf(appInf);
         if (appInf.is_assigned) {
-            setIsTaken(true);
+          setIsTaken(true);
         }
         changeRatingInf(appInf.upvotes, appInf.downvotes);
       } catch (error) {

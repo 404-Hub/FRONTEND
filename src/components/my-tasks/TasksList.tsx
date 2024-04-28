@@ -1,7 +1,6 @@
 'use client';
 
-import ProjectsList from '@/components/findProject/ProjectsList';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getMyApps } from '@/api/client/apps';
 import ProjectCard from '@/components/findProject/ProjectCard';
 import { TProject } from '@/types/findProjects';
