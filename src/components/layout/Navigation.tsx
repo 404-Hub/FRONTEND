@@ -122,6 +122,7 @@ const HeaderMobile: FC<{
     const pathKey = Object.keys(pathToLinkSlugMap).find((key) => pathToLinkSlugMap[key] === value);
     if (pathKey) {
       router.push(pathKey);
+      toggleMobileMenu();
     } else {
       console.error('Нет соответствующего ключа для значения:', value);
     }
