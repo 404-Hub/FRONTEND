@@ -3,7 +3,7 @@ import {
   Grid,
 } from '@mui/material';
 import type { TCategoryProps } from '@/types/findProjects';
-import { CategoryCard } from '@/app/[lang]/find-project/_components/category/CategoryCard';
+import { CategoryCard } from '@/app/[lang]/__find-project/_components/category/CategoryCard';
 
 export default function Category(props: TCategoryProps) {
   const { categories } = props;

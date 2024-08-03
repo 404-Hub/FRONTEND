@@ -1,6 +1,6 @@
 import { Container, Grid } from '@mui/material';
 import type { TSubCategoryProps } from '@/types/findProjects';
-import { CategoryCard } from '@/app/[lang]/find-project/_components/category/CategoryCard';
+import { CategoryCard } from '@/app/[lang]/__find-project/_components/category/CategoryCard';
 
 export const SubCategory = (props: TSubCategoryProps) => {
   const { category } = props;

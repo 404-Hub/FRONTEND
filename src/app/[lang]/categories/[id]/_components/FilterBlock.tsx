@@ -8,12 +8,15 @@ import {
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
-import RenderFilters from '@/app/[lang]/find-project/_components/RenderFilters';
+import { useIsMobile } from '@/lib/hooks/useIsMobile';
+import RenderFilters from './RenderFilters';
 
 const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   const {
     handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters,
   } = props;
+
+  const isMobile = useIsMobile();
 
   const [isFilterExist, setIsFilterExist] = useState(false);
   // const [isSlideEffect, setIsSlideEffect] = useState(showFilters);
@@ -78,7 +81,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
                 </Typography>
             </Box>
             <Box>
-                {showFilters && (
+                {((isMobile && showFilters) || !isMobile) && (
                     <Box
                         sx={{
                           ...findPageStyles.container,

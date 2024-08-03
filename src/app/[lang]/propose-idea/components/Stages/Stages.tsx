@@ -120,6 +120,11 @@ export const Stages = (props: { title: string }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const resetState = () => {
+    setUserInputs({});
+    setActiveStep(0);
+  };
+
   const handleApproveData = async () => {
     const session = await getSession();
     const accessToken = session?.accessToken;
@@ -137,13 +142,9 @@ export const Stages = (props: { title: string }) => {
 
     if (resp.success) {
       setIsCreated(true);
+      resetState();
       console.log('Project created successfully');
     }
-  };
-
-  const resetState = () => {
-    setUserInputs({});
-    setActiveStep(0);
   };
 
   const buttonActions: Record<string, () => void> = {
@@ -324,7 +325,6 @@ export const Stages = (props: { title: string }) => {
             <Snackbar open={isCreated} message={'Project Created'} onClose={() => {
               setIsCreated(false);
               router.push('/projects/new');
-              resetState();
             }} autoHideDuration={3000}/>
         </>
   );

@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 import { Filters, ActualFilter, FilterChangeArgs } from '@/types/findProjects';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
-import FilterBlock from '@/app/[lang]/find-project/_components/FilterBlock';
-import ProjectsList from '@/app/[lang]/find-project/_components/ProjectsList';
-import SelectFilters from '@/app/[lang]/find-project/_components/SelectFilters';
+import FilterBlock from '@/app/[lang]/__find-project/_components/FilterBlock';
+import ProjectsList from '@/app/[lang]/__find-project/_components/ProjectsList';
+import SelectFilters from '@/app/[lang]/__find-project/_components/SelectFilters';
 import filters from '../../../../mockups/filters.json';
 
 const AppsList = () => {

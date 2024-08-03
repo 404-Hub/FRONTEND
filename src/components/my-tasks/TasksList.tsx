@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getMyApps } from '@/api/client/apps';
-import ProjectCard from '@/app/[lang]/find-project/_components/ProjectCard';
+import ProjectCard from '@/app/[lang]/__find-project/_components/ProjectCard';
 import { TProject } from '@/types/findProjects';
 
 export const TasksList = () => {

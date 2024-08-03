@@ -9,8 +9,8 @@ import React, {
 } from 'react';
 import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
-import ProjectCard from '@/app/[lang]/find-project/_components/ProjectCard';
 import { getApps } from '@/api/client/apps';
+import ProjectCard from './ProjectCard';
 
 const ProjectsList = (props: ProjectsListProps) => {
   const { projectType, filters } = props;
