@@ -94,7 +94,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               padding: 2,
             }}
             onClick={() => {
-                setShowFilters(false);
+              setShowFilters(false);
             }}
           >
             <IconButton
