@@ -37,3 +37,14 @@ welcome ✨
 ## License
 
 This project is open-sourced software licensed under the MIT license.
+
+
+## Routing
+
+- categories
+- categories/[id]
+- projects
+- projects/new
+- tasks
+- tasks/[id]
+- tasks[id]/submit
