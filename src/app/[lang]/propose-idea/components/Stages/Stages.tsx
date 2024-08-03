@@ -2,12 +2,15 @@
 
 import type { TButtonType, TOneStepData } from '@/types/propose-idea.types';
 import React, { useState } from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import {
+  Button, Box, Typography, Snackbar,
+} from '@mui/material';
 import { Stage } from '@/app/[lang]/propose-idea/components/Stage/Stage';
 import { StageSummary } from '@/app/[lang]/propose-idea/components/StageSummary/StageSummary';
 import { Stepper } from '@/app/[lang]/propose-idea/components/Stepper/Stepper';
 import { getSession } from 'next-auth/react';
 import { createApp } from '@/api/client/apps';
+import { useRouter } from 'next/navigation';
 
 const commonOutlinedStyle = {
   variant: 'outlined',
@@ -34,10 +37,13 @@ const buttonStyles: Record<string, any> = {
   Approve: commonContainedStyle,
 };
 
-export const Stages = (props: {title: string}) => {
+export const Stages = (props: { title: string }) => {
   const { title } = props;
   const [activeStep, setActiveStep] = useState<number>(0);
   const [userInputs, setUserInputs] = useState<{ [key: string]: any }>({});
+  const [isCreated, setIsCreated] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const stages: TOneStepData[] = [
     {
@@ -130,8 +136,14 @@ export const Stages = (props: {title: string}) => {
     });
 
     if (resp.success) {
+      setIsCreated(true);
       console.log('Project created successfully');
     }
+  };
+
+  const resetState = () => {
+    setUserInputs({});
+    setActiveStep(0);
   };
 
   const buttonActions: Record<string, () => void> = {
@@ -151,145 +163,169 @@ export const Stages = (props: {title: string}) => {
   };
 
   const renderButtons = (buttons: TButtonType[]) => (
-    <Box
-      sx={{
-        display: 'flex',
-        gap: '4',
-        marginTop: '1rem',
-        width: '100%',
-      }}
-    >
-      {buttons.map((buttonObj) => {
-        const [action, label] = Object.entries(buttonObj)[0];
-
-        return (
-          <Button
-            key={action}
-            {...buttonStyles[action]}
-            onClick={buttonActions[action]}
-            fullWidth
-          >
-            {label}
-          </Button>
-        );
-      })}
-    </Box>
-  );
-
-  return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          paddingBottom: '2rem',
-        }}
-      >
         <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
-            maxWidth: 500,
-          }}
-        >
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            sx={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              color: '#333',
-              marginBottom: '0rem',
-              paddingLeft: '5rem',
-            }}
-          >
-            {title}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 0,
-            alignItems: 'center',
-          }}
-        >
-          <Box
             sx={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              gap: '4',
+              marginTop: '1rem',
+              width: '100%',
             }}
-          >
-            <Typography
-              variant="h5"
-              component="h2"
-              sx={{
-                fontSize: '12px',
-                fontWeight: 700,
-              }}
-            >
-              {currentStageData.label}
-            </Typography>
-          </Box>
-          <Stepper
-            activeStep={activeStep}
-            steps={stages}
-          />
+        >
+            {buttons.map((buttonObj) => {
+              const [action, label] = Object.entries(buttonObj)[0];
+
+              return (
+                    <Button
+                        key={action}
+                        {...buttonStyles[action]}
+                        onClick={buttonActions[action]}
+                        fullWidth
+                    >
+                        {label}
+                    </Button>
+              );
+            })}
         </Box>
-      </Box>
-      {activeStep === stages.length - 1 ? (
-        <StageSummary
-          stageData={currentStageData}
-          userInputs={userInputs}
-        >
-          <Box
-            sx={{
-              paddingTop: 16,
-              width: '500px',
-            }}
-          >
-            <Box sx={{ width: '100%', marginBottom: '8px' }}>
-              <Button
-                {...buttonStyles.EditData}
-                onClick={buttonActions.EditData}
-                fullWidth
-              >
-                {currentStageData.buttons[0].EditData}
-              </Button>
+  );
+  return (
+        <>
+            <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                  paddingBottom: '2rem',
+                }}
+            >
+                <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 4,
+                      maxWidth: 500,
+                    }}
+                >
+                    <Typography
+                        variant="h4"
+                        component="h1"
+                        gutterBottom
+                        sx={{
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold',
+                          color: '#333',
+                          marginBottom: '0rem',
+                          paddingLeft: '5rem',
+                        }}
+                    >
+                        {title}
+                    </Typography>
+                </Box>
+                <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: 0,
+                      alignItems: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            sx={{
+                              fontSize: '12px',
+                              fontWeight: 700,
+                            }}
+                        >
+                            {currentStageData.label}
+                        </Typography>
+                    </Box>
+                    <Stepper
+                        activeStep={activeStep}
+                        steps={stages}
+                    />
+                </Box>
             </Box>
-            <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
-              <Button
-                {...buttonStyles.Cancel}
-                onClick={buttonActions.Cancel}
-                fullWidth
-              >
-                {currentStageData.buttons[1].Cancel}
-              </Button>
-              <Button
-                {...buttonStyles.Approve}
-                onClick={buttonActions.Approve}
-                fullWidth
-              >
-                {currentStageData.buttons[2].Approve}
-              </Button>
-            </Box>
-          </Box>
-        </StageSummary>
-      ) : (
-        <Stage
-          stageData={currentStageData}
-          inputValue={userInputs[currentStageData.fieldName ?? '']}
-          handleInputChange={(e) => handleInputChange(currentStageData.fieldName ?? '', e.target.value)}
-          activeStep={activeStep}
-        >
-          {renderButtons(currentStageData.buttons)}
-        </Stage>
-      )}
-    </>
+            {activeStep === stages.length - 1 ? (
+                <StageSummary
+                    stageData={currentStageData}
+                    userInputs={userInputs}
+                >
+                    <Box
+                        sx={{
+                          paddingTop: 16,
+                          width: '500px',
+                        }}
+                    >
+                        {isCreated ? (
+                            <Box sx={{ width: '100%', marginBottom: '8px' }}>
+                                <Typography
+                                    variant="h5"
+                                    component="h2"
+                                    sx={{
+                                      fontSize: '1.5rem',
+                                      fontWeight: 'bold',
+                                      color: '#333',
+                                      marginBottom: '0rem',
+                                    }}
+                                >
+                                    Project created successfully!
+                                </Typography>
+                            </Box>
+                        ) : (
+                            <>
+                                <Box sx={{ width: '100%', marginBottom: '8px' }}>
+                                    <Button
+                                        {...buttonStyles.EditData}
+                                        onClick={buttonActions.EditData}
+                                        fullWidth
+                                    >
+                                        {currentStageData.buttons[0].EditData}
+                                    </Button>
+                                </Box>
+                                <Box sx={{ width: '100%', display: 'flex', gap: '4px' }}>
+                                    <Button
+                                        {...buttonStyles.Cancel}
+                                        onClick={buttonActions.Cancel}
+                                        fullWidth
+                                    >
+                                        {currentStageData.buttons[1].Cancel}
+                                    </Button>
+                                    <Button
+                                        {...buttonStyles.Approve}
+                                        onClick={buttonActions.Approve}
+                                        fullWidth
+                                    >
+                                        {currentStageData.buttons[2].Approve}
+                                    </Button>
+                                </Box>
+                            </>
+                        )}
+                    </Box>
+                </StageSummary>
+            ) : (
+                <Stage
+                    stageData={currentStageData}
+                    inputValue={userInputs[currentStageData.fieldName ?? '']}
+                    handleInputChange={(e) => handleInputChange(currentStageData.fieldName ?? '', e.target.value)}
+                    activeStep={activeStep}
+                >
+                    {renderButtons(currentStageData.buttons)}
+                </Stage>
+            )
+            }
+            <Snackbar open={isCreated} message={'Project Created'} onClose={() => {
+              setIsCreated(false);
+              router.push('/projects/new');
+              resetState();
+            }} autoHideDuration={3000}/>
+        </>
   );
 };

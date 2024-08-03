@@ -37,6 +37,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
 
   const fetchProject = useCallback(
     async (appId: number) => {
+        console.log('fetchProject', appId);
       try {
         const appInf: TFoundProject = await getApp(appId);
         setProjectInf(appInf);
