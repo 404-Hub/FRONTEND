@@ -81,7 +81,7 @@ const TaskSubmitingAfterClick = (props: TTaskSubmitingAfterClickProps) => {
                 sx={{ textTransform: 'none', fontWeight: 200 }}
                 fullWidth
                 onClick={() => {
-                  if (isValid) router.push('/find-project');
+                  if (isValid) router.push('/categories');
                   else submiting();
                 }}
             >
