@@ -93,11 +93,11 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               alignItems: 'center',
               padding: 2,
             }}
+            onClick={() => {
+                setShowFilters(false);
+            }}
           >
             <IconButton
-              onClick={() => {
-                setShowFilters(false);
-              }}
               color="inherit"
               aria-label="back"
             >
