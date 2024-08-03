@@ -5,8 +5,10 @@ import { TCategory } from '@/types/findProjects';
 import Categories from './_components/Categories';
 import PageTitle from './_components/PageTitle';
 
-export default async function FindProject() {
+export default async function CategoriesPage() {
   const categories = await useMemo(() => getCategories(), []) ?? [] as TCategory[];
+
+  console.log(categories);
   return (
     <Box>
       <Container maxWidth="lg" disableGutters>

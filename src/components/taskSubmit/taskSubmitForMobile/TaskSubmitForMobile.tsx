@@ -1,11 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { TTaskSubmitProps } from '@/types/taskSubmit';
+import { Paper } from '@mui/material';
 import TaskSubmiting from './TaskSubmitingForMobile';
 import TaskSubmitingAfterClick from '../AfterSubmit';
 import GithubAdd from './GitHubAdd';
-import { TTaskSubmitProps } from '@/types/taskSubmit';
-import { Paper } from '@mui/material';
 
 const TaskSubmitForMobile = (props: TTaskSubmitProps) => {
   const { conditions, handleChangeCondition, isValidCond } = props;
@@ -14,63 +14,61 @@ const TaskSubmitForMobile = (props: TTaskSubmitProps) => {
   const [hasGithub, setHasGithub] = useState<boolean>(false);
 
   const handleSubmitClick = useCallback(() => {
-    setIsSubmitClicked((prev) => {
-      return !prev;
-    });
+    setIsSubmitClicked((prev) => !prev);
   }, [isSubmitClicked]);
 
   const handleValidationCheck = useCallback(
     (isRight: boolean) => {
       setIsvalid(isRight);
     },
-    [isValid]
+    [isValid],
   );
 
   const handleGithubCheck = useCallback(
     (hasGithubRef: boolean) => {
       setHasGithub(hasGithubRef);
     },
-    [hasGithub]
+    [hasGithub],
   );
 
   return (
-    <Paper
-      sx={{
-        display: {
-          xs: 'block',
-          md: 'none',
-        },
-      }}
-    >
-      {!isSubmitClicked && (
-        <TaskSubmiting
-          validation={handleValidationCheck}
-          submiting={handleSubmitClick}
-          conditions={conditions}
-          handleChangeCondition={handleChangeCondition}
-          isValidCond={isValidCond}
-        />
-      )}
-      {isSubmitClicked && !isValid && (
-        <TaskSubmitingAfterClick
-          isValid={isValid}
-          submiting={handleSubmitClick}
-        />
-      )}
-      {isSubmitClicked && isValid && !hasGithub && (
-        <GithubAdd
-          githubCheck={handleGithubCheck}
-          validation={handleValidationCheck}
-          submiting={handleSubmitClick}
-        />
-      )}
-      {isSubmitClicked && hasGithub && isValid && (
-        <TaskSubmitingAfterClick
-          isValid
-          submiting={handleSubmitClick}
-        />
-      )}
-    </Paper>
+        <Paper
+            sx={{
+              display: {
+                xs: 'block',
+                md: 'none',
+              },
+            }}
+        >
+            {!isSubmitClicked && (
+                <TaskSubmiting
+                    validation={handleValidationCheck}
+                    submiting={handleSubmitClick}
+                    conditions={conditions}
+                    handleChangeCondition={handleChangeCondition}
+                    isValidCond={isValidCond}
+                />
+            )}
+            {isSubmitClicked && !isValid && (
+                <TaskSubmitingAfterClick
+                    isValid={isValid}
+                    submiting={handleSubmitClick}
+                />
+            )}
+            {isSubmitClicked && isValid && !hasGithub && (
+                <GithubAdd
+                    githubCheck={handleGithubCheck}
+                    validation={handleValidationCheck}
+                    submiting={handleSubmitClick}
+                />
+            )}
+            {isSubmitClicked && hasGithub && isValid && (
+                <TaskSubmitingAfterClick
+                    isValid
+                    submiting={handleSubmitClick}
+                />
+            )}
+        </Paper>
   );
 };
 

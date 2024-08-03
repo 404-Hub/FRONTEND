@@ -13,21 +13,21 @@ const GithubInput = (props: TGithubInputProps) => {
 
   useEffect(() => {
     setIsEmpty(inputValue !== '');
-    const rgx = /[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?/gi;
+    const rgx = /[-a-zA-Z0-9@:%_+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_+.~#?&/=]*)?/gi;
     setIsInputValid(rgx.test(inputValue) && inputValue.includes('github'));
   }, [inputValue]);
 
   return (
-    <TextField
-      sx={{ display: isVisible ? 'block' : 'none', marginY: 2 }}
-      label={REF}
-      onChange={(e) => {
-        setInputValue(e.target.value);
-      }}
-      error={!isInputValid && isEmpty}
-      helperText={!isInputValid && isEmpty ? INVALID_REF : VALID_REF}
-      fullWidth
-    />
+        <TextField
+            sx={{ display: isVisible ? 'block' : 'none', marginY: 2 }}
+            label={REF}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            error={!isInputValid && isEmpty}
+            helperText={!isInputValid && isEmpty ? INVALID_REF : VALID_REF}
+            fullWidth
+        />
   );
 };
 

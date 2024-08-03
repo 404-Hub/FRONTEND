@@ -125,6 +125,7 @@ type FilterProps = {
 };
 
 type TFoundAppProps = {
+  id?: string;
   isAppTaken?: boolean;
   voteByThisUser?: -1 | 0 | 1;
 };

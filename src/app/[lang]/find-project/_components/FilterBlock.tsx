@@ -8,7 +8,7 @@ import {
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
-import RenderFilters from '@/components/findProject/RenderFilters';
+import RenderFilters from '@/app/[lang]/find-project/_components/RenderFilters';
 
 const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   const {

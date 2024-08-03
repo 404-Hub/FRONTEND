@@ -1,6 +1,6 @@
 'use client';
 
-import FoundApp from '@/components/findProject/FoundProject';
+import FoundApp from '@/app/[lang]/find-project/_components/FoundProject';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Box } from '@mui/material';
 

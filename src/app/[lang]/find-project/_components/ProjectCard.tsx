@@ -38,7 +38,7 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
         cursor: 'pointer',
       }}
       onClick={() => {
-        router.push(`/find-project/project-page?appid=${id}`);
+        router.push(`/projects/${id}`);
       }}
     >
       <Paper

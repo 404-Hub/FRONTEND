@@ -8,18 +8,12 @@ const useConditions = () => {
   const handleChangeCondition = useCallback(
     (condition: string, conditionValue?: boolean) => {
       if (conditionValue === undefined) {
-        setConditions((prev) => {
-          prev[condition] = !prev[condition];
-          return { ...prev };
-        });
+        setConditions((prev) => ({ ...prev, [condition]: !prev[condition] }));
       } else {
-        setConditions((prev) => {
-          prev[condition] = conditionValue;
-          return { ...prev };
-        });
+        setConditions((prev) => ({ ...prev, [condition]: conditionValue }));
       }
     },
-    [conditions]
+    [],
   );
 
   useEffect(() => {

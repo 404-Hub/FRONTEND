@@ -5,6 +5,7 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "react/display-name": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "max-len": ["error", {"ignoreTemplateLiterals": true, "ignoreStrings": true,  "code": 120}]
   }
 }

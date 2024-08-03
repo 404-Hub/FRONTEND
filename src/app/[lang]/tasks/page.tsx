@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import React from 'react';
 import { TasksList } from '@/components/my-tasks/TasksList';
 
-export default function Page() {
+export default function TasksPage() {
   const t = useTranslations('home');
   return (
     <>

@@ -91,6 +91,8 @@ export const getMyApps = async () => {
 
     const apps = await response.json();
 
+    console.log('apps:', apps.data);
+
     return apps.data;
   } catch (error) {
     console.log(error);

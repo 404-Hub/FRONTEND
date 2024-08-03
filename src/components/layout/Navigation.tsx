@@ -29,9 +29,9 @@ type HeaderLink = {
 
 const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
   '/': 'main',
-  '/my-tasks': 'myTasks',
-  '/find-project': 'findProject',
-  '/propose-idea': 'proposeIdea',
+  '/tasks': 'myTasks',
+  '/categories': 'findProject',
+  '/projects/new': 'proposeIdea',
   '/find-project/subscribers': 'subscribers',
 };
 

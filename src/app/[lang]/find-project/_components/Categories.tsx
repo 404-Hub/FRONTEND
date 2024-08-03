@@ -1,10 +1,10 @@
 'use client';
 
 import { Container } from '@mui/material';
-import { SubCategory } from '@/components/findProject/category/SubCategory';
+import { SubCategory } from '@/app/[lang]/find-project/_components/category/SubCategory';
 import { useCallback, useMemo, useState } from 'react';
 import type { TCategory, TCategoryProps, TSetCategoryCallback } from '@/types/findProjects';
-import Category from '@/components/findProject/category/Category';
+import Category from '@/app/[lang]/find-project/_components/category/Category';
 import { useRouter } from 'next/navigation';
 
 function Categories(props: TCategoryProps) {

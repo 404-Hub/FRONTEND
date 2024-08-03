@@ -3,7 +3,7 @@ import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleAuth } from '@/authMiddleware';
 
-const authRoutes: string[] = ['/dashboard', '/propose-idea'];
+const authRoutes: string[] = ['/dashboard', '/tasks', '/projects/new'];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
@@ -13,13 +13,11 @@ export const config = {
 
 export default withAuth(
   async (request: NextRequest): Promise<NextResponse | undefined> => {
-    await handleAuth(request, authRoutes, verifyRoutes, guestRoutes);
-    // console.log('Запрос:', request.headers);
-    // const response = handleLanguage(request, 'i18next', 'lng');
-    // if (response) {
-    //   console.log('Ответ:', response.headers);
-    // }
-    // return response;
+    const authResult = await handleAuth(request, authRoutes, verifyRoutes, guestRoutes);
+
+    if (authResult?.redirect) {
+      return NextResponse.redirect(authResult.redirect);
+    }
 
     // Step 1: Use the incoming request (example)
     const defaultLocale = request.headers.get('x-default-locale') || 'en';

@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
-import ProjectCard from '@/components/findProject/ProjectCard';
+import ProjectCard from '@/app/[lang]/find-project/_components/ProjectCard';
 import { getApps } from '@/api/client/apps';
 
 const ProjectsList = (props: ProjectsListProps) => {
