@@ -27,7 +27,7 @@ export default function PageTitle() {
                 variant={'h6'}
                 sx={findPageStyles.title}
             >
-                Поиск проекта
+                Категории проектов
             </Typography>
         </Box>
   );
