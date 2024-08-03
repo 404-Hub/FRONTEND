@@ -35,7 +35,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop', closeCallback: () => void }> =
                                 }}
                                 color="inherit"
                                 variant={'contained'}
-                                onClick={() => { closeCallback() }}
+                                onClick={() => { closeCallback(); }}
                             >
                                 Выйти
                             </Button>
