@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { signOut, useSession } from 'next-auth/react';
 
-const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => {
+const AuthBlock: FC<{ type: 'mobile' | 'desktop', closeCallback: () => void }> = ({ type, closeCallback }) => {
   const { data: session } = useSession();
 
   return (
@@ -35,6 +35,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => {
                                 }}
                                 color="inherit"
                                 variant={'contained'}
+                                onClick={() => { closeCallback() }}
                             >
                                 Выйти
                             </Button>
@@ -46,6 +47,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => {
                                 }}
                                 color="inherit"
                                 variant={'contained'}
+                                onClick={() => { closeCallback(); }}
                             >
                                 Аккаунт
                             </Button>
@@ -63,6 +65,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => {
                                 }}
                                 color="inherit"
                                 variant={'contained'}
+                                onClick={() => { closeCallback(); }}
                             >
                                 Войти
                             </Button>
@@ -74,6 +77,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop' }> = ({ type }) => {
                                 }}
                                 color="inherit"
                                 variant={'contained'}
+                                onClick={() => { closeCallback(); }}
                             >
                                 Регистрация
                             </Button>

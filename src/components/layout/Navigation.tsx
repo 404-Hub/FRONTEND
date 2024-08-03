@@ -99,7 +99,7 @@ const HeaderDesktop: FC<{
                       <TelegramIcon />
                   </Button>
               </Link>
-            <AuthBlock type={'desktop'} />
+            <AuthBlock closeCallback={() => {}} type={'desktop'} />
           </Box>
         </Toolbar>
       </AppBar>
@@ -182,7 +182,7 @@ const HeaderMobile: FC<{
               Menu
             </Typography>
           </Box>
-          <AuthBlock type={'mobile'} />
+          <AuthBlock closeCallback={toggleMobileMenu} type={'mobile'} />
           <Box
             sx={{
               display: 'flex',

@@ -30,9 +30,9 @@ export const handleAuth = async (
   }
 
   if (token) {
-    if (!token.email_verified_at && !isVerifyRoute) {
-      return { redirect: new URL('/verify-email', request.url) };
-    }
+    // if (!token.email_verified_at && !isVerifyRoute) {
+    //   return { redirect: new URL('/verify-email', request.url) };
+    // }
   }
 
   return { next: true };
