@@ -126,7 +126,7 @@ export const Stages = (props: {title: string}) => {
       category_id: 1,
       title: userInputs.title,
       description: userInputs.description,
-      additional: userInputs.additional,
+      additional_info: userInputs.additional,
     });
 
     if (resp.success) {
