@@ -54,7 +54,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
     const res = await assignApp(Number(props.id ?? searchParams.get('appid')));
     if (
       res.success
-      && projectInf
+            && projectInf
     ) {
       projectInf.is_assigned = true;
       setIsTaken((prev) => !prev);
@@ -268,7 +268,11 @@ const ProjectDetails = (props: TFoundAppProps) => {
                         color="success"
                         sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
                         onClick={() => {
-                          handleIsAppTakenChange();
+                          if (isTaken) {
+                            router.push(`/tasks/${props.id ?? searchParams.get('appid')}/submit`);
+                          } else {
+                            handleIsAppTakenChange();
+                          }
                         }}
                     >
                         {TAKE_OR_PASS}
