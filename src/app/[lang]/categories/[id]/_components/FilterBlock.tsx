@@ -66,7 +66,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
             </Box>
             <Box sx={{ display: { md: 'none', xs: 'flex' }, alignItems: 'center' }}>
                 <Link
-                    href={{ pathname: '/find-project' }}
+                    href={{ pathname: '/categories' }}
                     passHref
                 >
                     <Icon aria-label="back">

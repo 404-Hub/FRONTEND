@@ -73,6 +73,7 @@ type TSetCategoryCallback = (category: TCategory | null) => void;
 type TCategory = {
   id: string;
   name: string;
+  title: string;
   children: TCategory[];
 };
 

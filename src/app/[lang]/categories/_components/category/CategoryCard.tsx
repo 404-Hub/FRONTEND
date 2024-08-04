@@ -27,13 +27,14 @@ export const CategoryCard = (props: TCardProps) => {
   return (
     <Grid
       item
-      xs={3}
+      xs={6}
+      md={4}
       key={category.id}
     >
       <Card>
         <CardActionArea sx={styles.card}>
           <CardContent onClick={() => handleClick(category)}>
-            <Typography>{category.name}</Typography>
+            <Typography>{category.title}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>

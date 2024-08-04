@@ -4,6 +4,7 @@ import { ViewportProvider } from '@/providers/ViewportProvider';
 import '@/styles/index.scss';
 import { ThemeProvider } from '@/theme';
 import { Navigation } from '@/components/layout/Navigation';
+import ContextProvider from '@/providers/ContextProvider';
 
 export const metadata = {
   title: '404 Hub',
@@ -14,21 +15,23 @@ export default function RootLayout({
   children,
   params: { locale },
 }: {
-  children: React.ReactNode;
-  params: {locale: string};
+    children: React.ReactNode;
+    params: { locale: string };
 }) {
   return (
-    <html lang={locale}>
-    <ThemeProvider>
-      <ViewportProvider>
-        <AuthProvider>
-            <body>
-              <Navigation />
-              {children}
-            </body>
-          </AuthProvider>
-        </ViewportProvider>
-      </ThemeProvider>
-    </html>
+        <html lang={locale}>
+        <ThemeProvider>
+            <ViewportProvider>
+                <AuthProvider>
+                    <ContextProvider>
+                        <body>
+                        <Navigation/>
+                        {children}
+                        </body>
+                    </ContextProvider>
+                </AuthProvider>
+            </ViewportProvider>
+        </ThemeProvider>
+        </html>
   );
 }

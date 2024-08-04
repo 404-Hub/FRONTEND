@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 import React, {
   useCallback, useState,
 } from 'react';
@@ -12,7 +11,8 @@ import FilterBlock from './FilterBlock';
 import ProjectsList from './ProjectsList';
 import SelectFilters from './SelectFilters';
 
-const AppsList = (props : { categoryId?: string }) => {
+const AppsList = (props: { categoryId?: string }) => {
+  const categoryId = props.categoryId ?? null;
   const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
   const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -22,13 +22,6 @@ const AppsList = (props : { categoryId?: string }) => {
     setAllFilters(defaultFilters);
     setActualFilters([]);
   }, [allFilters, actualFilters]);
-
-  const searchParams = useSearchParams();
-
-  const projectType = props.categoryId ?? searchParams.get('value');
-  if (!projectType) {
-    // router.push('/find-project');
-  }
 
   const updateFilter = useCallback(
     (args: FilterChangeArgs) => {
@@ -93,41 +86,40 @@ const AppsList = (props : { categoryId?: string }) => {
   );
 
   return (
-    <Box>
-      {/* <ThemeProvider theme={theme}> */}
-      {projectType && (
-        <Typography
-          sx={findPageStyles.pageTitle}
-          variant={'h5'}
-        >
-          {projectType}
-        </Typography>
-      )}
-      <Box sx={findPageStyles.centralContainer}>
-        <FilterBlock
-          handleChange={handleChange}
-          setShowFilters={setShowFilters}
-          actualFilters={actualFilters}
-          showFilters={showFilters}
-          allFilters={allFilters}
-          resetFilters={resetFilters}
-        />
+        <Box>
+            {categoryId && (
+                <Typography
+                    sx={findPageStyles.pageTitle}
+                    variant={'h5'}
+                >
+                    {categoryId}
+                </Typography>
+            )}
+            <Box sx={findPageStyles.centralContainer}>
+                <FilterBlock
+                    handleChange={handleChange}
+                    setShowFilters={setShowFilters}
+                    actualFilters={actualFilters}
+                    showFilters={showFilters}
+                    allFilters={allFilters}
+                    resetFilters={resetFilters}
+                />
 
-        <SelectFilters
-          handleChange={handleChange}
-          projectType={projectType}
-          actualFilters={actualFilters}
-          setShowFilters={setShowFilters}
-          showFilters={showFilters}
-        />
+                <SelectFilters
+                    handleChange={handleChange}
+                    projectType={categoryId}
+                    actualFilters={actualFilters}
+                    setShowFilters={setShowFilters}
+                    showFilters={showFilters}
+                />
 
-        <ProjectsList
-          projectType={projectType}
-          filters={actualFilters}
-        />
-      </Box>
-      {/* </ThemeProvider> */}
-    </Box>
+                <ProjectsList
+                    projectType={categoryId}
+                    filters={actualFilters}
+                />
+            </Box>
+            {/* </ThemeProvider> */}
+        </Box>
   );
 };
 

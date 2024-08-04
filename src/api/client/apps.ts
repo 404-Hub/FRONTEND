@@ -3,7 +3,7 @@ import { ActualFilter } from '@/types/findProjects';
 
 export const getApps = async (page: number, category: string, filters?: ActualFilter[]) => {
   try {
-    const params: Record<string, string> = { page: page.toString(), category };
+    const params: Record<string, string> = { page: page.toString(), category_id: category };
     if (filters) {
       filters.forEach((filter) => {
         const {

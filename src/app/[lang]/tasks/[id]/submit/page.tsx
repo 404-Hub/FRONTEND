@@ -38,7 +38,7 @@ export default function Page() {
                   background: '#FFFFFF',
                 }}
                 onClick={() => {
-                  router.push(`/find-project/project-page?appid=${Number(searchParams.get('appId'))}`);
+                  router.push(`/projects/${Number(searchParams.get('appId'))}`);
                 }}
             >
                 <Icon aria-label="back">
