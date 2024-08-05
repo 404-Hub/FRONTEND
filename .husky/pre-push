@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ ! -x "$(command -v .husky/pre-push)" ]; then
+  echo 'Error: .husky/pre-push is not executable. Making it executable...'
+  chmod +x .husky/pre-push 
+fi
+
+echo "Running tsc before push..."
+npm run tsc --noEmmit
