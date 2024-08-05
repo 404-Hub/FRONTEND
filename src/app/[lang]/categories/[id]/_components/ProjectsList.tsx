@@ -13,7 +13,7 @@ import { getApps } from '@/api/client/apps';
 import ProjectCard from './ProjectCard';
 
 const ProjectsList = (props: ProjectsListProps) => {
-  const { projectType, filters } = props;
+  const { categoryId, filters } = props;
   const [projects, setProjects] = useState<TProject[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
@@ -38,9 +38,9 @@ const ProjectsList = (props: ProjectsListProps) => {
   };
 
   const fetchProjects = useCallback(
-    async (categoryId: string) => {
+    async (catId: string) => {
       try {
-        const appsInf = await getApps(currentPage, categoryId, filters);
+        const appsInf = await getApps(currentPage, catId, filters);
         if (lastRequestCurrentPage !== appsInf.current_page) {
           setProjects((prev) => projectsCheck(prev, appsInf.items));
           setCurrentPage((prev) => prev + 1);
@@ -58,8 +58,8 @@ const ProjectsList = (props: ProjectsListProps) => {
   );
 
   const onLoadClick = useCallback(() => {
-    fetchProjects(projectType || '');
-  }, [projectType, filters, projects]);
+    fetchProjects(categoryId || '');
+  }, [categoryId, filters, projects]);
 
   useEffect(() => {
     onLoadClick();

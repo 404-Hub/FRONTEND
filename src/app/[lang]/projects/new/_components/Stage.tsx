@@ -1,7 +1,7 @@
 import type { TOneStepData } from '@/types/propose-idea.types';
 import React, { ChangeEvent } from 'react';
 import { TextField, Box, Typography } from '@mui/material';
-import { ShowExample } from '@/app/[lang]/propose-idea/components/ShowExample/ShowExample';
+import { ShowExample } from './ShowExample';
 
 interface StageProps {
   children: React.ReactNode;

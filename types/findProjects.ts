@@ -51,7 +51,7 @@ type TProject = {
 };
 
 type ProjectsListProps = {
-  projectType: string | null;
+  categoryId: string;
   filters: ActualFilter[];
 };
 

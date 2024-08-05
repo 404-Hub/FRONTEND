@@ -2,17 +2,22 @@
 
 import { Container } from '@mui/material';
 import {
-  useCallback, useMemo, useState,
+  useCallback, useEffect, useMemo, useState,
 } from 'react';
 import type { TCategory, TCategoryProps, TSetCategoryCallback } from '@/types/findProjects';
 import { useRouter } from 'next/navigation';
-// import { GlobalContext } from '@/providers/ContextProvider';
+import useGlobalState from '@/lib/hooks/useGlobalState';
 import Category from './category/Category';
 import { SubCategory } from './category/SubCategory';
 
 function Categories(props: TCategoryProps) {
-  // const context = useContext(GlobalContext);
+  const context = useGlobalState();
   const { categories } = props;
+  useEffect(() => {
+    if (context.categories.length === 0 && categories.length > 0) {
+      context.setCategories(categories);
+    }
+  }, [categories, context.categories]);
   const router = useRouter();
 
   const [currentCategory, setCurrentCategory] = useState<null | TCategory>(null);

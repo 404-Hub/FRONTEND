@@ -2,17 +2,25 @@
 
 import { Box, Typography } from '@mui/material';
 import React, {
-  useCallback, useState,
+  useCallback, useMemo, useState,
 } from 'react';
-import { Filters, ActualFilter, FilterChangeArgs } from '@/types/findProjects';
+import {
+  Filters, ActualFilter, FilterChangeArgs, type TCategory,
+} from '@/types/findProjects';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import filters from '@/mockups/filters.json';
+import useGlobalState from '@/lib/hooks/useGlobalState';
 import FilterBlock from './FilterBlock';
 import ProjectsList from './ProjectsList';
 import SelectFilters from './SelectFilters';
 
 const AppsList = (props: { categoryId?: string }) => {
-  const categoryId = props.categoryId ?? null;
+  const context = useGlobalState();
+  const categoryId = props.categoryId ?? '1';
+  const category = useMemo(
+    () => context.categories.find((item) => item.id === categoryId) ?? {} as TCategory,
+    [categoryId, context.categories],
+  );
   const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
   const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -92,7 +100,7 @@ const AppsList = (props: { categoryId?: string }) => {
                     sx={findPageStyles.pageTitle}
                     variant={'h5'}
                 >
-                    {categoryId}
+                    {category.name ?? 'Список проектов'}
                 </Typography>
             )}
             <Box sx={findPageStyles.centralContainer}>
@@ -114,7 +122,7 @@ const AppsList = (props: { categoryId?: string }) => {
                 />
 
                 <ProjectsList
-                    projectType={categoryId}
+                    categoryId={categoryId}
                     filters={actualFilters}
                 />
             </Box>

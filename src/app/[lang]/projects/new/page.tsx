@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { Stages } from '@/app/[lang]/propose-idea/components/Stages/Stages';
 import { useTranslations } from 'next-intl';
+import { Stages } from './_components/Stages';
 
 export default function Page() {
   const t = useTranslations('proposePage');

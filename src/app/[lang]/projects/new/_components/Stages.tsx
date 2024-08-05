@@ -5,12 +5,12 @@ import React, { useState } from 'react';
 import {
   Button, Box, Typography, Snackbar,
 } from '@mui/material';
-import { Stage } from '@/app/[lang]/propose-idea/components/Stage/Stage';
-import { StageSummary } from '@/app/[lang]/propose-idea/components/StageSummary/StageSummary';
-import { Stepper } from '@/app/[lang]/propose-idea/components/Stepper/Stepper';
 import { getSession } from 'next-auth/react';
 import { createApp } from '@/api/client/apps';
 import { useRouter } from 'next/navigation';
+import { Stage } from './Stage';
+import { StageSummary } from './StageSummary';
+import { Stepper } from './Stepper';
 
 const commonOutlinedStyle = {
   variant: 'outlined',
@@ -197,7 +197,9 @@ export const Stages = (props: { title: string }) => {
                   alignItems: 'center',
                   width: '100%',
                   paddingBottom: '2rem',
+                  flexDirection: { xs: 'column', sm: 'row' },
                 }}
+                className={'headerContainer'}
             >
                 <Box
                     sx={{
@@ -223,6 +225,7 @@ export const Stages = (props: { title: string }) => {
                     </Typography>
                 </Box>
                 <Box
+                    className={'stepperContainer'}
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
