@@ -19,6 +19,7 @@ export function MainCover(props: { translations: any }) {
     >
       <Typography variant={'h4'}>{translations.title}</Typography>
       <Typography variant={'body1'}>{translations.description}</Typography>
+      <Typography>{'Hello world!'}</Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Button
           variant={'contained'}
@@ -27,7 +28,12 @@ export function MainCover(props: { translations: any }) {
         >
           {translations.buttons.findProjectMain}
         </Button>
-        <Button sx={{ flexGrow: 1 }} onClick={() => router.push('/projects/new')}>{translations.buttons.proposeIdeaMain}</Button>
+        <Button
+          sx={{ flexGrow: 1 }}
+          onClick={() => router.push('/projects/new')}
+        >
+          {translations.buttons.proposeIdeaMain}
+        </Button>
       </Box>
     </Box>
   );
