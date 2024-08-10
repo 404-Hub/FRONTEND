@@ -10,7 +10,7 @@ export const getCategories = async () => {
     if (!response.ok) throw response;
 
     // @ts-ignore
-    const categories: { success: boolean, data: TCategory[] } = await response.json();
+    const categories: { success: boolean; data: TCategory[] } = await response.json();
 
     console.log('categories.data', categories.data);
 

@@ -16,21 +16,20 @@ export const TasksList = () => {
     });
   }, []);
   return (
-      <>
-        { apps.map((app) => (
-            <ProjectCard
-                key={app.id}
-                project={{
-                  upvotes: app?.upvotes,
-                  downvotes: app.downvotes,
-                  rating: (app.upvotes - app.downvotes).toString(),
-                  id: app.id,
-                  title: app.title,
-                  description: app.description,
-                }}
-            />
-        ))}
-      </>
-
+    <>
+      {apps.map((app) => (
+        <ProjectCard
+          key={app.id}
+          project={{
+            upvotes: app?.upvotes,
+            downvotes: app.downvotes,
+            rating: (app.upvotes - app.downvotes).toString(),
+            id: app.id,
+            title: app.title,
+            description: app.description,
+          }}
+        />
+      ))}
+    </>
   );
 };

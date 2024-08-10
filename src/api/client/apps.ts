@@ -6,9 +6,7 @@ export const getApps = async (page: number, category: string, filters?: ActualFi
     const params: Record<string, string> = { page: page.toString(), category_id: category };
     if (filters) {
       filters.forEach((filter) => {
-        const {
-          filterName, filterType, actualRadioOption, actualCheckboxOption,
-        } = filter;
+        const { filterName, filterType, actualRadioOption, actualCheckboxOption } = filter;
         const value = filterType === 'radio' ? actualRadioOption : actualCheckboxOption;
         if (!(filterName in params)) {
           params[filterName] = value;

@@ -2,9 +2,7 @@
 
 import { FilterBlockProps } from '@/types/findProjects';
 import { ArrowBack } from '@mui/icons-material';
-import {
-  Box, Button, Icon, IconButton, Paper, Typography,
-} from '@mui/material';
+import { Box, Button, Icon, IconButton, Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
@@ -12,9 +10,7 @@ import { useIsMobile } from '@/lib/hooks/useIsMobile';
 import RenderFilters from './RenderFilters';
 
 const FilterBlock: React.FC<FilterBlockProps> = (props) => {
-  const {
-    handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters,
-  } = props;
+  const { handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters } = props;
 
   const isMobile = useIsMobile();
 
@@ -37,135 +33,135 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   }, [actualFilters]);
 
   return (
-        <Paper
-            sx={{
-              padding: 2,
-              whiteSpace: 'nowrap',
-              height: '90%',
-              width: '100vw',
-              maxWidth: { md: '25%' },
-            }}
+    <Paper
+      sx={{
+        padding: 2,
+        whiteSpace: 'nowrap',
+        height: '90%',
+        width: '100vw',
+        maxWidth: { md: '25%' },
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography
+          variant={'h6'}
+          sx={{ display: { xs: 'none', md: 'block' }, paddingRight: 2 }}
         >
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+          Фильтры
+        </Typography>
+        {isFilterExist && (
+          <Button
+            onClick={resetFilters}
+            variant="outlined"
+            color="error"
+            sx={{ display: { xs: 'none', md: 'block' } }}
+          >
+            Сбросить
+          </Button>
+        )}
+      </Box>
+      <Box sx={{ display: { md: 'none', xs: 'flex' }, alignItems: 'center' }}>
+        <Link
+          href={{ pathname: '/categories' }}
+          passHref
+        >
+          <Icon aria-label="back">
+            <ArrowBack sx={{ width: 24, height: 24, color: '#161C24' }} />
+          </Icon>
+        </Link>
+        <Typography
+          variant={'h6'}
+          sx={findPageStyles.title}
+        >
+          Поиск проекта
+        </Typography>
+      </Box>
+      <Box>
+        {((isMobile && showFilters) || !isMobile) && (
+          <Box
+            sx={{
+              ...findPageStyles.container,
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: '#ffffff',
+                display: { xs: 'flex', md: 'none' },
+                alignItems: 'center',
+                padding: 2,
+              }}
+              onClick={() => {
+                console.log('click');
+                setShowFilters(false);
+              }}
+            >
+              <IconButton
+                color="inherit"
+                aria-label="back"
+              >
+                <ArrowBack />
+              </IconButton>
+              <Typography
+                variant={'h6'}
+                sx={findPageStyles.title}
+              >
+                Фильтр
+              </Typography>
+            </Box>
+            <RenderFilters
+              showFilters={showFilters}
+              handleChange={handleChange}
+              allFilters={allFilters}
+            ></RenderFilters>
+            <Box
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 2,
+                gap: 2,
+              }}
+            >
+              <Button
+                onClick={cancel}
+                variant="outlined"
+                color="success"
+                sx={{
+                  width: '48%',
+                }}
+              >
                 <Typography
-                    variant={'h6'}
-                    sx={{ display: { xs: 'none', md: 'block' }, paddingRight: 2 }}
+                  sx={{
+                    textTransform: 'capitalize',
+                  }}
                 >
-                    Фильтры
+                  Отмена
                 </Typography>
-                {isFilterExist && (
-                    <Button
-                        onClick={resetFilters}
-                        variant="outlined"
-                        color="error"
-                        sx={{ display: { xs: 'none', md: 'block' } }}
-                    >
-                        Сбросить
-                    </Button>
-                )}
-            </Box>
-            <Box sx={{ display: { md: 'none', xs: 'flex' }, alignItems: 'center' }}>
-                <Link
-                    href={{ pathname: '/categories' }}
-                    passHref
-                >
-                    <Icon aria-label="back">
-                        <ArrowBack sx={{ width: 24, height: 24, color: '#161C24' }}/>
-                    </Icon>
-                </Link>
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowFilters(false);
+                }}
+                variant="contained"
+                color="success"
+                sx={{
+                  width: '48%',
+                }}
+              >
                 <Typography
-                    variant={'h6'}
-                    sx={findPageStyles.title}
+                  sx={{
+                    textTransform: 'capitalize',
+                  }}
                 >
-                    Поиск проекта
+                  Сохранить
                 </Typography>
+              </Button>
             </Box>
-            <Box>
-                {((isMobile && showFilters) || !isMobile) && (
-                    <Box
-                        sx={{
-                          ...findPageStyles.container,
-                        }}
-                    >
-                        <Box
-                            sx={{
-                              backgroundColor: '#ffffff',
-                              display: { xs: 'flex', md: 'none' },
-                              alignItems: 'center',
-                              padding: 2,
-                            }}
-                            onClick={() => {
-                              console.log('click');
-                              setShowFilters(false);
-                            }}
-                        >
-                            <IconButton
-                                color="inherit"
-                                aria-label="back"
-                            >
-                                <ArrowBack/>
-                            </IconButton>
-                            <Typography
-                                variant={'h6'}
-                                sx={findPageStyles.title}
-                            >
-                                Фильтр
-                            </Typography>
-                        </Box>
-                        <RenderFilters
-                            showFilters={showFilters}
-                            handleChange={handleChange}
-                            allFilters={allFilters}
-                        ></RenderFilters>
-                        <Box
-                            sx={{
-                              display: { xs: 'flex', md: 'none' },
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              padding: 2,
-                              gap: 2,
-                            }}
-                        >
-                            <Button
-                                onClick={cancel}
-                                variant="outlined"
-                                color="success"
-                                sx={{
-                                  width: '48%',
-                                }}
-                            >
-                                <Typography
-                                    sx={{
-                                      textTransform: 'capitalize',
-                                    }}
-                                >
-                                    Отмена
-                                </Typography>
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                  setShowFilters(false);
-                                }}
-                                variant="contained"
-                                color="success"
-                                sx={{
-                                  width: '48%',
-                                }}
-                            >
-                                <Typography
-                                    sx={{
-                                      textTransform: 'capitalize',
-                                    }}
-                                >
-                                    Сохранить
-                                </Typography>
-                            </Button>
-                        </Box>
-                    </Box>
-                )}
-            </Box>
-        </Paper>
+          </Box>
+        )}
+      </Box>
+    </Paper>
   );
 };
 

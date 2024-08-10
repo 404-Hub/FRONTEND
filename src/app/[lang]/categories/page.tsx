@@ -6,15 +6,17 @@ import Categories from './_components/Categories';
 import PageTitle from './_components/PageTitle';
 
 export default async function CategoriesPage() {
-  const categories = await useMemo(() => getCategories(), []) ?? [] as TCategory[];
+  const categories = (await useMemo(() => getCategories(), [])) ?? ([] as TCategory[]);
 
-  console.log(categories);
   return (
     <Box>
-      <Container maxWidth="lg" disableGutters>
+      <Container
+        maxWidth="lg"
+        disableGutters
+      >
         <PageTitle />
-        <Categories categories={categories}/>
-      </Container >
+        <Categories categories={categories} />
+      </Container>
     </Box>
   );
 }

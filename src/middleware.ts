@@ -3,7 +3,7 @@ import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleAuth } from '@/authMiddleware';
 
-const authRoutes: string[] = ['/dashboard', '/tasks', '/projects/new'];
+const authRoutes: string[] = ['/dashboard', '/tasks', '/projects/new', '/party/new'];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
@@ -44,5 +44,5 @@ export default withAuth(
         return true;
       },
     },
-  },
+  }
 );

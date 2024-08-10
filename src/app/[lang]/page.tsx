@@ -13,13 +13,15 @@ export default function Page() {
     },
   };
   return (
-        <Container sx={{
-          marginTop: '12px',
-          marginBottom: '120px',
-        }}>
-            <div>
-                <MainCover translations={translations}/>
-            </div>
-        </Container>
+    <Container
+      sx={{
+        marginTop: '12px',
+        marginBottom: '120px',
+      }}
+    >
+      <div>
+        <MainCover translations={translations} />
+      </div>
+    </Container>
   );
 }

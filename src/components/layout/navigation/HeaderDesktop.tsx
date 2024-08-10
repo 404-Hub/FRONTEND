@@ -15,9 +15,9 @@ import { AuthBlock } from '@/components/layout/navigation/AuthBlock';
 import { type HeaderLink } from '@/components/layout/Navigation';
 
 const HeaderDesktop: FC<{
-    links: HeaderLink[];
-    activeLink: HeaderLink['value'];
-    pathToLinkSlugMap: Record<HeaderLink['value'], string>;
+  links: HeaderLink[];
+  activeLink: HeaderLink['value'];
+  pathToLinkSlugMap: Record<HeaderLink['value'], string>;
 }> = ({ links, activeLink, pathToLinkSlugMap }) => {
   const router = useRouter();
   const handleTabClick = (value: string) => {
@@ -30,61 +30,66 @@ const HeaderDesktop: FC<{
   };
 
   return (
-        <Container
-            maxWidth="lg"
-            sx={{ display: { xs: 'none', md: 'block' } }}
+    <Container
+      maxWidth="lg"
+      sx={{ display: { xs: 'none', md: 'block' } }}
+    >
+      <AppBar
+        position="sticky"
+        color={'transparent'}
+        sx={{
+          boxShadow: 'none',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexGrow: 1,
+            maxWidth: '1440px',
+          }}
         >
-            <AppBar
-                position="sticky"
-                color={'transparent'}
+          <Logo />
+          {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
+          <Tabs
+            value={activeLink || false}
+            onChange={(_, value) => handleTabClick(value)}
+          >
+            {links.map(({ label, value }) => (
+              <Tab
+                key={value}
+                label={label}
+                value={value}
                 sx={{
-                  boxShadow: 'none',
-                  display: 'flex',
-                  justifyContent: 'center',
+                  fontSize: theme.typography.pxToRem(12),
+                  padding: 1,
                 }}
+              />
+            ))}
+          </Tabs>
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <Link
+              target={'_blank'}
+              href={'https://t.me/svyatamesto'}
             >
-                <Toolbar
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexGrow: 1,
-                      maxWidth: '1440px',
-                    }}
-                >
-                    <Logo/>
-                    {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
-                    <Tabs
-                        value={activeLink || false}
-                        onChange={(_, value) => handleTabClick(value)}
-                    >
-                        {links.map(({ label, value }) => (
-                            <Tab
-                                key={value}
-                                label={label}
-                                value={value}
-                                sx={{
-                                  fontSize: theme.typography.pxToRem(12),
-                                  padding: 1,
-                                }}
-                            />
-                        ))}
-                    </Tabs>
-                    <Box sx={{ display: 'flex', gap: 3 }}>
-                        <Link target={'_blank'} href={'https://t.me/svyatamesto'}>
-                            <Button
-                                color="inherit"
-                                sx={{ display: 'flex', gap: 1 }}
-                            >
-                                Telegram
-                                <TelegramIcon/>
-                            </Button>
-                        </Link>
-                        <AuthBlock closeCallback={() => {
-                        }} type={'desktop'}/>
-                    </Box>
-                </Toolbar>
-            </AppBar>
-        </Container>
+              <Button
+                color="inherit"
+                sx={{ display: 'flex', gap: 1 }}
+              >
+                Telegram
+                <TelegramIcon />
+              </Button>
+            </Link>
+            <AuthBlock
+              closeCallback={() => {}}
+              type={'desktop'}
+            />
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Container>
   );
 };
 

@@ -1,85 +1,87 @@
-{"filters": [
-  {
-    "type" : "checkbox", 
-    "name": "bonus",
-    "label": "With bonus",
-    "options": [
-      {
-        "label": "With bonus",
-        "name": "with_bonus",
-        "checked":false
-      },
-      {
-        "label": "Free",
-        "name": "free",
-        "checked":false
-      }
-    ]
- },
- {
-    "type" : "checkbox", 
-    "name": "roles",
-    "label": "Роли",
-    "options": [
-      {
-        "label": "Бэкенд",
-        "name": "backend",
-        "checked":false
-      },
-      {
-        "label": "Фронтенд",
-        "name": "frontend",
-        "checked":false
-      },
-      {
-        "label": "Менеджер",
-        "name": "manager",
-        "checked":false
-      }
-    ]
-  },
-  {
-    "type" : "radio", 
-    "name": "time",
-    "label": "Время",
-    "options": [
-      {
-        "label": "до 80 часов в месяц",
-        "name": "over_time",
-        "checked":false
-      },
-      {
-        "label": "до 40 часов в месяц",
-        "name": "normal_time",
-        "checked":false
-      },
-      {
-        "label": "до 20 часов в месяц",
-        "name": "minimum_time",
-        "checked":false
-      }
-    ]
-  },
-  {
-     "type" : "radio",
-     "name": "rate",
-     "label": "Сложность",
-     "options": [
-      {
-        "label": "easy",
-        "name": "easy",
-        "checked":false
-      },
-      {
-        "label": "medium",
-        "name": "medium",
-        "checked":false
-      },
-      {
-        "label": "hard",
-        "name": "hard",
-        "checked":false
-      }
-     ]
-  }
-]}
+{
+  "filters": [
+    {
+      "type": "checkbox",
+      "name": "bonus",
+      "label": "With bonus",
+      "options": [
+        {
+          "label": "With bonus",
+          "name": "with_bonus",
+          "checked": false
+        },
+        {
+          "label": "Free",
+          "name": "free",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "name": "roles",
+      "label": "Роли",
+      "options": [
+        {
+          "label": "Бэкенд",
+          "name": "backend",
+          "checked": false
+        },
+        {
+          "label": "Фронтенд",
+          "name": "frontend",
+          "checked": false
+        },
+        {
+          "label": "Менеджер",
+          "name": "manager",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "name": "time",
+      "label": "Время",
+      "options": [
+        {
+          "label": "до 80 часов в месяц",
+          "name": "over_time",
+          "checked": false
+        },
+        {
+          "label": "до 40 часов в месяц",
+          "name": "normal_time",
+          "checked": false
+        },
+        {
+          "label": "до 20 часов в месяц",
+          "name": "minimum_time",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "name": "rate",
+      "label": "Сложность",
+      "options": [
+        {
+          "label": "easy",
+          "name": "easy",
+          "checked": false
+        },
+        {
+          "label": "medium",
+          "name": "medium",
+          "checked": false
+        },
+        {
+          "label": "hard",
+          "name": "hard",
+          "checked": false
+        }
+      ]
+    }
+  ]
+}

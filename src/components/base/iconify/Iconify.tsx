@@ -9,16 +9,12 @@ export type IconifyProps = {
   icon: string;
 };
 
-export const Iconify = forwardRef<unknown, IconifyProps>(
-  ({
-    icon, width = 20, sx, ...other
-  }, ref) => (
-    <Box
-      ref={ref}
-      component={Icon}
-      icon={icon}
-      sx={{ width, height: width, ...sx }}
-      {...other}
-    />
-  ),
-);
+export const Iconify = forwardRef<unknown, IconifyProps>(({ icon, width = 20, sx, ...other }, ref) => (
+  <Box
+    ref={ref}
+    component={Icon}
+    icon={icon}
+    sx={{ width, height: width, ...sx }}
+    {...other}
+  />
+));

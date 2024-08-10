@@ -46,11 +46,7 @@
         "additionalTitle": "Для кого:",
         "projectTitle": "Название проекта:",
         "isCorrectTitle": "Все верно?",
-        "buttons": [
-          { "EditData": "Изменить данные" },
-          { "Cancel": "Отмена" },
-          { "Approve": "Да, всё верно" }
-        ]
+        "buttons": [{ "EditData": "Изменить данные" }, { "Cancel": "Отмена" }, { "Approve": "Да, всё верно" }]
       }
     ]
   }
