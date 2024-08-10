@@ -17,6 +17,6 @@ export default function ComponentsOverrides(theme: Theme) {
     Tooltip(theme),
     Backdrop(theme),
     Typography(theme),
-    Autocomplete(theme),
+    Autocomplete(theme)
   );
 }

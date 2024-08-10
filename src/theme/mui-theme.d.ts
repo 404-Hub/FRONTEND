@@ -24,7 +24,7 @@ declare module '@mui/material/styles' {
   interface Theme {
     shadows: Shadows;
   }
-// eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   interface ThemeOptions {
     shadows?: Shadows;
   }

@@ -8,7 +8,12 @@ export type LogoProps = {
 };
 
 export const Logo: FC<LogoProps> = () => (
-    <Link href={'/'}>
-      <Image src={'/images/logo.png'} alt={'404hub'} width={100} height={30}/>
-    </Link>
+  <Link href={'/'}>
+    <Image
+      src={'/images/logo.png'}
+      alt={'404hub'}
+      width={100}
+      height={30}
+    />
+  </Link>
 );

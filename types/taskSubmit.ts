@@ -31,10 +31,4 @@ type TTaskSubmitProps = {
   isValidCond: boolean;
 };
 
-export type {
-  TTaskSubmitingProps,
-  TTaskSubmitingAfterClickProps,
-  TGithubAdd,
-  TGithubInputProps,
-  TTaskSubmitProps,
-};
+export type { TTaskSubmitingProps, TTaskSubmitingAfterClickProps, TGithubAdd, TGithubInputProps, TTaskSubmitProps };

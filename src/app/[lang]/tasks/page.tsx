@@ -18,7 +18,7 @@ export default function TasksPage() {
         }}
       >
         <h4>{t('h4MyTasks')}</h4>
-         <TasksList />
+        <TasksList />
       </Container>
     </>
   );

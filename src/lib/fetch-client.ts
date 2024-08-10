@@ -9,9 +9,7 @@ interface fetchClientProps {
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-async function fetchClient({
-  method = 'GET', url, body = '', token,
-}: fetchClientProps) {
+async function fetchClient({ method = 'GET', url, body = '', token }: fetchClientProps) {
   try {
     const session = await getSession();
     const accessToken = token || session?.accessToken;

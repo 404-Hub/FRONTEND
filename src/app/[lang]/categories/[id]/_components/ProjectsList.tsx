@@ -1,12 +1,8 @@
 'use client';
 
 import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
-import {
-  Box, Button, Grid, Skeleton, Typography,
-} from '@mui/material';
-import React, {
-  useCallback, useEffect, useState,
-} from 'react';
+import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import { getApps } from '@/api/client/apps';
@@ -26,12 +22,13 @@ const ProjectsList = (props: ProjectsListProps) => {
 
   const projectsCheck = (relevantProj: TProject[], newProj: TProject[]) => {
     if (
-      relevantProj.length > 0
-      && newProj.length > 0
-      && relevantProj[relevantProj.length - 1].id !== newProj[newProj.length - 1].id
+      relevantProj.length > 0 &&
+      newProj.length > 0 &&
+      relevantProj[relevantProj.length - 1].id !== newProj[newProj.length - 1].id
     ) {
       return [...relevantProj, ...newProj];
-    } if (relevantProj.length === 0 && newProj.length > 0) {
+    }
+    if (relevantProj.length === 0 && newProj.length > 0) {
       return [...newProj];
     }
     return [...relevantProj];
@@ -54,7 +51,7 @@ const ProjectsList = (props: ProjectsListProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [lastRequestCurrentPage, currentPage, filters],
+    [lastRequestCurrentPage, currentPage, filters]
   );
 
   const onLoadClick = useCallback(() => {
@@ -87,30 +84,26 @@ const ProjectsList = (props: ProjectsListProps) => {
         columnSpacing={{ xs: 0, sm: 2 }}
       >
         {projects.length > 0
-          ? projects
-            .slice(0, maxOfProjectsOnPage * lastRequestCurrentPage)
-            .map((project, index) => {
-              const {
-                upvotes, downvotes, id, title, description,
-              } = project;
+          ? projects.slice(0, maxOfProjectsOnPage * lastRequestCurrentPage).map((project, index) => {
+              const { upvotes, downvotes, id, title, description } = project;
               return (
-                  <Grid
-                    key={index}
-                    item
-                    xs={12}
-                    sm={4}
-                  >
-                    <ProjectCard
-                      project={{
-                        upvotes,
-                        downvotes,
-                        rating: (upvotes - downvotes).toString(),
-                        id,
-                        title,
-                        description,
-                      }}
-                    />
-                  </Grid>
+                <Grid
+                  key={index}
+                  item
+                  xs={12}
+                  sm={4}
+                >
+                  <ProjectCard
+                    project={{
+                      upvotes,
+                      downvotes,
+                      rating: (upvotes - downvotes).toString(),
+                      id,
+                      title,
+                      description,
+                    }}
+                  />
+                </Grid>
               );
             })
           : [...Array(maxOfProjectsOnPage)].map((_, index) => (
@@ -127,7 +120,7 @@ const ProjectsList = (props: ProjectsListProps) => {
                   height={288}
                 />
               </Grid>
-          ))}
+            ))}
         {/* <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography> */}
       </Grid>
 

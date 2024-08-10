@@ -18,16 +18,16 @@ const GithubInput = (props: TGithubInputProps) => {
   }, [inputValue]);
 
   return (
-        <TextField
-            sx={{ display: isVisible ? 'block' : 'none', marginY: 2 }}
-            label={REF}
-            onChange={(e) => {
-              setInputValue(e.target.value);
-            }}
-            error={!isInputValid && isEmpty}
-            helperText={!isInputValid && isEmpty ? INVALID_REF : VALID_REF}
-            fullWidth
-        />
+    <TextField
+      sx={{ display: isVisible ? 'block' : 'none', marginY: 2 }}
+      label={REF}
+      onChange={(e) => {
+        setInputValue(e.target.value);
+      }}
+      error={!isInputValid && isEmpty}
+      helperText={!isInputValid && isEmpty ? INVALID_REF : VALID_REF}
+      fullWidth
+    />
   );
 };
 

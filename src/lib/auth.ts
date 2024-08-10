@@ -82,9 +82,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({
-      token, user, trigger, session,
-    }) {
+    async jwt({ token, user, trigger, session }) {
       if (trigger === 'update') {
         if (session.type === 'MANUAL') {
           const response = await fetchClient({

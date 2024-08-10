@@ -2,11 +2,7 @@
 
 import { PropsWithChildren } from 'react';
 import { CssBaseline } from '@mui/material';
-import {
-  ThemeProvider as MUIThemeProvider,
-  createTheme,
-  StyledEngineProvider,
-} from '@mui/material/styles';
+import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
 import { Shadows } from '@mui/material/styles/shadows';
 import palette from './palette';
 import shadows from './shadows';

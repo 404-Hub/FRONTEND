@@ -10,20 +10,28 @@ const Subcategory = () => {
     router.push(`/find-project/subcategories/foundProjects?value=${value}`);
   };
 
-  return (<Box sx={findPageStyles.addOptions}>
-    <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
-      onClick={() => handleClick('training')}>
-      Тренировочный
-    </Button>
-    <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
-      onClick={() => handleClick('advanced')}>
-      Продвинутый
-    </Button>
-    <Button sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
-      onClick={() => handleClick('complex')}>
-      Комплексный
-    </Button>
-  </Box>);
+  return (
+    <Box sx={findPageStyles.addOptions}>
+      <Button
+        sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
+        onClick={() => handleClick('training')}
+      >
+        Тренировочный
+      </Button>
+      <Button
+        sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
+        onClick={() => handleClick('advanced')}
+      >
+        Продвинутый
+      </Button>
+      <Button
+        sx={[findPageStyles.buttons, findPageStyles.fromSvyat]}
+        onClick={() => handleClick('complex')}
+      >
+        Комплексный
+      </Button>
+    </Box>
+  );
 };
 
 export default Subcategory;

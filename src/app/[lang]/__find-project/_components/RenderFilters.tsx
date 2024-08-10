@@ -11,20 +11,20 @@ const RenderFilters: React.FC<RenderFiltersProps> = (props) => {
   return (
     <Box sx={filtersStyles.filterContainer}>
       {props.allFilters.map((filter) => (
-          <div key={filter.name}>
-            {filter.type === 'checkbox' && (
-              <CheckBoxFilter
-                filter={filter}
-                handleChange={handleChange}
-              />
-            )}
-            {filter.type === 'radio' && (
-              <RadioFilter
-                filter={filter}
-                handleChange={handleChange}
-              />
-            )}
-          </div>
+        <div key={filter.name}>
+          {filter.type === 'checkbox' && (
+            <CheckBoxFilter
+              filter={filter}
+              handleChange={handleChange}
+            />
+          )}
+          {filter.type === 'radio' && (
+            <RadioFilter
+              filter={filter}
+              handleChange={handleChange}
+            />
+          )}
+        </div>
       ))}
     </Box>
   );
