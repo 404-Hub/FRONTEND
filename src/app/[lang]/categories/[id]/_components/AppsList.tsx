@@ -1,12 +1,8 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import React, {
-  useCallback, useMemo, useState,
-} from 'react';
-import {
-  Filters, ActualFilter, FilterChangeArgs, type TCategory,
-} from '@/types/findProjects';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Filters, ActualFilter, FilterChangeArgs, type TCategory } from '@/types/findProjects';
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import filters from '@/mockups/filters.json';
 import useGlobalState from '@/lib/hooks/useGlobalState';
@@ -18,8 +14,8 @@ const AppsList = (props: { categoryId?: string }) => {
   const context = useGlobalState();
   const categoryId = props.categoryId ?? '1';
   const category = useMemo(
-    () => context.categories.find((item) => item.id === categoryId) ?? {} as TCategory,
-    [categoryId, context.categories],
+    () => context.categories.find((item) => item.id === categoryId) ?? ({} as TCategory),
+    [categoryId, context.categories]
   );
   const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
   const [actualFilters, setActualFilters] = useState<ActualFilter[]>([]);
@@ -33,9 +29,7 @@ const AppsList = (props: { categoryId?: string }) => {
 
   const updateFilter = useCallback(
     (args: FilterChangeArgs) => {
-      const {
-        type, name, value, checked,
-      } = args;
+      const { type, name, value, checked } = args;
 
       const newFilters = allFilters.map((filter) => {
         const { options } = filter;
@@ -57,14 +51,12 @@ const AppsList = (props: { categoryId?: string }) => {
       });
       return newFilters;
     },
-    [allFilters],
+    [allFilters]
   );
 
   const changeFilters = useCallback(
     (filtersValues: ActualFilter[], newFilterValues: FilterChangeArgs) => {
-      const {
-        type, name, value, checked, label,
-      } = newFilterValues;
+      const { type, name, value, checked, label } = newFilterValues;
 
       const newFilter: ActualFilter = {
         filterName: name,
@@ -82,7 +74,7 @@ const AppsList = (props: { categoryId?: string }) => {
       }
       return [...filtersValues, newFilter];
     },
-    [actualFilters],
+    [actualFilters]
   );
 
   const handleChange = useCallback(
@@ -90,44 +82,44 @@ const AppsList = (props: { categoryId?: string }) => {
       setActualFilters((prev) => changeFilters(prev, args));
       setAllFilters(updateFilter(args));
     },
-    [actualFilters, allFilters],
+    [actualFilters, allFilters]
   );
 
   return (
-        <Box>
-            {categoryId && (
-                <Typography
-                    sx={findPageStyles.pageTitle}
-                    variant={'h5'}
-                >
-                    {category.name ?? 'Список проектов'}
-                </Typography>
-            )}
-            <Box sx={findPageStyles.centralContainer}>
-                <FilterBlock
-                    handleChange={handleChange}
-                    setShowFilters={setShowFilters}
-                    actualFilters={actualFilters}
-                    showFilters={showFilters}
-                    allFilters={allFilters}
-                    resetFilters={resetFilters}
-                />
+    <Box>
+      {categoryId && (
+        <Typography
+          sx={findPageStyles.pageTitle}
+          variant={'h5'}
+        >
+          {category.name ?? 'Список проектов'}
+        </Typography>
+      )}
+      <Box sx={findPageStyles.centralContainer}>
+        <FilterBlock
+          handleChange={handleChange}
+          setShowFilters={setShowFilters}
+          actualFilters={actualFilters}
+          showFilters={showFilters}
+          allFilters={allFilters}
+          resetFilters={resetFilters}
+        />
 
-                <SelectFilters
-                    handleChange={handleChange}
-                    projectType={categoryId}
-                    actualFilters={actualFilters}
-                    setShowFilters={setShowFilters}
-                    showFilters={showFilters}
-                />
+        <SelectFilters
+          handleChange={handleChange}
+          projectType={categoryId}
+          actualFilters={actualFilters}
+          setShowFilters={setShowFilters}
+          showFilters={showFilters}
+        />
 
-                <ProjectsList
-                    categoryId={categoryId}
-                    filters={actualFilters}
-                />
-            </Box>
-            {/* </ThemeProvider> */}
-        </Box>
+        <ProjectsList
+          categoryId={categoryId}
+          filters={actualFilters}
+        />
+      </Box>
+      {/* </ThemeProvider> */}
+    </Box>
   );
 };
 

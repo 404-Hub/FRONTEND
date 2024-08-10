@@ -25,9 +25,7 @@ export default async function VerifyEmail(props: { token: string }) {
   }
 
   return (
-    <>
-      Email Verified
-    </>
+    <>Email Verified</>
     // <form onSubmit={handleSubmit}>
     //   <button type="submit">Verify</button>
     // </form>

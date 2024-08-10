@@ -23,8 +23,7 @@ const Theme = {
   },
   components: {
     MuiContainer: {
-      styleOverrides: {
-      },
+      styleOverrides: {},
     },
   },
 };

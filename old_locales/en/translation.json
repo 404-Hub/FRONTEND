@@ -46,11 +46,7 @@
         "additionalTitle": "For whom:",
         "projectTitle": "Project Name:",
         "isCorrectTitle": "Is everything correct?",
-        "buttons": [
-          { "EditData": "Edit Data" },
-          { "Cancel": "Cancel" },
-          { "Approve": "Yes, all correct" }
-        ]
+        "buttons": [{ "EditData": "Edit Data" }, { "Cancel": "Cancel" }, { "Approve": "Yes, all correct" }]
       }
     ]
   }

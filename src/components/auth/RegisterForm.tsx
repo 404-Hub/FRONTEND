@@ -52,37 +52,40 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = useCallback(async (data: SignUpDto) => {
-    try {
-      const response = await fetchClient({
-        method: 'POST',
-        url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/register`,
-        body: JSON.stringify(data),
-      });
+  const onSubmit = useCallback(
+    async (data: SignUpDto) => {
+      try {
+        const response = await fetchClient({
+          method: 'POST',
+          url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/register`,
+          body: JSON.stringify(data),
+        });
 
-      if (!response.ok) {
-        throw response;
-      }
-
-      const credentials = {
-        email: data.email,
-        password: data.password,
-      };
-
-      await signIn('credentials', { ...credentials, callbackUrl: '/' });
-    } catch (err) {
-      // todo: handle error
-      if (err instanceof Response) {
-        const response = await err.json();
-
-        if (!response.errors) {
-          throw error;
+        if (!response.ok) {
+          throw response;
         }
-      }
 
-      throw new Error('An error has occurred during registration request');
-    }
-  }, [router, error]);
+        const credentials = {
+          email: data.email,
+          password: data.password,
+        };
+
+        await signIn('credentials', { ...credentials, callbackUrl: '/' });
+      } catch (err) {
+        // todo: handle error
+        if (err instanceof Response) {
+          const response = await err.json();
+
+          if (!response.errors) {
+            throw error;
+          }
+        }
+
+        throw new Error('An error has occurred during registration request');
+      }
+    },
+    [router, error]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

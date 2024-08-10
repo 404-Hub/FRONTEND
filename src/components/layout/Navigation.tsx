@@ -1,17 +1,15 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import Box from '@mui/material/Box';
 import { usePathname } from 'next/navigation';
-import {
-  FC, useMemo,
-} from 'react';
+import { FC, useMemo } from 'react';
 import HeaderDesktop from '@/components/layout/navigation/HeaderDesktop';
 import HeaderMobile from '@/components/layout/navigation/HeaderMobile';
+import { Container } from '@mui/material';
 
 export type HeaderLink = {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 };
 
 const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
@@ -44,24 +42,28 @@ export const Navigation: FC = () => {
       },
       ...(session.status === 'authenticated'
         ? [
-          {
-            label: 'Предложить идею для проекта',
-            value: 'proposeIdea',
-          },
-        ]
+            {
+              label: 'Предложить идею для проекта',
+              value: 'proposeIdea',
+            },
+          ]
         : []),
     ],
-    [session],
+    [session]
   );
 
   return (
-        <Box>
-            <HeaderDesktop
-                activeLink={activeLink}
-                links={links}
-                pathToLinkSlugMap={pathToLinkSlugMap}
-            />
-            <HeaderMobile activeLink={activeLink} links={links} pathToLinkSlugMap={pathToLinkSlugMap}/>
-        </Box>
+    <Container component={'header'}>
+      <HeaderDesktop
+        activeLink={activeLink}
+        links={links}
+        pathToLinkSlugMap={pathToLinkSlugMap}
+      />
+      <HeaderMobile
+        activeLink={activeLink}
+        links={links}
+        pathToLinkSlugMap={pathToLinkSlugMap}
+      />
+    </Container>
   );
 };

@@ -47,11 +47,14 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = useCallback(async (data: SignInDto) => {
-    const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const onSubmit = useCallback(
+    async (data: SignInDto) => {
+      const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-    await signIn('credentials', { ...data, callbackUrl });
-  }, [searchParams]);
+      await signIn('credentials', { ...data, callbackUrl });
+    },
+    [searchParams]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

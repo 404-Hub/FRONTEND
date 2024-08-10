@@ -1,18 +1,20 @@
-{"mainFilters":[
-  {
-    "type":"subscribers",
-    "title":"От подписчиков"
-  },
-  {
-    "type":"fromSvyat",
-    "title":"От Свята"
-  },
-  {
-    "type":"bests",
-    "title":"Лучшие"
-  },
-  {
-    "type":"changeInfo",
-    "title":"Изменить данные"
-  }
-]}
+{
+  "mainFilters": [
+    {
+      "type": "subscribers",
+      "title": "От подписчиков"
+    },
+    {
+      "type": "fromSvyat",
+      "title": "От Свята"
+    },
+    {
+      "type": "bests",
+      "title": "Лучшие"
+    },
+    {
+      "type": "changeInfo",
+      "title": "Изменить данные"
+    }
+  ]
+}

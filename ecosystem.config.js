@@ -1,6 +1,8 @@
 module.exports = {
-  apps: [{
-    name: 'Hub FRONTEND',
-    script: 'npm run start',
-  }],
+  apps: [
+    {
+      name: 'Hub FRONTEND',
+      script: 'npm run start',
+    },
+  ],
 };

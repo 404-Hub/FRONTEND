@@ -26,9 +26,7 @@ export default function Layout({ children }: PropsWithChildren) {
     <StyledRoot>
       <Container maxWidth="sm">
         <StyledContent>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </StyledContent>
       </Container>
     </StyledRoot>

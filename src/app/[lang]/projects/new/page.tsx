@@ -16,6 +16,7 @@ export default function Page() {
           alignItems: 'center',
           marginTop: 1.5,
           padding: 0,
+          height: 'calc(100% - 74px)',
         }}
       >
         <Stages title={t('title').toString()} />

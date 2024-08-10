@@ -5,15 +5,12 @@ export const handleAuth = async (
   request: NextRequest,
   authRoutes: string[],
   verifyRoutes: string[],
-  guestRoutes: string[],
-): Promise<{ redirect?: URL, next?: boolean }> => {
+  guestRoutes: string[]
+): Promise<{ redirect?: URL; next?: boolean }> => {
   const token: JWT | null = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-  const isAuthRoute: boolean = authRoutes
-    .some((route) => request.nextUrl.pathname.startsWith(route));
-  const isVerifyRoute: boolean = verifyRoutes
-    .some((route) => request.nextUrl.pathname.startsWith(route));
-  const isGuestRoute: boolean = guestRoutes
-    .some((route) => request.nextUrl.pathname.startsWith(route));
+  const isAuthRoute: boolean = authRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
+  const isVerifyRoute: boolean = verifyRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
+  const isGuestRoute: boolean = guestRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
 
   if (!token) {
     if (isAuthRoute) {

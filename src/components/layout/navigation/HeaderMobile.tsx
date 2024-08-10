@@ -14,9 +14,9 @@ import Button from '@mui/material/Button';
 import { type HeaderLink } from '@/components/layout/Navigation';
 
 const HeaderMobile: FC<{
-    links: HeaderLink[];
-    activeLink: HeaderLink['value'];
-    pathToLinkSlugMap: Record<HeaderLink['value'], string>;
+  links: HeaderLink[];
+  activeLink: HeaderLink['value'];
+  pathToLinkSlugMap: Record<HeaderLink['value'], string>;
 }> = ({ links, pathToLinkSlugMap }) => {
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
@@ -36,85 +36,91 @@ const HeaderMobile: FC<{
   };
 
   return (
-        <>
-            <Container sx={{ display: { sm: 'block', md: 'none' } }} maxWidth="lg">
-                <AppBar
-                    position="sticky"
-                    color={'transparent'}
-                    sx={{
-                      boxShadow: 0,
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                >
-                    <Toolbar
-                        sx={{
-                          display: 'flex',
-                          gap: 1,
-                          padding: 0,
-                        }}
-                    >
-                        <IconButton onClick={toggleMobileMenu}>
-                            <MenuIcon/>
-                        </IconButton>
-                        <Logo/>
-                    </Toolbar>
-                </AppBar>
-            </Container>
-            <Drawer
-                anchor={'left'}
-                open={isMobileMenuExpanded}
-                onClose={toggleMobileMenu}
+    <>
+      <Container
+        sx={{ display: { sm: 'block', md: 'none' } }}
+        maxWidth="lg"
+      >
+        <AppBar
+          position="sticky"
+          color={'transparent'}
+          sx={{
+            boxShadow: 0,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Toolbar
+            sx={{
+              display: 'flex',
+              gap: 1,
+              padding: 0,
+            }}
+          >
+            <IconButton onClick={toggleMobileMenu}>
+              <MenuIcon />
+            </IconButton>
+            <Logo />
+          </Toolbar>
+        </AppBar>
+      </Container>
+      <Drawer
+        anchor={'left'}
+        open={isMobileMenuExpanded}
+        onClose={toggleMobileMenu}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '80vw',
+          }}
+        >
+          <Box
+            sx={{
+              paddingTop: 3,
+              paddingLeft: 3,
+              paddingRight: 3,
+              paddingBottom: 1,
+            }}
+          >
+            <Typography
+              variant={'h6'}
+              align={'left'}
+              sx={{ width: '100%' }}
             >
-                <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '80vw',
-                    }}
+              Menu
+            </Typography>
+          </Box>
+          <AuthBlock
+            closeCallback={toggleMobileMenu}
+            type={'mobile'}
+          />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: 2,
+            }}
+          >
+            {links.map((tab) => (
+              <Button
+                key={tab.value}
+                onClick={() => handleTabClick(tab.value)}
+              >
+                <Typography
+                  variant={'body2'}
+                  align={'left'}
+                  sx={{ width: '100%' }}
                 >
-                    <Box
-                        sx={{
-                          paddingTop: 3,
-                          paddingLeft: 3,
-                          paddingRight: 3,
-                          paddingBottom: 1,
-                        }}
-                    >
-                        <Typography
-                            variant={'h6'}
-                            align={'left'}
-                            sx={{ width: '100%' }}
-                        >
-                            Menu
-                        </Typography>
-                    </Box>
-                    <AuthBlock closeCallback={toggleMobileMenu} type={'mobile'}/>
-                    <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          padding: 2,
-                        }}
-                    >
-                        {links.map((tab) => (
-                            <Button
-                                key={tab.value}
-                                onClick={() => handleTabClick(tab.value)}
-                            >
-                                <Typography
-                                    variant={'body2'}
-                                    align={'left'}
-                                    sx={{ width: '100%' }}
-                                >
-                                    {tab.label}
-                                </Typography>
-                            </Button>
-                        ))}
-                    </Box>
-                </Box>
-            </Drawer>
-        </>
+                  {tab.label}
+                </Typography>
+              </Button>
+            ))}
+          </Box>
+        </Box>
+      </Drawer>
+    </>
   );
 };
 
