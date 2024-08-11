@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import { signOut, useSession } from 'next-auth/react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> = ({ type, closeCallback }) => {
   const { data: session } = useSession();
@@ -42,6 +45,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
               onClick={() => {
                 closeCallback();
               }}
+              startIcon={<LogoutIcon />}
             >
               Выйти
             </Button>
@@ -56,6 +60,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
               onClick={() => {
                 closeCallback();
               }}
+              startIcon={<AccountCircleIcon />}
             >
               Аккаунт
             </Button>
@@ -74,6 +79,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
               onClick={() => {
                 closeCallback();
               }}
+              startIcon={<LoginIcon />}
             >
               Войти
             </Button>
