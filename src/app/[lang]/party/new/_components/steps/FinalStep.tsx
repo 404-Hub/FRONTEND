@@ -39,7 +39,8 @@ const FinalStep = (props: TFinalStep) => {
         >
           <Grid
             item
-            xs={6}
+            xs={12}
+            md={6}
           >
             <FormControl
               sx={{ marginBottom: '1rem' }}
