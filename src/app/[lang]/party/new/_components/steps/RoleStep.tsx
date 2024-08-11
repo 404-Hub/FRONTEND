@@ -58,7 +58,8 @@ const RoleStep = (props: RoleStepProps) => {
               <Grid
                 key={item.id}
                 item
-                xs={2}
+                md={2}
+                xs={6}
               >
                 <Paper
                   onClick={() => handleClick(item.id.toString())}
@@ -98,7 +99,8 @@ const RoleStep = (props: RoleStepProps) => {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={12}
+          md={6}
           sx={{ marginTop: '1.5rem' }}
         >
           <FormControl

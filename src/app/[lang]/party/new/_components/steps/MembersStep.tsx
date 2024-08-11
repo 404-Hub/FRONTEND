@@ -75,7 +75,8 @@ const MembersStep = (props: MembersStepProps) => {
                 <Grid
                   key={item.id}
                   item
-                  xs={2}
+                  xs={6}
+                  md={2}
                 >
                   <Paper
                     onClick={() => handleClick(item.id.toString())}
@@ -155,7 +156,8 @@ const MembersStep = (props: MembersStepProps) => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            md={6}
             sx={{ marnigTop: '1rem' }}
           >
             <FormControl
