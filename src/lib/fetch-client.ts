@@ -3,7 +3,8 @@ import { getSession, signOut } from 'next-auth/react';
 interface fetchClientProps {
   method?: string;
   url: string;
-  body?: string;
+  body?: string | FormData;
+  contentType?: string;
   token?: string;
 }
 
@@ -14,13 +15,18 @@ async function fetchClient({ method = 'GET', url, body = '', token }: fetchClien
     const session = await getSession();
     const accessToken = token || session?.accessToken;
 
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    if (typeof body === 'string') {
+      Object.assign(headers, { 'Content-Type': 'application/json' });
+    }
+
     const response = await fetch(url.toString(), {
       method,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers,
       body: body || undefined,
     });
 
