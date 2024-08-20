@@ -124,7 +124,7 @@ const ProjectsList = (props: ProjectsListProps) => {
         {/* <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography> */}
       </Grid>
 
-      {hasAnotherProjects && (
+      {hasAnotherProjects && total > 10 && (
         <Button
           onClick={onLoadClick}
           style={projectsListStyles.loadButton}
