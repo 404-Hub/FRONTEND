@@ -3,7 +3,11 @@ import { Modal, Box, Typography, Link } from '@mui/material';
 import NextLink from 'next/link';
 import RegisterForm from '@/components/auth/RegisterForm';
 
-const RegisterModal = ({ open, onClose }) => (
+interface RegisterModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => (
   <Modal
     open={open}
     onClose={onClose}
