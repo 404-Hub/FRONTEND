@@ -12,11 +12,11 @@ const ProjectsList = (props: ProjectsListProps) => {
   const { categoryId, filters } = props;
   const [projects, setProjects] = useState<TProject[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(1);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const WORD_IN_TITLE = 'проект';
-  const maxOfProjectsOnPage = 9;
+  const maxOfProjectsOnPage = 10;
 
   // eslint-disable-next-line no-unused-vars
 
@@ -38,20 +38,33 @@ const ProjectsList = (props: ProjectsListProps) => {
     async (catId: string) => {
       try {
         const appsInf = await getApps(currentPage, catId, filters);
+        console.log('appsInf.items:', appsInf.items);
         if (lastRequestCurrentPage !== appsInf.current_page) {
-          setProjects((prev) => projectsCheck(prev, appsInf.items));
-          setCurrentPage((prev) => prev + 1);
+          setProjects((prev) => {
+            console.log('Предыдущие проекты:', prev);
+
+            const updatedProjects = projectsCheck(prev, appsInf.items);
+
+            console.log('Обновленные проекты:', updatedProjects);
+            console.log(`Показано проектов: ${updatedProjects.length}, Общее кол-во проектов: ${appsInf.total}`);
+
+            return updatedProjects;
+          });
+
           setLastRequestCurrentPage(appsInf.current_page);
+          setCurrentPage((prevPage) => prevPage + 1);
         }
-        if (currentPage >= appsInf.last_page) {
+
+        if (projects.length + appsInf.items.length >= appsInf.total) {
           setHasAnotherProjects(false);
         }
         setTotal(appsInf.total);
       } catch (error) {
-        throw new Error('An error occurred during try to load more projects', { cause: error });
+        console.error('An error occurred during the attempt to load more projects', error);
+        throw new Error('An error occurred during the attempt to load more projects', { cause: error });
       }
     },
-    [lastRequestCurrentPage, currentPage, filters]
+    [lastRequestCurrentPage, currentPage, filters, projects]
   );
 
   const onLoadClick = useCallback(() => {
@@ -124,7 +137,7 @@ const ProjectsList = (props: ProjectsListProps) => {
         {/* <Typography>Проекты, удовлетворябщие критериям поиска, не найдены </Typography> */}
       </Grid>
 
-      {hasAnotherProjects && total > 10 && (
+      {hasAnotherProjects && (
         <Button
           onClick={onLoadClick}
           style={projectsListStyles.loadButton}
