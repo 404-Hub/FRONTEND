@@ -31,7 +31,10 @@ export const CategoryCard = (props: TCardProps) => {
     >
       <Card>
         <CardActionArea sx={styles.card}>
-          <CardContent onClick={() => handleClick(category)}>
+          <CardContent
+            data-test={`category-${category.id}`}
+            onClick={() => handleClick(category)}
+          >
             <Typography>{category.title}</Typography>
           </CardContent>
         </CardActionArea>

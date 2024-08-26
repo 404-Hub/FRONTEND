@@ -38,6 +38,7 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
       onClick={() => {
         router.push(`/projects/${id}`);
       }}
+      className={'projectCardCY'}
     >
       <Paper
         sx={{
