@@ -62,6 +62,7 @@ const HeaderDesktop: FC<{
                 key={value}
                 label={label}
                 value={value}
+                data-test={`heaedr-tab-${value}`}
                 sx={{
                   fontSize: theme.typography.pxToRem(12),
                   padding: 1,

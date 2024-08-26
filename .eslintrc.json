@@ -1,6 +1,6 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "airbnb-base"],
-  "plugins": ["prettier"],
+  "extends": ["next/core-web-vitals", "prettier", "airbnb-base", "plugin:cypress/recommended"],
+  "plugins": ["prettier", "cypress"],
   "rules": {
     "no-console": "off",
     "import/extensions": "off",
@@ -23,6 +23,7 @@
     ],
     "operator-linebreak": "off",
     "indent": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
 }
