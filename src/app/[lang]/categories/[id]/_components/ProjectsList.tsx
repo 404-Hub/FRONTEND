@@ -14,9 +14,9 @@ const ProjectsList = (props: ProjectsListProps) => {
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const WORD_IN_TITLE = 'проект';
-  const maxOfProjectsOnPage = 9;
+  const maxOfProjectsOnPage = 10;
 
   // eslint-disable-next-line no-unused-vars
 
@@ -38,25 +38,31 @@ const ProjectsList = (props: ProjectsListProps) => {
     async (catId: string) => {
       try {
         const appsInf = await getApps(currentPage, catId, filters);
-        if (lastRequestCurrentPage !== appsInf.current_page) {
-          setProjects((prev) => projectsCheck(prev, appsInf.items));
-          setCurrentPage((prev) => prev + 1);
+        if (lastRequestCurrentPage < currentPage) {
+          setProjects((prev) => {
+            const updatedProjects = projectsCheck(prev, appsInf.items);
+            return updatedProjects;
+          });
           setLastRequestCurrentPage(appsInf.current_page);
+          setCurrentPage(currentPage + 1);
         }
-        if (currentPage >= appsInf.last_page) {
+
+        if (projects.length + appsInf.items.length >= appsInf.total) {
           setHasAnotherProjects(false);
         }
         setTotal(appsInf.total);
       } catch (error) {
-        throw new Error('An error occurred during try to load more projects', { cause: error });
+        console.error('Failed to fetch projects', error);
       }
     },
-    [lastRequestCurrentPage, currentPage, filters]
+    [lastRequestCurrentPage, currentPage, filters, projects]
   );
 
   const onLoadClick = useCallback(() => {
-    fetchProjects(categoryId || '');
-  }, [categoryId, filters, projects]);
+    if (hasAnotherProjects) {
+      fetchProjects(categoryId || '');
+    }
+  }, [categoryId, filters, projects, hasAnotherProjects]);
 
   useEffect(() => {
     onLoadClick();
