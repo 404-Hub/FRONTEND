@@ -12,9 +12,9 @@ const ProjectsList = (props: ProjectsListProps) => {
   const { categoryId, filters } = props;
   const [projects, setProjects] = useState<TProject[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
-  const [total, setTotal] = useState(1);
+  const [total, setTotal] = useState(0);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const WORD_IN_TITLE = 'проект';
   const maxOfProjectsOnPage = 10;
 
@@ -38,21 +38,13 @@ const ProjectsList = (props: ProjectsListProps) => {
     async (catId: string) => {
       try {
         const appsInf = await getApps(currentPage, catId, filters);
-        console.log('appsInf.items:', appsInf.items);
-        if (lastRequestCurrentPage !== appsInf.current_page) {
+        if (lastRequestCurrentPage < currentPage) {
           setProjects((prev) => {
-            console.log('Предыдущие проекты:', prev);
-
             const updatedProjects = projectsCheck(prev, appsInf.items);
-
-            console.log('Обновленные проекты:', updatedProjects);
-            console.log(`Показано проектов: ${updatedProjects.length}, Общее кол-во проектов: ${appsInf.total}`);
-
             return updatedProjects;
           });
-
           setLastRequestCurrentPage(appsInf.current_page);
-          setCurrentPage((prevPage) => prevPage + 1);
+          setCurrentPage(currentPage + 1);
         }
 
         if (projects.length + appsInf.items.length >= appsInf.total) {
@@ -60,16 +52,17 @@ const ProjectsList = (props: ProjectsListProps) => {
         }
         setTotal(appsInf.total);
       } catch (error) {
-        console.error('An error occurred during the attempt to load more projects', error);
-        throw new Error('An error occurred during the attempt to load more projects', { cause: error });
+        console.error('Failed to fetch projects', error);
       }
     },
     [lastRequestCurrentPage, currentPage, filters, projects]
   );
 
   const onLoadClick = useCallback(() => {
-    fetchProjects(categoryId || '');
-  }, [categoryId, filters, projects]);
+    if (hasAnotherProjects) {
+      fetchProjects(categoryId || '');
+    }
+  }, [categoryId, filters, projects, hasAnotherProjects]);
 
   useEffect(() => {
     onLoadClick();
