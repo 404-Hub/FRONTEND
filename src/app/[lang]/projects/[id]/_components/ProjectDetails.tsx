@@ -8,6 +8,8 @@ import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { assignApp, getApp } from '@/api/client/apps';
+import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
+import RegisterModal from './RegisterModal';
 
 const ProjectDetails = (props: TFoundAppProps) => {
   // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
@@ -17,9 +19,11 @@ const ProjectDetails = (props: TFoundAppProps) => {
   const [ratingColor, setRatingColor] = useState<string>();
   const [isTaken, setIsTaken] = useState(isAppTaken);
   const [vote, setVote] = useState(voteByThisUser);
+  const [showModal, setShowModal] = useState(false); //! Отображение модального окна
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { data: session, status } = useSession(); //! Данные по сессии
 
   const PAGE_TITLE = 'Детали проекта';
   const RATING = 'Рейтинг';
@@ -49,6 +53,12 @@ const ProjectDetails = (props: TFoundAppProps) => {
     [projectInf]
   );
   const handleIsAppTakenChange = async () => {
+    if (!session) {
+      //! Проверка сессии
+      setShowModal(true);
+      return;
+    }
+
     const res = await assignApp(Number(props.id ?? searchParams.get('appid')));
     if (res.success && projectInf) {
       projectInf.is_assigned = true;
@@ -290,6 +300,12 @@ const ProjectDetails = (props: TFoundAppProps) => {
             {TAKE_OR_PASS}
           </Button>
         </Box>
+        {showModal && (
+          <RegisterModal
+            open={showModal}
+            onClose={() => setShowModal(false)}
+          />
+        )}
       </Box>
     </Paper>
   );
