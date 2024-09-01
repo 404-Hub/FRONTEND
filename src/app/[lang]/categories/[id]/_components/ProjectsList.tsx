@@ -5,10 +5,12 @@ import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
+import useGlobalState from '@/lib/hooks/useGlobalState';
 import { getApps } from '@/api/client/apps';
 import ProjectCard from './ProjectCard';
 
 const ProjectsList = (props: ProjectsListProps) => {
+  const { categories } = useGlobalState();
   const { categoryId, filters } = props;
   const [projects, setProjects] = useState<TProject[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);

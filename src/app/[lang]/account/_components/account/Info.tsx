@@ -1,30 +1,42 @@
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { Box, Typography, Button, Select, FormControl, MenuItem, InputLabel } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import TextField from '@mui/material/TextField';
+import { AlertColor, Box, Button, Grid, Snackbar } from '@mui/material';
 import { getUserProfile, getUserRoles, saveUserProfile } from '@/api/client/account';
-import Image from 'next/image';
 import { TProfile, TRole } from '@/types/entity';
+import General from '@/app/[lang]/account/_components/account/info/General';
+import Contacts from '@/app/[lang]/account/_components/account/info/Contacts';
+import useGlobalState from '@/lib/hooks/useGlobalState';
+import { Alert } from '@mui/lab';
+import CheckIcon from '@mui/icons-material/Check';
 
 const Info = () => {
+  const context = useGlobalState();
   const { data: session, status } = useSession();
   const [user, setUser] = useState({} as User);
-  const [roles, setRoles] = useState<TRole[]>([]);
-  const [profile, setProfile] = useState<TProfile>({} as TProfile);
+  const [roles, setRoles] = useState<TRole[]>(context.teamRoles);
+  const [profile, setProfile] = useState<TProfile>(context.userProfile);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('Profile saved');
+  const [severity, setSeverity] = useState<AlertColor>('success');
 
   useEffect(() => {
-    getUserRoles().then((data) => {
-      if (data) {
-        setRoles(data);
-      }
-    });
-    getUserProfile().then((data) => {
-      if (data) {
-        setProfile(data);
-      }
-    });
+    if (Object.keys(context.userProfile).length === 0) {
+      getUserProfile().then((data) => {
+        if (data) {
+          setProfile(data);
+          context.setUserProfile(data);
+        }
+      });
+    }
+    if (Object.keys(context.teamRoles).length === 0) {
+      getUserRoles().then((data) => {
+        if (data) {
+          setRoles(data);
+          context.setTeamRoles(data);
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -38,8 +50,16 @@ const Info = () => {
       name: user.name,
     };
 
-    saveUserProfile(formData).then(() => {
-      console.log('Profile saved');
+    console.log('formData', formData);
+
+    saveUserProfile(formData).then((res) => {
+      if (res) {
+        setOpen(true);
+      } else {
+        setMessage('Failed to save profile');
+        setSeverity('error');
+        setOpen(true);
+      }
     });
   }, [profile, user]);
 
@@ -52,103 +72,64 @@ const Info = () => {
   };
 
   return (
-    <Box>
-      <Box>
-        <Typography variant={'h5'}>Personal Info</Typography>
-        {typeof profile.avatar === 'string' && (
-          <Image
-            src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${profile.avatar}`}
-            alt={'avatar'}
-            width={120}
-            height={120}
-          />
-        )}
-        <Box>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload avatar
-            <input
-              accept="image/*"
-              type={'file'}
-              style={{ opacity: 0 }}
-              onChange={handleUploadClick}
-            />
-          </Button>
-        </Box>
-        <Box sx={{ marginTop: '1rem' }}>
-          <FormControl fullWidth>
-            <TextField
-              name={'name'}
-              label={'User Name'}
-              value={user.name ?? ''}
-              onChange={(e) => {
-                setUser((prevState) => ({ ...prevState, name: e.target.value }));
-              }}
-            />
-          </FormControl>
-        </Box>
-        <Box sx={{ marginTop: '1rem' }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Select your role</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              label={'Select your role'}
-              id={'user-role'}
-              value={profile.team_role_id ?? ''}
-              onChange={(e) => {
-                setProfile((prevState) => ({ ...prevState, role: e.target.value as string }));
-              }}
-            >
-              {roles.map((role) => (
-                <MenuItem
-                  key={role.id}
-                  value={role.id}
-                >
-                  {role.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ marginTop: '1rem' }}>
-          <FormControl fullWidth>
-            <TextField
-              name={'about'}
-              value={profile.about ?? ''}
-              label={'About'}
-              onChange={(e) => {
-                setProfile((prevState) => ({ ...prevState, about: e.target.value }));
-              }}
-            />
-          </FormControl>
-        </Box>
-        <Box sx={{ marginTop: '1rem' }}>
-          <FormControl fullWidth>
-            <TextField
-              name={'availability'}
-              value={profile.availability ?? ''}
-              label={'Availability'}
-              onChange={(e) => {
-                setProfile((prevState) => ({ ...prevState, availability: e.target.value }));
-              }}
-            />
-          </FormControl>
-        </Box>
-      </Box>
-      <Box>
-        <Button
-          onClick={() => {
-            handleSaveClick();
-          }}
+    <Box sx={{ marginTop: '1rem', marginBottom: '2rem' }}>
+      <Grid
+        container
+        spacing={2}
+        rowSpacing={2}
+      >
+        <Grid
+          item
+          xs={12}
         >
-          Save
-        </Button>
-      </Box>
+          <General
+            user={user}
+            setUser={setUser}
+            profile={profile}
+            setProfile={setProfile}
+            roles={roles}
+            handleUploadClick={handleUploadClick}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+        >
+          <Contacts
+            user={user}
+            setProfile={setProfile}
+            profile={profile}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          display={'flex'}
+          justifyContent={'flex-end'}
+        >
+          <Button
+            variant={'contained'}
+            color={'primary'}
+            onClick={() => {
+              handleSaveClick();
+            }}
+          >
+            Save
+          </Button>
+        </Grid>
+      </Grid>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+      >
+        <Alert
+          variant={'filled'}
+          severity={severity}
+          onClose={() => setOpen(false)}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
