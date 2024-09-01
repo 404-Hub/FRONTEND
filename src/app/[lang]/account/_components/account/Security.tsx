@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid } from '@mui/material';
+import { Button, Card, CardContent, FormControl, Grid, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { changePassword } from '@/api/client/account';
@@ -32,85 +32,103 @@ const Security = () => {
   return (
     <Grid
       container
-      rowGap={'1rem'}
+      spacing={2}
+      rowSpacing={2}
       sx={{
-        marginTop: '2rem',
+        marginTop: '1rem',
       }}
     >
       <Grid
         item
         xs={12}
       >
-        <FormControl fullWidth>
-          <TextField
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            label={'Current password'}
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
-        </FormControl>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-      >
-        <FormControl fullWidth>
-          <TextField
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            label={'New password'}
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
-        </FormControl>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-      >
-        <FormControl fullWidth>
-          <TextField
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            label={'Confirm new password'}
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          ></TextField>
-        </FormControl>
+        <Card>
+          <CardContent>
+            <Typography variant={'h5'}>Change Password</Typography>
+            <Grid
+              container
+              spacing={2}
+              rowSpacing={2}
+              sx={{ marginTop: '1rem' }}
+            >
+              <Grid
+                item
+                xs={12}
+              >
+                <FormControl fullWidth>
+                  <TextField
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    label={'Current password'}
+                    type={showPassword ? 'text' : 'password'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  ></TextField>
+                </FormControl>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
+                <FormControl fullWidth>
+                  <TextField
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    label={'New password'}
+                    type={showPassword ? 'text' : 'password'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  ></TextField>
+                </FormControl>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
+                <FormControl fullWidth>
+                  <TextField
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    label={'Confirm new password'}
+                    type={showPassword ? 'text' : 'password'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  ></TextField>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
       </Grid>
       <Grid
         item

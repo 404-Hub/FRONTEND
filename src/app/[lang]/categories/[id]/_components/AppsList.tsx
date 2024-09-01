@@ -14,7 +14,7 @@ const AppsList = (props: { categoryId?: string }) => {
   const context = useGlobalState();
   const categoryId = props.categoryId ?? '1';
   const category = useMemo(
-    () => context.categories.find((item) => item.id === categoryId) ?? ({} as TCategory),
+    () => context.categories.find((item) => parseInt(item.id, 10) === parseInt(categoryId, 10)) ?? ({} as TCategory),
     [categoryId, context.categories]
   );
   const [allFilters, setAllFilters] = useState<Filters>(filters.filters);
@@ -92,7 +92,7 @@ const AppsList = (props: { categoryId?: string }) => {
           sx={findPageStyles.pageTitle}
           variant={'h5'}
         >
-          {category.name ?? 'Список проектов'}
+          {category.title ?? 'Список проектов'}
         </Typography>
       )}
       <Box sx={findPageStyles.centralContainer}>
