@@ -18,6 +18,8 @@ import { Iconify } from '@/components/base/iconify/Iconify';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SignUpDto, signUpDtoSchema } from '@/api/auth/signUp';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function FormError({ error }: { error: string | null }) {
   if (!error) return null;
@@ -35,6 +37,7 @@ export default function LoginForm() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const error = searchParams.get('error');
 
@@ -74,18 +77,31 @@ export default function LoginForm() {
       } catch (err) {
         // todo: handle error
         if (err instanceof Response) {
-          const response = await err.json();
-
-          if (!response.errors) {
-            throw error;
+          try {
+            const response = await err.json();
+            console.log('Response JSON:', response); // Логирование ответа
+            if (response.details && response.details.email) {
+              setErrorMessage(response.details.email[0]);
+            } else if (response.message) {
+              setErrorMessage(response.message);
+            } else {
+              setErrorMessage('An unexpected error occurred.');
+            }
+          } catch (parseError) {
+            console.error('Failed to parse response JSON:', parseError);
+            setErrorMessage('Failed to parse response.');
           }
+        } else {
+          console.error('An error occurred:', err);
+          setErrorMessage('An error has occurred during registration request');
         }
-
-        throw new Error('An error has occurred during registration request');
       }
     },
     [router, error]
   );
+  const handleCloseSnackbar = () => {
+    setErrorMessage(null);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -211,6 +227,21 @@ export default function LoginForm() {
       >
         Зарегистрироваться
       </LoadingButton>
+
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </form>
   );
 }
