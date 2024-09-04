@@ -96,3 +96,23 @@ export const getMyApps = async () => {
     console.log(error);
   }
 };
+
+export const upvoteApp = async (id: string) => {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/up/${id}`;
+  const response = await fetchClient({
+    method: 'POST',
+    url,
+  });
+  if (!response.ok) throw response;
+  return response.json();
+};
+
+export const downvoteApp = async (id: string) => {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/down/${id}`;
+  const response = await fetchClient({
+    method: 'POST',
+    url,
+  });
+  if (!response.ok) throw response;
+  return response.json();
+};
