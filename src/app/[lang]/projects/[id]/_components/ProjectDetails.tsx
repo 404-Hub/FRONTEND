@@ -7,7 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { assignApp, getApp } from '@/api/client/apps';
+import { assignApp, getApp, upvoteApp, downvoteApp } from '@/api/client/apps';
 import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
 import RegisterModal from './RegisterModal';
 
@@ -66,9 +66,53 @@ const ProjectDetails = (props: TFoundAppProps) => {
     }
   };
 
-  const handleUpVoteClick = useCallback(() => {
-    console.log('upvote');
-  }, []);
+  const handleUpVoteClick = useCallback(
+    async (isUpvote: boolean) => {
+      try {
+        let id: string | null;
+
+        if (props.id) {
+          id = props.id;
+        } else {
+          id = searchParams.get('appid');
+        }
+
+        console.log('Voting for ID:', id);
+
+        let voteResponse;
+
+        if (isUpvote) {
+          voteResponse = await upvoteApp(id!);
+        } else {
+          voteResponse = await downvoteApp(id!);
+        }
+
+        console.log('Vote response:', voteResponse);
+
+        if (isUpvote) {
+          setVote(1);
+        } else {
+          setVote(-1);
+        }
+
+        setRating((prevRating) => {
+          let newRating = prevRating;
+
+          if (isUpvote) {
+            newRating = prevRating + 1;
+          } else {
+            newRating = prevRating - 1;
+          }
+
+          console.log('Updated rating:', newRating);
+          return newRating;
+        });
+      } catch (error) {
+        console.error('Произошла ошибка во время голосования:', error);
+      }
+    },
+    [props.id, searchParams, setVote, setRating]
+  );
 
   useEffect(() => {
     fetchProject(Number(props.id ?? searchParams.get('appid')));
@@ -166,7 +210,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
               }}
               color="inherit"
               onClick={() => {
-                handleUpVoteClick();
+                handleUpVoteClick(true);
                 setVote(1);
               }}
             >
@@ -200,7 +244,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 background: vote === -1 ? '#F4F6F8' : 'transparent',
               }}
               onClick={() => {
-                handleUpVoteClick();
+                handleUpVoteClick(false);
                 setVote(-1);
               }}
             >
