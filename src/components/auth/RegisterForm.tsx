@@ -79,7 +79,6 @@ export default function LoginForm() {
         if (err instanceof Response) {
           try {
             const response = await err.json();
-            console.log('Response JSON:', response); // Логирование ответа
             if (response.details && response.details.email) {
               setErrorMessage(response.details.email[0]);
             } else if (response.message) {
@@ -88,7 +87,6 @@ export default function LoginForm() {
               setErrorMessage('An unexpected error occurred.');
             }
           } catch (parseError) {
-            console.error('Failed to parse response JSON:', parseError);
             setErrorMessage('Failed to parse response.');
           }
         } else {
