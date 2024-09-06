@@ -7,7 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { assignApp, getApp, upvoteApp, downvoteApp } from '@/api/client/apps';
+import { assignApp, getApp, voteApp } from '@/api/client/apps';
 import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
 import RegisterModal from './RegisterModal';
 
@@ -50,7 +50,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [projectInf]
+    [projectInf, vote]
   );
   const handleIsAppTakenChange = async () => {
     if (!session) {
@@ -66,52 +66,35 @@ const ProjectDetails = (props: TFoundAppProps) => {
     }
   };
 
-  const handleUpVoteClick = useCallback(
+  const handleVoteClick = useCallback(
     async (isUpvote: boolean) => {
+      if (!session) {
+        setShowModal(true);
+        return;
+      }
+
+      if (!projectInf) {
+        console.error('Project information is undefined');
+        return;
+      }
+
       try {
-        let id: string | null;
-
-        if (props.id) {
-          id = props.id;
-        } else {
-          id = searchParams.get('appid');
-        }
-
-        console.log('Voting for ID:', id);
-
-        let voteResponse;
+        let voteType: 'up' | 'down';
 
         if (isUpvote) {
-          voteResponse = await upvoteApp(id!);
+          voteType = 'up';
         } else {
-          voteResponse = await downvoteApp(id!);
+          voteType = 'down';
         }
 
-        console.log('Vote response:', voteResponse);
+        await voteApp(String(projectInf.id), voteType);
 
-        if (isUpvote) {
-          setVote(1);
-        } else {
-          setVote(-1);
-        }
-
-        setRating((prevRating) => {
-          let newRating = prevRating;
-
-          if (isUpvote) {
-            newRating = prevRating + 1;
-          } else {
-            newRating = prevRating - 1;
-          }
-
-          console.log('Updated rating:', newRating);
-          return newRating;
-        });
+        await fetchProject(projectInf.id);
       } catch (error) {
         console.error('Произошла ошибка во время голосования:', error);
       }
     },
-    [props.id, searchParams, setVote, setRating]
+    [projectInf, session, fetchProject]
   );
 
   useEffect(() => {
@@ -205,13 +188,12 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: vote === 1 ? 'black' : 'grey',
-                background: vote === 1 ? '#F4F6F8' : 'transparent',
+                color: projectInf.vote === 1 ? 'black' : 'grey',
+                background: projectInf.vote === 1 ? '#F4F6F8' : 'transparent',
               }}
               color="inherit"
               onClick={() => {
-                handleUpVoteClick(true);
-                setVote(1);
+                handleVoteClick(true);
               }}
             >
               <KeyboardArrowUpIcon />
@@ -240,12 +222,11 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: vote === -1 ? 'black' : 'grey',
-                background: vote === -1 ? '#F4F6F8' : 'transparent',
+                color: projectInf.vote === -1 ? 'black' : 'grey',
+                background: projectInf.vote === -1 ? '#F4F6F8' : 'transparent',
               }}
               onClick={() => {
-                handleUpVoteClick(false);
-                setVote(-1);
+                handleVoteClick(false);
               }}
             >
               <KeyboardArrowDownIcon sx={{ color: '#647380' }} />
