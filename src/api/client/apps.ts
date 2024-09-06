@@ -97,22 +97,14 @@ export const getMyApps = async () => {
   }
 };
 
-export const upvoteApp = async (id: string) => {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/up/${id}`;
+export const voteApp = async (id: string, type: 'up' | 'down') => {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/${type}/${id}`;
   const response = await fetchClient({
     method: 'POST',
     url,
   });
-  if (!response.ok) throw response;
-  return response.json();
-};
-
-export const downvoteApp = async (id: string) => {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/down/${id}`;
-  const response = await fetchClient({
-    method: 'POST',
-    url,
-  });
-  if (!response.ok) throw response;
+  if (!response.ok) {
+    throw new Error(`Ошибка при голосовании: ${response.statusText}`);
+  }
   return response.json();
 };
