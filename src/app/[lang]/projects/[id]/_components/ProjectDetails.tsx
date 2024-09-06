@@ -79,14 +79,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
       }
 
       try {
-        let voteType: 'up' | 'down';
-
-        if (isUpvote) {
-          voteType = 'up';
-        } else {
-          voteType = 'down';
-        }
-
+        const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
         await voteApp(String(projectInf.id), voteType);
 
         await fetchProject(projectInf.id);
@@ -94,7 +87,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
         console.error('Произошла ошибка во время голосования:', error);
       }
     },
-    [projectInf, session, fetchProject]
+    [session, fetchProject]
   );
 
   useEffect(() => {
