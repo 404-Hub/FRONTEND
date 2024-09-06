@@ -181,8 +181,8 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: projectInf.vote === 1 ? 'black' : 'grey',
-                background: projectInf.vote === 1 ? '#F4F6F8' : 'transparent',
+                color: vote === 1 ? 'black' : 'grey',
+                background: vote === 1 ? '#F4F6F8' : 'transparent',
               }}
               color="inherit"
               onClick={() => {
@@ -215,8 +215,8 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: projectInf.vote === -1 ? 'black' : 'grey',
-                background: projectInf.vote === -1 ? '#F4F6F8' : 'transparent',
+                color: vote === -1 ? 'black' : 'grey',
+                background: vote === -1 ? '#F4F6F8' : 'transparent',
               }}
               onClick={() => {
                 handleVoteClick(false);
