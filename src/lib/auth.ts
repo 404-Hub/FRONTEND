@@ -131,6 +131,8 @@ export const authOptions: NextAuthOptions = {
       session.user.email = token.email || '';
       // eslint-disable-next-line no-param-reassign
       session.user.email_verified_at = token.email_verified_at;
+      // eslint-disable-next-line no-param-reassign
+      session.user.id = token.id;
 
       return session;
     },

@@ -3,39 +3,22 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import GitIcon from '@/components/icons/GitIcon';
 import LinkIcon from '@mui/icons-material/Link';
-import { getUserProfile } from '@/api/client/account';
-import { TProfile } from '@/types/entity';
+import { TContacts, TProfileInfo } from '@/types/profile';
 
-interface TContact {
-  icon: string;
-  text: string;
-}
+type LeftAsideProps = {
+  profile: TProfileInfo;
+  contacts: TContacts[];
+  isOwner: boolean;
+  isLogged: boolean;
+};
 
-const LeftAside = () => {
-  const [profile, setProfile] = useState<TProfile>({} as TProfile);
-
-  useEffect(() => {
-    getUserProfile().then((data) => {
-      if (data) {
-        setProfile(data);
-      }
-    });
-  }, []);
-
-  const contacts: TContact[] = [
-    { icon: 'location', text: 'Moscow, Russia' },
-    { icon: 'email', text: 'example@mail.com' },
-    { icon: 'telegram', text: '@tguserexample' },
-    { icon: 'git', text: 'example_git' },
-    { icon: 'website', text: 'website' },
-  ];
-
+const LeftAside = (props: LeftAsideProps) => {
   const iconsMap: Record<string, ReactNode> = {
     location: <LocationOnIcon />,
     email: <MailOutlineIcon />,
@@ -64,11 +47,11 @@ const LeftAside = () => {
       >
         <Typography variant="h6">Описание</Typography>
         <Box>
-          <Typography variant="body2">{profile?.about}</Typography>
-          <Typography variant="body2">Доступен: {profile?.availability}</Typography>
+          <Typography variant="body2">{props.profile?.about}</Typography>
+          <Typography variant="body2">Доступен: {props.profile?.availability}</Typography>
         </Box>
         <Box>
-          {contacts.map((contact) => (
+          {props.contacts.map((contact) => (
             <Box
               key={contact.icon}
               display={'flex'}
@@ -100,14 +83,16 @@ const LeftAside = () => {
             </Box>
           ))}
         </Box>
-        <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
-          <Button
-            variant={'contained'}
-            color={'success'}
-          >
-            Предложить участие в проекте
-          </Button>
-        </Box>
+        {!props.isOwner && (
+          <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Button
+              variant={'contained'}
+              color={'success'}
+            >
+              Предложить участие в проекте
+            </Button>
+          </Box>
+        )}
       </Paper>
     </Grid>
   );

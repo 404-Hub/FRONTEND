@@ -1,20 +1,14 @@
 'use client';
 
 import { Avatar, Box, Grid, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { getUserProfile } from '@/api/client/account';
-import { TProfile } from '@/types/entity';
+import { TProfileInfo } from '@/types/profile';
 
-const Header = () => {
-  const [profile, setProfile] = useState<TProfile>();
+const Header = (props: { profile: TProfileInfo }) => {
+  let { avatar } = props.profile;
 
-  useEffect(() => {
-    getUserProfile().then((data) => {
-      if (data) {
-        setProfile(data);
-      }
-    });
-  }, []);
+  if (!avatar) {
+    avatar = '/images/default_avatar.png';
+  }
 
   return (
     <Grid
@@ -55,7 +49,7 @@ const Header = () => {
           <Grid item>
             <Avatar
               sx={{ width: '120px', height: '120px' }}
-              src={'/images/default_avatar.png'}
+              src={avatar}
             />
           </Grid>
           <Grid
@@ -71,11 +65,11 @@ const Header = () => {
                 variant="h5"
                 color={'#FFFFFF'}
               >
-                Alex Smith
+                {props.profile.name}
               </Typography>
             </Box>
             <Box>
-              <Typography variant="body1">Backend developer</Typography>
+              <Typography variant="body1">{props.profile.role}</Typography>
             </Box>
           </Grid>
         </Grid>
