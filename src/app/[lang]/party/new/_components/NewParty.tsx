@@ -119,6 +119,9 @@ const NewParty = (props: TNewPartyProps) => {
 
   const handleBack = () => {
     if (activeStep === 0) {
+      if (typeof window !== 'undefined') {
+        window.location.href = `/projects/${appId}`;
+      }
       return;
     }
     setActiveStep(activeStep - 1);
