@@ -7,9 +7,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { assignApp, getApp } from '@/api/client/apps';
+import { assignApp, getIdea } from '@/api/client/idea';
+import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
+import { createProject } from '@/api/client/project';
+import RegisterModal from './RegisterModal';
 
-const FoundApp = (props: TFoundAppProps) => {
+const IdeaDetails = (props: TFoundAppProps) => {
   // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
   const { isAppTaken = false, voteByThisUser = 0 } = props;
   const [projectInf, setProjectInf] = useState<TFoundProject>();
@@ -17,11 +20,13 @@ const FoundApp = (props: TFoundAppProps) => {
   const [ratingColor, setRatingColor] = useState<string>();
   const [isTaken, setIsTaken] = useState(isAppTaken);
   const [vote, setVote] = useState(voteByThisUser);
+  const [showModal, setShowModal] = useState(false); //! Отображение модального окна
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { data: session, status } = useSession(); //! Данные по сессии
 
-  const PAGE_TITLE = 'Детали проекта';
+  const PAGE_TITLE = 'назад';
   const RATING = 'Рейтинг';
   const ADDITIONAL = 'Для кого';
   const DETAILS = 'Детали';
@@ -36,20 +41,30 @@ const FoundApp = (props: TFoundAppProps) => {
   const fetchProject = useCallback(
     async (appId: number) => {
       try {
-        const appInf: TFoundProject = await getApp(appId);
+        const appInf: TFoundProject = await getIdea(appId);
         setProjectInf(appInf);
         if (appInf.is_assigned) {
           setIsTaken(true);
         }
         setRating(appInf.upvotes - appInf.downvotes + vote);
       } catch (error) {
-        throw new Error('An error occurred during try to load more projects', { cause: error });
+        throw new Error('An error occurred during try to load more ideas', { cause: error });
       }
     },
     [projectInf]
   );
   const handleIsAppTakenChange = async () => {
-    const res = await assignApp(Number(searchParams.get('appid')));
+    if (!session) {
+      //! Проверка сессии
+      setShowModal(true);
+      return;
+    }
+
+    if (!projectInf) {
+      return;
+    }
+
+    const res = await createProject({ idea_id: projectInf.id.toString() });
     if (res.success && projectInf) {
       projectInf.is_assigned = true;
       setIsTaken((prev) => !prev);
@@ -61,7 +76,7 @@ const FoundApp = (props: TFoundAppProps) => {
   }, []);
 
   useEffect(() => {
-    fetchProject(Number(searchParams.get('appid')));
+    fetchProject(Number(props.id ?? searchParams.get('appid')));
   }, []);
 
   useEffect(() => {
@@ -242,6 +257,23 @@ const FoundApp = (props: TFoundAppProps) => {
         </Paper>
         <Box
           sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 1,
+            background: '#F9FAFB',
+          }}
+        >
+          <Button
+            onClick={() => {
+              router.push(`/party/new?appId=${projectInf?.id.toString()}`);
+            }}
+          >
+            Request A Party for this task
+          </Button>
+        </Box>
+        <Box
+          sx={{
             backgroundColor: 'transparent',
             display: 'flex',
             flexDirection: 'row',
@@ -263,15 +295,25 @@ const FoundApp = (props: TFoundAppProps) => {
             color="success"
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
             onClick={() => {
-              handleIsAppTakenChange();
+              if (isTaken) {
+                router.push(`/tasks/${props.id ?? searchParams.get('appid')}/submit`);
+              } else {
+                handleIsAppTakenChange();
+              }
             }}
           >
             {TAKE_OR_PASS}
           </Button>
         </Box>
+        {showModal && (
+          <RegisterModal
+            open={showModal}
+            onClose={() => setShowModal(false)}
+          />
+        )}
       </Box>
     </Paper>
   );
 };
 
-export default FoundApp;
+export default IdeaDetails;
