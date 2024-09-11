@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Snackbar } from '@mui/material';
+import { useRouter } from 'next/router';
 import RoleStep from '@/app/[lang]/party/new/_components/steps/RoleStep';
 import MembersStep from '@/app/[lang]/party/new/_components/steps/MembersStep';
 import { storeParty } from '@/api/client/party';
@@ -82,6 +83,7 @@ const NewParty = (props: TNewPartyProps) => {
   const [requirements, setRequirements] = useState('');
   const [duration, setDuration] = useState('30');
   const [isCreated, setIsCreated] = useState(false);
+  const router = useRouter();
 
   const handleNext = () => {
     if (steps.length === activeStep + 1) {
@@ -119,9 +121,7 @@ const NewParty = (props: TNewPartyProps) => {
 
   const handleBack = () => {
     if (activeStep === 0) {
-      if (typeof window !== 'undefined') {
-        window.location.href = `/projects/${appId}`;
-      }
+      router.push(`/projects/${appId}`);
       return;
     }
     setActiveStep(activeStep - 1);
