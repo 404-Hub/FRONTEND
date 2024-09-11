@@ -7,7 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { assignApp, getApp } from '@/api/client/apps';
+import { assignApp, getApp, voteApp } from '@/api/client/apps';
 import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
 import RegisterModal from './RegisterModal';
 
@@ -50,7 +50,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
         throw new Error('An error occurred during try to load more projects', { cause: error });
       }
     },
-    [projectInf]
+    [projectInf, vote]
   );
   const handleIsAppTakenChange = async () => {
     if (!session) {
@@ -66,9 +66,29 @@ const ProjectDetails = (props: TFoundAppProps) => {
     }
   };
 
-  const handleUpVoteClick = useCallback(() => {
-    console.log('upvote');
-  }, []);
+  const handleVoteClick = useCallback(
+    async (isUpvote: boolean) => {
+      if (!session) {
+        setShowModal(true);
+        return;
+      }
+
+      if (!projectInf) {
+        console.error('Project information is undefined');
+        return;
+      }
+
+      try {
+        const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
+        await voteApp(String(projectInf.id), voteType);
+
+        await fetchProject(projectInf.id);
+      } catch (error) {
+        console.error('Произошла ошибка во время голосования:', error);
+      }
+    },
+    [session, fetchProject]
+  );
 
   useEffect(() => {
     fetchProject(Number(props.id ?? searchParams.get('appid')));
@@ -161,13 +181,12 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: vote === 1 ? 'black' : 'grey',
-                background: vote === 1 ? '#F4F6F8' : 'transparent',
+                color: vote === 1 ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
+                background: vote === 1 ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
               }}
               color="inherit"
               onClick={() => {
-                handleUpVoteClick();
-                setVote(1);
+                handleVoteClick(true);
               }}
             >
               <KeyboardArrowUpIcon />
@@ -196,12 +215,11 @@ const ProjectDetails = (props: TFoundAppProps) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: vote === -1 ? 'black' : 'grey',
-                background: vote === -1 ? '#F4F6F8' : 'transparent',
+                color: vote === -1 ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
+                background: vote === -1 ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
               }}
               onClick={() => {
-                handleUpVoteClick();
-                setVote(-1);
+                handleVoteClick(false);
               }}
             >
               <KeyboardArrowDownIcon sx={{ color: '#647380' }} />
