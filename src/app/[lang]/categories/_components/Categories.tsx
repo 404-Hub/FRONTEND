@@ -12,7 +12,6 @@ function Categories(props: TCategoryProps) {
   const context = useGlobalState();
   const { categories } = props;
   useEffect(() => {
-    console.log('categories', context.categories);
     if (context.categories.length === 0 && categories.length > 0) {
       context.setCategories(categories);
     }

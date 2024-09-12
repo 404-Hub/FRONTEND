@@ -6,12 +6,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ProjectsListProps, TProject } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import useGlobalState from '@/lib/hooks/useGlobalState';
-import { getApps } from '@/api/client/apps';
+import { getIdeas } from '@/api/client/idea';
 import ProjectCard from './ProjectCard';
 
 const ProjectsList = (props: ProjectsListProps) => {
   const { categories } = useGlobalState();
-  const { categoryId, filters } = props;
+  const { categoryId, filtersState } = props;
   const [projects, setProjects] = useState<TProject[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
@@ -39,7 +39,7 @@ const ProjectsList = (props: ProjectsListProps) => {
   const fetchProjects = useCallback(
     async (catId: string) => {
       try {
-        const appsInf = await getApps(currentPage, catId, filters);
+        const appsInf = await getIdeas(currentPage, catId, filtersState);
         if (lastRequestCurrentPage < currentPage) {
           setProjects((prev) => {
             const updatedProjects = projectsCheck(prev, appsInf.items);
@@ -54,21 +54,21 @@ const ProjectsList = (props: ProjectsListProps) => {
         }
         setTotal(appsInf.total);
       } catch (error) {
-        console.error('Failed to fetch projects', error);
+        console.error('Failed to fetch ideas', error);
       }
     },
-    [lastRequestCurrentPage, currentPage, filters, projects]
+    [lastRequestCurrentPage, currentPage, filtersState, projects]
   );
 
   const onLoadClick = useCallback(() => {
     if (hasAnotherProjects) {
       fetchProjects(categoryId || '');
     }
-  }, [categoryId, filters, projects, hasAnotherProjects]);
+  }, [categoryId, filtersState, projects, hasAnotherProjects]);
 
   useEffect(() => {
     onLoadClick();
-  }, [filters]);
+  }, [filtersState]);
 
   const caseWord = useCallback((projectsAmount: number, word: string) => {
     const numBeforeWord = Math.abs(projectsAmount) % 100;

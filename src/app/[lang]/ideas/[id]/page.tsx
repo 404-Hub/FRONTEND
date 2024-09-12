@@ -1,11 +1,11 @@
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Box } from '@mui/material';
-import ProjectDetails from './_components/ProjectDetails';
+import IdeaDetails from './_components/IdeaDetails';
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   return (
     <Box sx={findPageStyles.mainContainer}>
-      <ProjectDetails id={params.id} />
+      <IdeaDetails id={params.id} />
     </Box>
   );
 }

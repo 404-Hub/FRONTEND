@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { TFilter } from '@/types/filter';
 
 type Options = {
   subscribers?: string;
@@ -14,15 +15,6 @@ type FilterOption = {
   name: string;
   checked: boolean;
 };
-
-type Filter = {
-  type: string;
-  name: string;
-  label: string;
-  options: FilterOption[];
-};
-
-type Filters = Filter[];
 
 type SelectedFilters = {
   label: string;
@@ -52,7 +44,7 @@ type TProject = {
 
 type ProjectsListProps = {
   categoryId: string;
-  filters: ActualFilter[];
+  filtersState: Record<string, string[]>;
 };
 
 type ProjectCardProps = {
@@ -67,15 +59,15 @@ type FilterChangeArgs = {
   checked: boolean;
 };
 
-type FilterChange = (args: FilterChangeArgs) => void;
-type TSetCategoryCallback = (category: TCategory | null) => void;
-
 type TCategory = {
   id: string;
   name: string;
   title: string;
   children: TCategory[];
 };
+
+type TFilterChangeFunction = (filterName: string, optionValue: string) => void;
+type TSetCategoryCallback = (category: TCategory | null) => void;
 
 type TCategoryProps = {
   categories: TCategory[];
@@ -99,30 +91,30 @@ type TCardProps = {
 
 type RenderFiltersProps = {
   showFilters: boolean;
-  allFilters: Filters;
-  handleChange: FilterChange;
+  allFilters: TFilter[];
+  handleChange: TFilterChangeFunction;
+  filtersState: Record<string, string[]>;
 };
 
 type FilterBlockProps = {
-  handleChange: FilterChange;
-  setShowFilters: Dispatch<SetStateAction<boolean>>;
+  handleChange: TFilterChangeFunction;
   resetFilters: () => void;
-  showFilters: boolean;
-  actualFilters: ActualFilter[];
-  allFilters: Filters;
+  filtersState: Record<string, string[]>;
+  allFilters: TFilter[];
 };
 
 type SelectFiltersProps = {
   projectType: string | null;
   actualFilters: ActualFilter[];
   showFilters: boolean;
-  handleChange: FilterChange;
+  handleChange: TFilterChangeFunction;
   setShowFilters: Dispatch<SetStateAction<boolean>>;
 };
 
 type FilterProps = {
-  filter: Filter;
-  handleChange: FilterChange;
+  filter: TFilter;
+  handleChange: TFilterChangeFunction;
+  filtersState: Record<string, string[]>;
 };
 
 type TFoundAppProps = {
@@ -159,11 +151,9 @@ export type {
   TCardProps,
   FilterChangeArgs,
   Options,
-  Filter,
-  Filters,
   FilterOption,
   SelectedFilters,
-  FilterChange,
+  TFilterChangeFunction,
   ActualFilter,
   TProject,
   ProjectsListProps,

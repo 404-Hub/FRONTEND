@@ -7,11 +7,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { assignApp, getApp, voteApp } from '@/api/client/apps';
+import { assignApp, getIdea, voteIdea } from '@/api/client/idea';
 import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
+import { createProject } from '@/api/client/project';
 import RegisterModal from './RegisterModal';
 
-const ProjectDetails = (props: TFoundAppProps) => {
+const IdeaDetails = (props: TFoundAppProps) => {
   // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
   const { isAppTaken = false, voteByThisUser = 0 } = props;
   const [projectInf, setProjectInf] = useState<TFoundProject>();
@@ -25,7 +26,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
   const router = useRouter();
   const { data: session, status } = useSession(); //! Данные по сессии
 
-  const PAGE_TITLE = 'Детали проекта';
+  const PAGE_TITLE = 'назад';
   const RATING = 'Рейтинг';
   const ADDITIONAL = 'Для кого';
   const DETAILS = 'Детали';
@@ -40,14 +41,14 @@ const ProjectDetails = (props: TFoundAppProps) => {
   const fetchProject = useCallback(
     async (appId: number) => {
       try {
-        const appInf: TFoundProject = await getApp(appId);
+        const appInf: TFoundProject = await getIdea(appId);
         setProjectInf(appInf);
         if (appInf.is_assigned) {
           setIsTaken(true);
         }
         setRating(appInf.upvotes - appInf.downvotes + vote);
       } catch (error) {
-        throw new Error('An error occurred during try to load more projects', { cause: error });
+        throw new Error('An error occurred during try to load more ideas', { cause: error });
       }
     },
     [projectInf, vote]
@@ -59,7 +60,11 @@ const ProjectDetails = (props: TFoundAppProps) => {
       return;
     }
 
-    const res = await assignApp(Number(props.id ?? searchParams.get('appid')));
+    if (!projectInf) {
+      return;
+    }
+
+    const res = await createProject({ idea_id: projectInf.id.toString() });
     if (res.success && projectInf) {
       projectInf.is_assigned = true;
       setIsTaken((prev) => !prev);
@@ -80,7 +85,7 @@ const ProjectDetails = (props: TFoundAppProps) => {
 
       try {
         const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
-        await voteApp(String(projectInf.id), voteType);
+        await voteIdea(String(projectInf.id), voteType);
 
         await fetchProject(projectInf.id);
       } catch (error) {
@@ -329,4 +334,4 @@ const ProjectDetails = (props: TFoundAppProps) => {
   );
 };
 
-export default ProjectDetails;
+export default IdeaDetails;
