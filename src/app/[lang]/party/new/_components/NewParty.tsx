@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Snackbar } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import RoleStep from '@/app/[lang]/party/new/_components/steps/RoleStep';
 import MembersStep from '@/app/[lang]/party/new/_components/steps/MembersStep';
 import { storeParty } from '@/api/client/party';
@@ -70,11 +70,11 @@ const rolesInfo = [
 ];
 
 interface TNewPartyProps {
-  appId: string;
+  ideaId: string;
 }
 
 const NewParty = (props: TNewPartyProps) => {
-  const { appId } = props;
+  const { ideaId } = props;
   const [activeStep, setActiveStep] = useState(0);
   const [role, setRole] = useState('0');
   const [roles, setRoles] = useState<string[]>([]);
@@ -88,7 +88,7 @@ const NewParty = (props: TNewPartyProps) => {
   const handleNext = () => {
     if (steps.length === activeStep + 1) {
       const formData = {
-        app_id: appId,
+        idea_id: ideaId,
         requirements,
         duration,
         creator_role: {
@@ -121,7 +121,7 @@ const NewParty = (props: TNewPartyProps) => {
 
   const handleBack = () => {
     if (activeStep === 0) {
-      router.push(`/projects/${appId}`);
+      router.push(`/projects/${ideaId}`);
       return;
     }
     setActiveStep(activeStep - 1);

@@ -5,7 +5,7 @@ import IdeaDetails from './_components/IdeaDetails';
 export default function ProjectPage({ params }: { params: { id: string } }) {
   return (
     <Box sx={findPageStyles.mainContainer}>
-      <IdeaDetails id={params.id} />
+      <IdeaDetails id={Number(params.id)} />
     </Box>
   );
 }

@@ -117,12 +117,6 @@ type FilterProps = {
   filtersState: Record<string, string[]>;
 };
 
-type TFoundAppProps = {
-  id?: string;
-  isAppTaken?: boolean;
-  voteByThisUser?: -1 | 0 | 1;
-};
-
 type TFoundProject = {
   id: number;
   created_by: number | string;
@@ -158,6 +152,5 @@ export type {
   TProject,
   ProjectsListProps,
   ProjectCardProps,
-  TFoundAppProps,
   TFoundProject,
 };

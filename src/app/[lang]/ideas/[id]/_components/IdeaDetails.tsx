@@ -1,6 +1,6 @@
 'use client';
 
-import { TFoundAppProps, TFoundProject } from '@/types/findProjects';
+import { TFoundProject } from '@/types/findProjects';
 import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -12,14 +12,12 @@ import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.б
 import { createProject } from '@/api/client/project';
 import RegisterModal from './RegisterModal';
 
-const IdeaDetails = (props: TFoundAppProps) => {
-  // пока передаю пропсами, дальше переделаю на данные из стейт-менеджера
-  const { isAppTaken = false, voteByThisUser = 0 } = props;
+const IdeaDetails = (props: { id: number }) => {
   const [projectInf, setProjectInf] = useState<TFoundProject>();
   const [rating, setRating] = useState<number>(0);
   const [ratingColor, setRatingColor] = useState<string>();
-  const [isTaken, setIsTaken] = useState(isAppTaken);
-  const [vote, setVote] = useState(voteByThisUser);
+  const [isTaken, setIsTaken] = useState(false);
+  const [vote, setVote] = useState(0);
   const [showModal, setShowModal] = useState(false); //! Отображение модального окна
 
   const searchParams = useSearchParams();
@@ -39,21 +37,21 @@ const IdeaDetails = (props: TFoundAppProps) => {
   };
 
   const fetchProject = useCallback(
-    async (appId: number) => {
+    async (ideaId: number) => {
       try {
-        const appInf: TFoundProject = await getIdea(appId);
-        setProjectInf(appInf);
-        if (appInf.is_assigned) {
+        const ideaInf: TFoundProject = await getIdea(ideaId);
+        setProjectInf(ideaInf);
+        if (ideaInf.is_assigned) {
           setIsTaken(true);
         }
-        setRating(appInf.upvotes - appInf.downvotes + vote);
+        setRating(ideaInf.upvotes - ideaInf.downvotes + vote);
       } catch (error) {
         throw new Error('An error occurred during try to load more ideas', { cause: error });
       }
     },
     [projectInf, vote]
   );
-  const handleIsAppTakenChange = async () => {
+  const handleIsIdeaTakenChange = async () => {
     if (!session) {
       //! Проверка сессии
       setShowModal(true);
@@ -96,7 +94,7 @@ const IdeaDetails = (props: TFoundAppProps) => {
   );
 
   useEffect(() => {
-    fetchProject(Number(props.id ?? searchParams.get('appid')));
+    fetchProject(Number(props.id ?? searchParams.get('ideaId')));
   }, []);
 
   useEffect(() => {
@@ -284,7 +282,7 @@ const IdeaDetails = (props: TFoundAppProps) => {
         >
           <Button
             onClick={() => {
-              router.push(`/party/new?appId=${projectInf?.id.toString()}`);
+              router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
             }}
           >
             Request A Party for this task
@@ -304,7 +302,7 @@ const IdeaDetails = (props: TFoundAppProps) => {
             variant="outlined"
             color={`${isTaken ? 'error' : 'success'}`}
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={() => (isTaken ? handleIsAppTakenChange() : router.back())}
+            onClick={() => (isTaken ? handleIsIdeaTakenChange() : router.back())}
           >
             {`${isTaken ? REJECTION : BACK}`}
           </Button>
@@ -314,9 +312,9 @@ const IdeaDetails = (props: TFoundAppProps) => {
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
             onClick={() => {
               if (isTaken) {
-                router.push(`/tasks/${props.id ?? searchParams.get('appid')}/submit`);
+                router.push(`/tasks/${props.id ?? searchParams.get('ideaId')}/submit`);
               } else {
-                handleIsAppTakenChange();
+                handleIsIdeaTakenChange();
               }
             }}
           >
