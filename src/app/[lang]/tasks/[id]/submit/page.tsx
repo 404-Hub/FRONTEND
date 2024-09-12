@@ -36,7 +36,7 @@ export default function Page() {
           background: '#FFFFFF',
         }}
         onClick={() => {
-          router.push(`/projects/${Number(searchParams.get('appId'))}`);
+          router.push(`/projects/${Number(searchParams.get('ideaId'))}`);
         }}
       >
         <Icon aria-label="back">

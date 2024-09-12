@@ -23,11 +23,11 @@ export const getIdeas = async (page: number, category: string, filters?: Record<
   }
 };
 
-export const getIdea = async (appId: number) => {
+export const getIdea = async (ideaId: number) => {
   try {
     const response = await fetchClient({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/${appId}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/${ideaId}`,
     });
     if (!response.ok) throw response;
 
@@ -54,11 +54,11 @@ export const createIdea = async (data: {}) => {
   }
 };
 
-export const assignApp = async (appId: number) => {
+export const assignApp = async (ideaId: number) => {
   try {
     const response = await fetchClient({
       method: 'POST',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/assign/${appId}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/assign/${ideaId}`,
     });
     if (!response.ok) throw response;
 

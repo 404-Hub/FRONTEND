@@ -121,7 +121,7 @@ const NewParty = (props: TNewPartyProps) => {
 
   const handleBack = () => {
     if (activeStep === 0) {
-      router.push(`/projects/${ideaId}`);
+      router.push(`/ideas/${ideaId}`);
       return;
     }
     setActiveStep(activeStep - 1);
