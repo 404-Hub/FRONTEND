@@ -1,13 +1,15 @@
 import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { Box } from '@mui/material';
-import AppsList from './_components/AppsList';
+import { getCategory } from '@/api/server/idea';
+import List from './_components/List';
 
-export default function CategoryPage({ params }: { params: { id: string } }) {
+export default async function CategoryPage({ params }: { params: { id: string } }) {
   // @todo loaf category info from the server
   const categoryId = params.id;
+  const category = await getCategory(categoryId);
   return (
     <Box sx={findPageStyles.mainContainer}>
-      <AppsList categoryId={categoryId} />
+      <List categoryId={categoryId} />
     </Box>
   );
 }
