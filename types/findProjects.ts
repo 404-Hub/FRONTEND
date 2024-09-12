@@ -117,7 +117,11 @@ type FilterProps = {
   filtersState: Record<string, string[]>;
 };
 
-type TFoundProject = {
+export type TVote = {
+  type: 'up' | 'down' | 'none';
+};
+
+export type TIdea = {
   id: number;
   created_by: number | string;
   category_id: number;
@@ -130,6 +134,7 @@ type TFoundProject = {
   created_at: string;
   updated_at: string;
   additional: string;
+  vote: TVote;
   is_assigned: boolean;
 };
 
@@ -152,5 +157,4 @@ export type {
   TProject,
   ProjectsListProps,
   ProjectCardProps,
-  TFoundProject,
 };

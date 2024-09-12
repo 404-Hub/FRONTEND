@@ -15,9 +15,9 @@ export const getIdeas = async (page: number, category: string, filters?: Record<
     });
     if (!response.ok) throw response;
 
-    const apps = await response.json();
+    const ideas = await response.json();
 
-    return apps.data;
+    return ideas.data;
   } catch (error) {
     // res.status(500).json({ error: 'GetCategoriesError' });
   }
@@ -58,7 +58,7 @@ export const assignApp = async (ideaId: number) => {
   try {
     const response = await fetchClient({
       method: 'POST',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/assign/${ideaId}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/assign/${ideaId}`,
     });
     if (!response.ok) throw response;
 
@@ -68,26 +68,24 @@ export const assignApp = async (ideaId: number) => {
   }
 };
 
-export const getMyApps = async () => {
+export const getMyIdeas = async () => {
   try {
     const response = await fetchClient({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/apps`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/ideas`,
     });
     if (!response.ok) throw response;
 
-    const apps = await response.json();
+    const ideas = await response.json();
 
-    console.log('apps:', apps.data);
-
-    return apps.data;
+    return ideas.data;
   } catch (error) {
     console.log(error);
   }
 };
 
 export const voteIdea = async (id: string, type: 'up' | 'down') => {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/${type}/${id}`;
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/vote/${type}/${id}`;
   const response = await fetchClient({
     method: 'POST',
     url,

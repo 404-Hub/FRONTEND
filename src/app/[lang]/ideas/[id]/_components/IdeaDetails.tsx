@@ -1,6 +1,6 @@
 'use client';
 
-import { TFoundProject } from '@/types/findProjects';
+import { TIdea, TVote } from '@/types/findProjects';
 import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -13,11 +13,11 @@ import { createProject } from '@/api/client/project';
 import RegisterModal from './RegisterModal';
 
 const IdeaDetails = (props: { id: number }) => {
-  const [projectInf, setProjectInf] = useState<TFoundProject>();
+  const [projectInf, setProjectInf] = useState<TIdea>();
   const [rating, setRating] = useState<number>(0);
   const [ratingColor, setRatingColor] = useState<string>();
   const [isTaken, setIsTaken] = useState(false);
-  const [vote, setVote] = useState(0);
+  const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false); //! Отображение модального окна
 
   const searchParams = useSearchParams();
@@ -39,12 +39,13 @@ const IdeaDetails = (props: { id: number }) => {
   const fetchProject = useCallback(
     async (ideaId: number) => {
       try {
-        const ideaInf: TFoundProject = await getIdea(ideaId);
+        const ideaInf: TIdea = await getIdea(ideaId);
         setProjectInf(ideaInf);
+        setVote(ideaInf.vote);
         if (ideaInf.is_assigned) {
           setIsTaken(true);
         }
-        setRating(ideaInf.upvotes - ideaInf.downvotes + vote);
+        setRating(ideaInf.upvotes - ideaInf.downvotes);
       } catch (error) {
         throw new Error('An error occurred during try to load more ideas', { cause: error });
       }
@@ -93,12 +94,14 @@ const IdeaDetails = (props: { id: number }) => {
     [session, fetchProject]
   );
 
+  console.log(vote);
+
   useEffect(() => {
     fetchProject(Number(props.id ?? searchParams.get('ideaId')));
   }, []);
 
   useEffect(() => {
-    setRatingColor(() => (rating + vote >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative));
+    setRatingColor(() => (rating >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative));
   }, [projectInf, vote]);
 
   return (
@@ -184,8 +187,8 @@ const IdeaDetails = (props: { id: number }) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: vote === 1 ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote === 1 ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'up' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
+                background: vote.type === 'up' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
               }}
               color="inherit"
               onClick={() => {
@@ -200,10 +203,10 @@ const IdeaDetails = (props: { id: number }) => {
             >
               {/* eslint-disable-next-line no-nested-ternary */}
               {projectInf ? (
-                rating + vote <= 0 ? (
-                  rating + vote
+                rating <= 0 ? (
+                  rating
                 ) : (
-                  `+${rating + vote}`
+                  `+${rating}`
                 )
               ) : (
                 <Skeleton
@@ -218,8 +221,8 @@ const IdeaDetails = (props: { id: number }) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: vote === -1 ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote === -1 ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'down' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
+                background: vote.type === 'down' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
               }}
               onClick={() => {
                 handleVoteClick(false);

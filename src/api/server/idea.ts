@@ -36,17 +36,17 @@ export const getCategory = async (categoryId: string) => {
   }
 };
 
-export const getMyApps = async () => {
+export const getMyIdeas = async () => {
   try {
     const response = await fetchServer({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/apps`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/ideas`,
     });
     if (!response.ok) throw response;
 
-    const apps = await response.json();
+    const ideas = await response.json();
 
-    return apps.data;
+    return ideas.data;
   } catch (error) {
     // res.status(500).json({ error: 'GetCategoriesError' });
   }
