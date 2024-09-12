@@ -1,20 +1,9 @@
 import fetchClient from '@/lib/fetch-client';
 import { ActualFilter } from '@/types/findProjects';
 
-export const getApps = async (page: number, category: string, filters?: ActualFilter[]) => {
+export const getIdeas = async (page: number, category: string, filters?: Record<string, string[]>) => {
   try {
-    const params: Record<string, string> = { page: page.toString(), category_id: category };
-    if (filters) {
-      filters.forEach((filter) => {
-        const { filterName, filterType, actualRadioOption, actualCheckboxOption } = filter;
-        const value = filterType === 'radio' ? actualRadioOption : actualCheckboxOption;
-        if (!(filterName in params)) {
-          params[filterName] = value;
-        } else if (filterType !== 'radio') {
-          params[filterName] = `${params[filterName]},${actualCheckboxOption}`;
-        }
-      });
-    }
+    const params: Record<string, string[]> = { ...filters, page: [page.toString()], category_id: [category] };
 
     const queryString = Object.keys(params)
       .map((key) => `${key}=${params[key]}`)
@@ -22,7 +11,7 @@ export const getApps = async (page: number, category: string, filters?: ActualFi
 
     const response = await fetchClient({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps?${queryString}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas?${queryString}`,
     });
     if (!response.ok) throw response;
 
@@ -34,11 +23,11 @@ export const getApps = async (page: number, category: string, filters?: ActualFi
   }
 };
 
-export const getApp = async (appId: number) => {
+export const getIdea = async (appId: number) => {
   try {
     const response = await fetchClient({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/${appId}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/${appId}`,
     });
     if (!response.ok) throw response;
 
@@ -50,11 +39,11 @@ export const getApp = async (appId: number) => {
   }
 };
 
-export const createApp = async (data: {}) => {
+export const createIdea = async (data: {}) => {
   try {
     const response = await fetchClient({
       method: 'POST',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas`,
       body: JSON.stringify(data),
     });
     if (!response.ok) throw response;
@@ -97,7 +86,7 @@ export const getMyApps = async () => {
   }
 };
 
-export const voteApp = async (id: string, type: 'up' | 'down') => {
+export const voteIdea = async (id: string, type: 'up' | 'down') => {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/${type}/${id}`;
   const response = await fetchClient({
     method: 'POST',

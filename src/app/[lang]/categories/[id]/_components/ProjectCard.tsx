@@ -36,7 +36,7 @@ const ProjectCard: React.FC<ProjectCardProps> = (props) => {
         cursor: 'pointer',
       }}
       onClick={() => {
-        router.push(`/projects/${id}`);
+        router.push(`/ideas/${id}`);
       }}
       className={'projectCardCY'}
     >

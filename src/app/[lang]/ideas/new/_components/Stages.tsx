@@ -4,7 +4,7 @@ import type { TStep } from '@/types/propose-idea.types';
 import React, { useState } from 'react';
 import { Snackbar } from '@mui/material';
 import { getSession } from 'next-auth/react';
-import { createApp } from '@/api/client/apps';
+import { createIdea } from '@/api/client/idea';
 import { useRouter } from 'next/navigation';
 import MultiStepProcess from '@/components/layout/multi-step-process/MultiStepProcess';
 import { Stage } from './Stage';
@@ -44,7 +44,7 @@ export const Stages = (props: { title: string }) => {
       return;
     }
 
-    const resp = await createApp({
+    const resp = await createIdea({
       category_id: 1,
       title: userInputs.title,
       description: userInputs.description,
