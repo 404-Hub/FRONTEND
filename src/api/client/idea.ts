@@ -85,3 +85,15 @@ export const getMyApps = async () => {
     console.log(error);
   }
 };
+
+export const voteIdea = async (id: string, type: 'up' | 'down') => {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/vote/${type}/${id}`;
+  const response = await fetchClient({
+    method: 'POST',
+    url,
+  });
+  if (!response.ok) {
+    throw new Error(`Ошибка при голосовании: ${response.statusText}`);
+  }
+  return response.json();
+};
