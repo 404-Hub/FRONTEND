@@ -32,10 +32,10 @@ export const Navigation: FC = () => {
         label: 'Главная',
         value: 'main',
       },
-      {
-        label: 'Мои задачи',
-        value: 'myTasks',
-      },
+      // {
+      //   label: 'Мои задачи',
+      //   value: 'myTasks',
+      // },
       {
         label: 'Найти проект',
         value: 'findProject',
