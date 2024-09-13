@@ -65,7 +65,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
               <Link href="#">Мои Идеи</Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-              <Link href="/tasks">Мои Проекты</Link>
+              <Link href="/projects">Мои Проекты</Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
               <Link href="/account">Аккаунт</Link>
