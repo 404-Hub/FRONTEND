@@ -1,12 +1,16 @@
 import { Container } from '@mui/material';
 import { redirect } from 'next/navigation';
+import { getRoles } from '@/api/server/roles';
 import NewParty from './_components/NewParty';
 
-export default function NewPartyPage({ searchParams }: { searchParams: Record<string, string> }) {
+export default async function NewPartyPage({ searchParams }: { searchParams: Record<string, string> }) {
   const { ideaId } = searchParams;
   if (!ideaId) {
     redirect('/categories/new');
   }
+
+  const roles = await getRoles();
+
   return (
     <Container
       component="main"
@@ -20,7 +24,10 @@ export default function NewPartyPage({ searchParams }: { searchParams: Record<st
         height: 'calc(100% - 74px)',
       }}
     >
-      <NewParty ideaId={ideaId} />
+      <NewParty
+        rolesInfo={roles}
+        ideaId={ideaId}
+      />
     </Container>
   );
 }

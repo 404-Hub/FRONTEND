@@ -1,9 +1,9 @@
 'use client';
 
 import { FormControl, Grid, Paper, Typography } from '@mui/material';
-import { Info } from '@mui/icons-material';
-import type { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import TextField from '@mui/material/TextField';
+import DynamicIcon from '@/app/[lang]/party/new/_components/steps/DynamicIcon';
 
 type RoleStepProps = {
   rolesInfo: Record<string, any>[];
@@ -85,7 +85,7 @@ const RoleStep = (props: RoleStepProps) => {
                     },
                   }}
                 >
-                  {item.component ? <item.component /> : <Info />}
+                  <DynamicIcon iconName={item.icon} />
                   <Typography
                     variant="body1"
                     sx={{ fontSize: '16px' }}

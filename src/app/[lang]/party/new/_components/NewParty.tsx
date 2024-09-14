@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation';
 import RoleStep from '@/app/[lang]/party/new/_components/steps/RoleStep';
 import MembersStep from '@/app/[lang]/party/new/_components/steps/MembersStep';
 import { storeParty } from '@/api/client/party';
-import StorageIcon from '@mui/icons-material/Storage';
-import WebIcon from '@mui/icons-material/Web';
 import MultiStepProcess from '@/components/layout/multi-step-process/MultiStepProcess';
 import FinalStep from '@/app/[lang]/party/new/_components/steps/FinalStep';
 import { TStep } from '@/types/propose-idea.types';
@@ -39,42 +37,20 @@ const steps: TStep[] = [
   },
 ];
 
-const rolesInfo = [
-  {
-    id: 1,
-    title: 'Project manageer',
-    component: StorageIcon,
-  },
-  {
-    id: 2,
-    title: 'Full Stack',
-  },
-  {
-    id: 3,
-    title: 'Frontend',
-    component: WebIcon,
-  },
-  {
-    id: 4,
-    title: 'Backend',
-    component: StorageIcon,
-  },
-  {
-    id: 5,
-    title: 'QA',
-  },
-  {
-    id: 6,
-    title: 'Design UI/UX',
-  },
-];
+type TRole = {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+};
 
 interface TNewPartyProps {
   ideaId: string;
+  rolesInfo: TRole[];
 }
 
 const NewParty = (props: TNewPartyProps) => {
-  const { ideaId } = props;
+  const { ideaId, rolesInfo } = props;
   const [activeStep, setActiveStep] = useState(0);
   const [role, setRole] = useState('0');
   const [roles, setRoles] = useState<string[]>([]);

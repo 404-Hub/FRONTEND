@@ -41,7 +41,9 @@ const IdeaDetails = (props: { id: number }) => {
       try {
         const ideaInf: TIdea = await getIdea(ideaId);
         setProjectInf(ideaInf);
-        setVote(ideaInf.vote);
+        if (ideaInf.vote) {
+          setVote(ideaInf.vote);
+        }
         if (ideaInf.is_assigned) {
           setIsTaken(true);
         }
