@@ -30,7 +30,9 @@ export const getUserRoles = async () => {
     });
     if (!response.ok) throw response;
 
-    return (await response.json()) as Promise<TRole[]>;
+    const resp = await response.json();
+
+    return resp.data as Promise<TRole[]>;
   } catch (error) {
     console.log(error);
   }
