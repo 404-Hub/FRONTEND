@@ -11,14 +11,14 @@ import GitIcon from '@/components/icons/GitIcon';
 import LinkIcon from '@mui/icons-material/Link';
 import { TContacts, TProfileInfo } from '@/types/profile';
 
-type LeftAsideProps = {
+type TLeftAsideProps = {
   profile: TProfileInfo;
   contacts: TContacts[];
   isOwner: boolean;
   isLogged: boolean;
 };
 
-const LeftAside = (props: LeftAsideProps) => {
+const LeftAside = (props: TLeftAsideProps) => {
   const iconsMap: Record<string, ReactNode> = {
     location: <LocationOnIcon />,
     email: <MailOutlineIcon />,

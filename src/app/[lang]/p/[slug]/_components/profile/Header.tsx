@@ -3,7 +3,11 @@
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 import { TProfileInfo } from '@/types/profile';
 
-const Header = (props: { profile: TProfileInfo }) => {
+type THeaderProps = {
+  profile: TProfileInfo;
+};
+
+const Header = (props: THeaderProps) => {
   let { avatar } = props.profile;
 
   if (!avatar) {

@@ -3,16 +3,16 @@ import Link from 'next/link';
 import Header from '@/app/[lang]/p/[slug]/_components/profile/Header';
 import LeftAside from '@/app/[lang]/p/[slug]/_components/profile/LeftAside';
 import Content from '@/app/[lang]/p/[slug]/_components/profile/Content';
-import { getProfileBySlug } from '@/api/client/profile';
+import { getProfileBySlug } from '@/api/server/profile';
 import { TContacts, TProfileInfo } from '@/types/profile';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 
-type ProfilePageProps = {
+type TProfilePageProps = {
   params: { slug: string };
 };
 
-export async function generateMetadata({ params }: ProfilePageProps) {
+export async function generateMetadata({ params }: TProfilePageProps) {
   const data = await getProfileBySlug(params.slug);
   const profile = data?.user || { name: 'Profile' };
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: ProfilePageProps) {
   };
 }
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
+export default async function ProfilePage({ params }: TProfilePageProps) {
   const session = await getServerSession(authOptions);
   const userSlug = params.slug;
   let isPrivate = false;
@@ -94,7 +94,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               isOwner={isOwner}
             ></LeftAside>
             <Content
-              avatar={profile.avatar}
+              profile={profile}
               isLogged={isLogged}
               isOwner={isOwner}
             />

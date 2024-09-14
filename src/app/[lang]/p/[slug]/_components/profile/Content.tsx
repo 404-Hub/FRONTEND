@@ -7,14 +7,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
+import { TProfileInfo } from '@/types/profile';
 
-type ContentProps = {
-  avatar: string;
+type TContentProps = {
+  profile: TProfileInfo;
   isLogged: boolean;
   isOwner: boolean;
 };
-const Content = (props: ContentProps) => {
-  let { avatar } = props;
+const Content = (props: TContentProps) => {
+  let { avatar } = props.profile;
 
   if (!avatar) {
     avatar = '/images/default_avatar.png';

@@ -1,8 +1,8 @@
-import fetchClient from '@/lib/fetch-client';
+import fetchServer from '@/lib/fetch-server';
 
 const getProfileBySlug = async (slug: string) => {
   try {
-    const response = await fetchClient({
+    const response = await fetchServer({
       method: 'GET',
       url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/profile/${slug}`,
     });
