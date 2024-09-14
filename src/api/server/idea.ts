@@ -5,14 +5,12 @@ export const getCategories = async () => {
   try {
     const response = await fetchServer({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/apps/categories`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/ideas/categories`,
     });
     if (!response.ok) throw response;
 
     // @ts-ignore
     const categories: { success: boolean; data: TCategory[] } = await response.json();
-
-    console.log('categories.data', categories.data);
 
     return categories.data;
 
@@ -22,17 +20,33 @@ export const getCategories = async () => {
   }
 };
 
-export const getMyApps = async () => {
+export const getCategory = async (categoryId: string) => {
   try {
     const response = await fetchServer({
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/apps`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/categories/${categoryId}`,
     });
     if (!response.ok) throw response;
 
-    const apps = await response.json();
+    const category = await response.json();
 
-    return apps.data;
+    return category.data;
+  } catch (error) {
+    // res.status(500).json({ error: 'GetCategoriesError' });
+  }
+};
+
+export const getMyIdeas = async () => {
+  try {
+    const response = await fetchServer({
+      method: 'GET',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/ideas`,
+    });
+    if (!response.ok) throw response;
+
+    const ideas = await response.json();
+
+    return ideas.data;
   } catch (error) {
     // res.status(500).json({ error: 'GetCategoriesError' });
   }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
-import { FilterProps, Filter } from '@/types/findProjects';
+import { FilterProps } from '@/types/findProjects';
 
-const RadioFilter = (props: FilterProps) => {
-  const { filter, handleChange } = props;
-  const { type, name, label, options } = filter as Filter;
+const RadioItemsGroup = (props: FilterProps) => {
+  const { filter, handleChange, filtersState } = props;
+  const { type, name, label, options } = filter;
   return (
     <Box sx={filtersStyles.filterBlock}>
       <Typography
@@ -21,22 +21,13 @@ const RadioFilter = (props: FilterProps) => {
             sx={filtersStyles.filterLabel}
             control={
               <Radio
-                checked={option.checked}
+                checked={filtersState[filter.name]?.includes(option.name)}
                 sx={filtersStyles.formSelect}
               />
             }
             value={option.name}
             label={option.label}
-            // eslint-disable-next-line max-len
-            onChange={() =>
-              handleChange({
-                name,
-                value: option.name,
-                type,
-                checked: !option.checked,
-                label: option.label,
-              })
-            }
+            onChange={() => handleChange(filter.name, option.name)}
           />
         ))}
       </RadioGroup>
@@ -44,4 +35,4 @@ const RadioFilter = (props: FilterProps) => {
   );
 };
 
-export default RadioFilter;
+export default RadioItemsGroup;

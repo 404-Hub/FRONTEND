@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
-import { FilterProps, Filter } from '@/types/findProjects';
+import { FilterProps } from '@/types/findProjects';
 
-const CheckBoxFilter = (props: FilterProps) => {
+const CheckboxGroup = (props: FilterProps) => {
   const { filter, handleChange } = props;
-  const { type, name, label, options } = filter as Filter;
+  const { type, name, label, options } = filter;
   return (
     <Box sx={filtersStyles.filterBlock}>
       <Typography
@@ -25,15 +25,7 @@ const CheckBoxFilter = (props: FilterProps) => {
               checked={option.checked}
               sx={[filtersStyles.formControlLabel, filtersStyles.formSelect]}
               // eslint-disable-next-line max-len
-              onChange={() =>
-                handleChange({
-                  name,
-                  value: option.name,
-                  type,
-                  checked: !option.checked,
-                  label: option.label,
-                })
-              }
+              onChange={() => handleChange(filter.name, option.name)}
             />
           }
         />
@@ -42,4 +34,4 @@ const CheckBoxFilter = (props: FilterProps) => {
   );
 };
 
-export default CheckBoxFilter;
+export default CheckboxGroup;

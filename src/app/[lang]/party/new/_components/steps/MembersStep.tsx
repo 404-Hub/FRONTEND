@@ -1,9 +1,10 @@
 import { Box, FormControl, Grid, Typography, Paper } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Info } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import DynamicIcon from '@/app/[lang]/party/new/_components/steps/DynamicIcon';
 
 type MembersStepProps = {
   rolesInfo: Record<string, any>[];
@@ -101,7 +102,7 @@ const MembersStep = (props: MembersStepProps) => {
                       },
                     }}
                   >
-                    {item.component ? <item.component /> : <Info />}
+                    <DynamicIcon iconName={item.icon} />
                     <Typography
                       variant="body1"
                       sx={{ fontSize: '16px' }}

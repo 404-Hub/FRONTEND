@@ -9,28 +9,23 @@ import findPageStyles from '@/styles/findProjectStyles/pageStyles';
 import { useIsMobile } from '@/lib/hooks/useIsMobile';
 import RenderFilters from './RenderFilters';
 
-const FilterBlock: React.FC<FilterBlockProps> = (props) => {
-  const { handleChange, setShowFilters, resetFilters, showFilters, actualFilters, allFilters } = props;
+const FiltersPanel: React.FC<FilterBlockProps> = (props) => {
+  const { handleChange, resetFilters, allFilters, filtersState } = props;
 
   const isMobile = useIsMobile();
 
+  const [showFilters, setShowFilters] = useState(false);
+
   const [isFilterExist, setIsFilterExist] = useState(false);
-  // const [isSlideEffect, setIsSlideEffect] = useState(showFilters);
 
   const cancel = useCallback(() => {
     setShowFilters(false);
     resetFilters();
   }, [resetFilters, setShowFilters]);
 
-  // useEffect(() => {
-  //   console.log('inside');
-  //   const msInSlideEffect = showFilters ? 0 : 300;
-  //   setTimeout(() => setIsSlideEffect((prev) => !prev), msInSlideEffect);
-  // }, [showFilters]);
-
   useEffect(() => {
-    setIsFilterExist(actualFilters.length > 0);
-  }, [actualFilters]);
+    setIsFilterExist(Object.keys(filtersState).length > 0);
+  }, [filtersState]);
 
   return (
     <Paper
@@ -112,6 +107,7 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
               showFilters={showFilters}
               handleChange={handleChange}
               allFilters={allFilters}
+              filtersState={filtersState}
             ></RenderFilters>
             <Box
               sx={{
@@ -165,4 +161,4 @@ const FilterBlock: React.FC<FilterBlockProps> = (props) => {
   );
 };
 
-export default FilterBlock;
+export default FiltersPanel;

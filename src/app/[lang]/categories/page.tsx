@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Box, Container } from '@mui/material';
-import { getCategories } from '@/api/server/apps';
+import { getCategories } from '@/api/server/idea';
 import { TCategory } from '@/types/findProjects';
 import Categories from './_components/Categories';
 import PageTitle from './_components/PageTitle';
