@@ -47,6 +47,7 @@ const HeaderDesktop: FC<{
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
+            gap: '1rem',
             flexGrow: 1,
             maxWidth: '1440px',
           }}
@@ -54,6 +55,9 @@ const HeaderDesktop: FC<{
           <Logo />
           {/* https://github.com/mui/material-ui/issues/32749#issuecomment-1258711077 */}
           <Tabs
+            sx={{
+              flex: 1,
+            }}
             value={activeLink || false}
             onChange={(_, value) => handleTabClick(value)}
           >
