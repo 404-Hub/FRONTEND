@@ -7,6 +7,7 @@ import { getProfileBySlug } from '@/api/server/profile';
 import { TContacts, TProfileInfo } from '@/types/profile';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
+import { checkIsOwner } from '@/lib/session';
 
 type TProfilePageProps = {
   params: { slug: string };
@@ -25,7 +26,7 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
   const session = await getServerSession(authOptions);
   const userSlug = params.slug;
   let isPrivate = false;
-  let isOwner = false;
+  let isOwner: boolean = false;
   let isLogged = false;
   let profile: TProfileInfo = {
     name: '',
@@ -34,6 +35,7 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
     about: '',
     availability: '',
   };
+  let userId: number | null = null;
   let contacts: TContacts[] = [];
 
   if (session) {
@@ -45,16 +47,15 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
     if (data.user) {
       profile = data.user;
       contacts = data.contacts;
-
-      if (session && session.user && session.user.id === data.user.user_id) {
-        isOwner = true;
-      }
+      userId = data.user.user_id;
     }
   } catch (error: any) {
     if (error.status === 403) {
       isPrivate = true;
     }
   }
+
+  isOwner = await checkIsOwner(userId as number);
 
   return (
     <Container>
