@@ -19,6 +19,8 @@ const IdeaDetails = (props: { id: number }) => {
   const [isTaken, setIsTaken] = useState(false);
   const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false); //! Отображение модального окна
+  const [partyCreated, setPartyCreated] = useState<{ [key: number]: boolean }>({}); //! Состояние для созданной пати
+  const [partyLink, setPartyLink] = useState<{ [key: number]: string | null }>({}); //! Ссылка на созданную пати
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -54,6 +56,7 @@ const IdeaDetails = (props: { id: number }) => {
     },
     [projectInf, vote]
   );
+
   const handleIsIdeaTakenChange = async () => {
     if (!session) {
       //! Проверка сессии
@@ -96,15 +99,34 @@ const IdeaDetails = (props: { id: number }) => {
     [session, fetchProject]
   );
 
+  const handleCreateParty = async () => {
+    if (!session) {
+      setShowModal(true);
+      return;
+    }
+
+    const ideaId = Number(props.id ?? searchParams.get('ideaId'));
+
+    // Логика для создания пати
+    // После успешного создания пати, обновите состояние
+    setPartyCreated((prev) => ({ ...prev, [ideaId]: true }));
+    setPartyLink((prev) => ({ ...prev, [ideaId]: 'https://take.ms/atcmO' })); // Замените на реальную ссылку
+  };
+
   console.log(vote);
 
   useEffect(() => {
-    fetchProject(Number(props.id ?? searchParams.get('ideaId')));
-  }, []);
+    const ideaId = Number(props.id ?? searchParams.get('ideaId'));
+    fetchProject(ideaId);
+    setPartyCreated((prev) => ({ ...prev, [ideaId]: false })); // Сброс состояния при изменении идеи
+    setPartyLink((prev) => ({ ...prev, [ideaId]: null })); // Сброс ссылки при изменении идеи
+  }, [props.id, searchParams]);
 
   useEffect(() => {
     setRatingColor(() => (rating >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative));
   }, [projectInf, vote]);
+
+  const ideaId = Number(props.id ?? searchParams.get('ideaId'));
 
   return (
     <Paper
@@ -285,13 +307,32 @@ const IdeaDetails = (props: { id: number }) => {
             background: '#F9FAFB',
           }}
         >
-          <Button
-            onClick={() => {
-              router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
-            }}
-          >
-            Request A Party for this task
-          </Button>
+          {!partyCreated[ideaId] ? (
+            <Button onClick={handleCreateParty}>Request A Party for this task</Button>
+          ) : (
+            <Box>
+              <Typography>
+                Your party link:{' '}
+                <a
+                  href={partyLink[ideaId]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {partyLink[ideaId]}
+                </a>
+              </Typography>
+              <Typography>
+                Other active parties:{' '}
+                <a
+                  href="https://take.ms/atcmO"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://take.ms/atcmO
+                </a>
+              </Typography>
+            </Box>
+          )}
         </Box>
         <Box
           sx={{
