@@ -317,7 +317,7 @@ const IdeaDetails = (props: { id: number }) => {
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
             onClick={() => {
               if (isTaken) {
-                router.push(`/tasks/${props.id ?? searchParams.get('ideaId')}/submit`);
+                router.push(`/projects/${props.id ?? searchParams.get('ideaId')}/submit`);
               } else {
                 handleIsIdeaTakenChange();
               }

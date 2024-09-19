@@ -4,7 +4,7 @@ import { Box, Typography, Icon, Container } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import TaskSubmit from '@/components/taskSubmit/TaskSubmit';
+import ProjectSubmit from '@/components/projectSubmit/ProjectSubmit';
 
 export default function Page() {
   const PAGE_TITLE = 'Детали проекта';
@@ -36,7 +36,7 @@ export default function Page() {
           background: '#FFFFFF',
         }}
         onClick={() => {
-          router.push(`/projects/${Number(searchParams.get('ideaId'))}`);
+          router.push(`/ideas/${Number(searchParams.get('ideaId'))}`);
         }}
       >
         <Icon aria-label="back">
@@ -49,7 +49,7 @@ export default function Page() {
           {PAGE_TITLE}
         </Typography>
       </Box>
-      <TaskSubmit />
+      <ProjectSubmit />
     </Container>
   );
 }
