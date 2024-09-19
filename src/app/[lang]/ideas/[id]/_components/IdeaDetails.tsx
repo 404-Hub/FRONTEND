@@ -8,7 +8,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { assignApp, getIdea, voteIdea } from '@/api/client/idea';
-import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
+import { useSession, signIn } from 'next-auth/react';
 import { createProject } from '@/api/client/project';
 import RegisterModal from './RegisterModal';
 
@@ -18,13 +18,13 @@ const IdeaDetails = (props: { id: number }) => {
   const [ratingColor, setRatingColor] = useState<string>();
   const [isTaken, setIsTaken] = useState(false);
   const [vote, setVote] = useState<TVote>({ type: 'none' });
-  const [showModal, setShowModal] = useState(false); //! Отображение модального окна
-  const [partyCreated, setPartyCreated] = useState<{ [key: number]: boolean }>({}); //! Состояние для созданной пати
-  const [partyLink, setPartyLink] = useState<{ [key: number]: string | null }>({}); //! Ссылка на созданную пати
+  const [showModal, setShowModal] = useState(false);
+  const [partyCreated, setPartyCreated] = useState(false); // Track party creation status
+  const [partyLink, setPartyLink] = useState<string | null>(null); // Store the link to the created party
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { data: session, status } = useSession(); //! Данные по сессии
+  const { data: session, status } = useSession();
 
   const PAGE_TITLE = 'назад';
   const RATING = 'Рейтинг';
@@ -38,28 +38,33 @@ const IdeaDetails = (props: { id: number }) => {
     negative: '#B52020',
   };
 
-  const fetchProject = useCallback(
-    async (ideaId: number) => {
-      try {
-        const ideaInf: TIdea = await getIdea(ideaId);
-        setProjectInf(ideaInf);
-        if (ideaInf.vote) {
-          setVote(ideaInf.vote);
-        }
-        if (ideaInf.is_assigned) {
-          setIsTaken(true);
-        }
-        setRating(ideaInf.upvotes - ideaInf.downvotes);
-      } catch (error) {
-        throw new Error('An error occurred during try to load more ideas', { cause: error });
+  const fetchIdea = useCallback(async (ideaId: number) => {
+    try {
+      const ideaInf: TIdea = await getIdea(ideaId);
+      setProjectInf(ideaInf);
+      if (ideaInf.vote) {
+        setVote(ideaInf.vote);
       }
-    },
-    [projectInf, vote]
-  );
+      if (ideaInf.is_assigned) {
+        setIsTaken(true);
+      }
+      setRating(ideaInf.upvotes - ideaInf.downvotes);
+
+      // Check if a party has been created for the idea
+      if (ideaInf.party) {
+        setPartyCreated(true);
+        setPartyLink(`https://dhub.svyat404.com/party/${ideaInf.party.id}`);
+      } else {
+        setPartyCreated(false);
+        setPartyLink(null);
+      }
+    } catch (error) {
+      throw new Error('An error occurred during try to load more ideas', { cause: error });
+    }
+  }, []);
 
   const handleIsIdeaTakenChange = async () => {
     if (!session) {
-      //! Проверка сессии
       setShowModal(true);
       return;
     }
@@ -91,42 +96,21 @@ const IdeaDetails = (props: { id: number }) => {
         const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
         await voteIdea(String(projectInf.id), voteType);
 
-        await fetchProject(projectInf.id);
+        await fetchIdea(projectInf.id);
       } catch (error) {
         console.error('Произошла ошибка во время голосования:', error);
       }
     },
-    [session, fetchProject]
+    [session, fetchIdea, projectInf]
   );
 
-  const handleCreateParty = async () => {
-    if (!session) {
-      setShowModal(true);
-      return;
-    }
-
-    const ideaId = Number(props.id ?? searchParams.get('ideaId'));
-
-    // Логика для создания пати
-    // После успешного создания пати, обновите состояние
-    setPartyCreated((prev) => ({ ...prev, [ideaId]: true }));
-    setPartyLink((prev) => ({ ...prev, [ideaId]: 'https://take.ms/atcmO' })); // Замените на реальную ссылку
-  };
-
-  console.log(vote);
-
   useEffect(() => {
-    const ideaId = Number(props.id ?? searchParams.get('ideaId'));
-    fetchProject(ideaId);
-    setPartyCreated((prev) => ({ ...prev, [ideaId]: false })); // Сброс состояния при изменении идеи
-    setPartyLink((prev) => ({ ...prev, [ideaId]: null })); // Сброс ссылки при изменении идеи
-  }, [props.id, searchParams]);
+    fetchIdea(Number(props.id ?? searchParams.get('ideaId')));
+  }, [props.id, searchParams, fetchIdea]);
 
   useEffect(() => {
     setRatingColor(() => (rating >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative));
-  }, [projectInf, vote]);
-
-  const ideaId = Number(props.id ?? searchParams.get('ideaId'));
+  }, [rating, ratingColorsVariant.positive, ratingColorsVariant.negative]);
 
   return (
     <Paper
@@ -211,8 +195,8 @@ const IdeaDetails = (props: { id: number }) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: vote.type === 'up' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote.type === 'up' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'up' ? 'black' : 'grey',
+                background: vote.type === 'up' ? '#F4F6F8' : 'transparent',
               }}
               color="inherit"
               onClick={() => {
@@ -227,10 +211,10 @@ const IdeaDetails = (props: { id: number }) => {
             >
               {/* eslint-disable-next-line no-nested-ternary */}
               {projectInf ? (
-                rating <= 0 ? (
-                  rating
-                ) : (
+                rating > 0 ? (
                   `+${rating}`
+                ) : (
+                  rating
                 )
               ) : (
                 <Skeleton
@@ -245,8 +229,8 @@ const IdeaDetails = (props: { id: number }) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: vote.type === 'down' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote.type === 'down' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'down' ? 'black' : 'grey',
+                background: vote.type === 'down' ? '#F4F6F8' : 'transparent',
               }}
               onClick={() => {
                 handleVoteClick(false);
@@ -267,7 +251,7 @@ const IdeaDetails = (props: { id: number }) => {
               sx={{ padding: 2 }}
             >
               {projectInf ? (
-                projectInf.additional
+                projectInf.additional_info
               ) : (
                 <Skeleton
                   animation="wave"
@@ -307,30 +291,33 @@ const IdeaDetails = (props: { id: number }) => {
             background: '#F9FAFB',
           }}
         >
-          {!partyCreated[ideaId] ? (
-            <Button onClick={handleCreateParty}>Request A Party for this task</Button>
-          ) : (
+          {!partyCreated && (
+            <Button
+              onClick={() => {
+                router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
+              }}
+            >
+              Request A Party for this task
+            </Button>
+          )}
+          {partyCreated && (
             <Box>
-              <Typography>
-                Your party link:{' '}
-                <a
-                  href={partyLink[ideaId]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {partyLink[ideaId]}
-                </a>
-              </Typography>
-              <Typography>
-                Other active parties:{' '}
-                <a
-                  href="https://take.ms/atcmO"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://take.ms/atcmO
-                </a>
-              </Typography>
+              <Typography>Your party link:</Typography>
+              <a
+                href={partyLink ?? ''}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {partyLink}
+              </a>
+              <Typography>List of active parties:</Typography>
+              <a
+                href="https://take.ms/atcmO"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View active parties
+              </a>
             </Box>
           )}
         </Box>
@@ -346,11 +333,11 @@ const IdeaDetails = (props: { id: number }) => {
         >
           <Button
             variant="outlined"
-            color={`${isTaken ? 'error' : 'success'}`}
+            color={isTaken ? 'error' : 'success'}
             sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
             onClick={() => (isTaken ? handleIsIdeaTakenChange() : router.back())}
           >
-            {`${isTaken ? REJECTION : BACK}`}
+            {isTaken ? REJECTION : BACK}
           </Button>
           <Button
             variant="contained"
