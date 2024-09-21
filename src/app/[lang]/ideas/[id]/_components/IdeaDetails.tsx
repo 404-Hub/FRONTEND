@@ -4,12 +4,13 @@ import { TIdea, TVote } from '@/types/findProjects';
 import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { assignApp, getIdea, voteIdea } from '@/api/client/idea';
 import { useSession, signIn } from 'next-auth/react';
 import { createProject } from '@/api/client/project';
+import Link from 'next/link';
 import RegisterModal from './RegisterModal';
 
 const IdeaDetails = (props: { id: number }) => {
@@ -19,7 +20,6 @@ const IdeaDetails = (props: { id: number }) => {
   const [isTaken, setIsTaken] = useState(false);
   const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false);
-  const [partyCreated, setPartyCreated] = useState(false); // Track party creation status
   const [partyLink, setPartyLink] = useState<string | null>(null); // Store the link to the created party
 
   const searchParams = useSearchParams();
@@ -52,10 +52,8 @@ const IdeaDetails = (props: { id: number }) => {
 
       // Check if a party has been created for the idea
       if (ideaInf.party) {
-        setPartyCreated(true);
-        setPartyLink(`https://dhub.svyat404.com/party/${ideaInf.party.id}`);
+        setPartyLink(`/projects/${ideaInf.id}/party`);
       } else {
-        setPartyCreated(false);
         setPartyLink(null);
       }
     } catch (error) {
@@ -285,39 +283,63 @@ const IdeaDetails = (props: { id: number }) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 1,
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 2,
             background: '#F9FAFB',
           }}
         >
-          {!partyCreated && (
-            <Button
-              onClick={() => {
-                router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
-              }}
-            >
-              Request A Party for this task
-            </Button>
-          )}
-          {partyCreated && (
+          {!partyLink ? (
+            <>
+              <Typography
+                variant="h6"
+                sx={{ marginBottom: 2 }}
+              >
+                Хочешь попробовать совместную разработку?
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: 'orange', '&:hover': { backgroundColor: 'darkorange' }, marginBottom: 2 }}
+                onClick={() => {
+                  router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
+                }}
+              >
+                Создать запрос
+              </Button>
+              <Link
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography
+                    variant="body1"
+                    sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    Смотреть запросы от других пользователей
+                  </Typography>
+                  <ArrowForward sx={{ marginLeft: 1 }} />
+                </Box>
+              </Link>
+            </>
+          ) : (
             <Box>
-              <Typography>Your party link:</Typography>
-              <a
+              <Typography>Ваша ссылка на пати:</Typography>
+              <Link
                 href={partyLink ?? ''}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {partyLink}
-              </a>
-              <Typography>List of active parties:</Typography>
-              <a
-                href="https://take.ms/atcmO"
+              </Link>
+              <Typography>Список активных пати:</Typography>
+              <Link
+                href="#"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View active parties
-              </a>
+                Посмотреть активные пати
+              </Link>
             </Box>
           )}
         </Box>
