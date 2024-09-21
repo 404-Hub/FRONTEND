@@ -323,14 +323,19 @@ const IdeaDetails = (props: { id: number }) => {
               </Link>
             </>
           ) : (
-            <Box>
+            <>
               <Typography>Ваша ссылка на пати:</Typography>
               <Link
                 href={partyLink ?? ''}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {partyLink}
+                <Typography
+                  variant="body1"
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  {partyLink}
+                </Typography>
               </Link>
               <Typography>Список активных пати:</Typography>
               <Link
@@ -338,9 +343,14 @@ const IdeaDetails = (props: { id: number }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Посмотреть активные пати
+                <Typography
+                  variant="body1"
+                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                >
+                  Посмотреть активные пати
+                </Typography>
               </Link>
-            </Box>
+            </>
           )}
         </Box>
         <Box
