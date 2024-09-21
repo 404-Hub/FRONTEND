@@ -6,3 +6,12 @@ export async function getCurrentUser() {
 
   return session?.user;
 }
+
+export async function checkIsOwner(userId: number) {
+  const session = await getServerSession(authOptions);
+  const sessionUserId: number | undefined = session?.user?.id as number | undefined;
+
+  if (!sessionUserId) return false;
+
+  return sessionUserId === userId;
+}
