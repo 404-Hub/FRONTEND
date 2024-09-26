@@ -87,10 +87,6 @@ const NewParty = (props: TNewPartyProps) => {
           setRequirements('');
           setDuration('30');
           setActiveStep(0);
-
-          // Перенаправление на страницу идеи
-          console.log('Redirecting to idea page:', `/ideas/${ideaId}`);
-          router.push(`/ideas/${ideaId}`);
         } else {
           console.error('Failed to create party:', resp.error);
         }

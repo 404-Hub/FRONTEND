@@ -20,7 +20,6 @@ const IdeaDetails = (props: { id: number }) => {
   const [isTaken, setIsTaken] = useState(false);
   const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false);
-  const [partyLink, setPartyLink] = useState<string | null>(null); // Store the link to the created party
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -49,13 +48,6 @@ const IdeaDetails = (props: { id: number }) => {
         setIsTaken(true);
       }
       setRating(ideaInf.upvotes - ideaInf.downvotes);
-
-      // Check if a party has been created for the idea
-      if (ideaInf.party) {
-        setPartyLink(`/projects/${ideaInf.id}/party`);
-      } else {
-        setPartyLink(null);
-      }
     } catch (error) {
       throw new Error('An error occurred during try to load more ideas', { cause: error });
     }
@@ -289,7 +281,7 @@ const IdeaDetails = (props: { id: number }) => {
             background: '#F9FAFB',
           }}
         >
-          {!partyLink ? (
+          {!projectInf?.party ? (
             <>
               <Typography
                 variant="h6"
@@ -326,7 +318,7 @@ const IdeaDetails = (props: { id: number }) => {
             <>
               <Typography>Ваша ссылка на пати:</Typography>
               <Link
-                href={partyLink ?? ''}
+                href={`/projects/${projectInf.id}/party`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -334,7 +326,7 @@ const IdeaDetails = (props: { id: number }) => {
                   variant="body1"
                   sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                 >
-                  {partyLink}
+                  {`/projects/${projectInf.id}/party`}
                 </Typography>
               </Link>
               <Typography>Список активных пати:</Typography>
