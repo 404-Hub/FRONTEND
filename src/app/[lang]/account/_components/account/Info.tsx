@@ -44,11 +44,17 @@ const Info = () => {
   }, [status, session]);
 
   const handleSaveClick = useCallback(() => {
-    const formData = {
+    const formData: Record<string, any> = {
       ...profile,
       team_role_id: profile.team_role_id,
       name: user.name,
     };
+
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] === null) {
+        delete formData[key];
+      }
+    });
 
     console.log('formData', formData);
 
