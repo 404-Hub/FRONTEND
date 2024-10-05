@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Header from '@/app/[lang]/p/[slug]/_components/profile/Header';
 import LeftAside from '@/app/[lang]/p/[slug]/_components/profile/LeftAside';
 import Content from '@/app/[lang]/p/[slug]/_components/profile/Content';
-import { getProfileBySlug } from '@/api/server/profile';
-import { TContacts, TProfileInfo } from '@/types/profile';
+import { getProfileBySlug, getProfileProjects } from '@/api/server/profile';
+import { TContacts, TProfileInfo, TProfileProject } from '@/types/profile';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import { checkIsOwner } from '@/lib/session';
@@ -28,15 +28,10 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
   let isPrivate = false;
   let isOwner: boolean = false;
   let isLogged = false;
-  let profile: TProfileInfo = {
-    name: '',
-    role: 'Unknown',
-    avatar: '',
-    about: '',
-    availability: '',
-  };
+  let profile: TProfileInfo = {} as TProfileInfo;
   let userId: number | null = null;
   let contacts: TContacts[] = [];
+  const projects: TProfileProject[] = [] as TProfileProject[];
 
   if (session) {
     isLogged = true;
@@ -56,6 +51,13 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
   }
 
   isOwner = await checkIsOwner(userId as number);
+
+  try {
+    const projectList = (await getProfileProjects(userId as number)) as TProfileProject[];
+    projects.push(...projectList);
+  } catch (error) {
+    console.log(error);
+  }
 
   return (
     <Container>
@@ -90,6 +92,7 @@ export default async function ProfilePage({ params }: TProfilePageProps) {
             <Header profile={profile} />
             <LeftAside
               profile={profile}
+              projects={projects}
               contacts={contacts}
               isLogged={isLogged}
               isOwner={isOwner}

@@ -30,7 +30,8 @@ export const getUserRoles = async () => {
     });
     if (!response.ok) throw response;
 
-    return (await response.json()) as Promise<TRole[]>;
+    const data = await response.json();
+    return data.data as Promise<TRole[]>;
   } catch (error) {
     console.log(error);
   }
@@ -71,6 +72,21 @@ export const saveUserProfile = async (data: any) => {
     if (!response.ok) throw response;
 
     return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPartyList = async () => {
+  try {
+    const response = await fetchClient({
+      method: 'GET',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/party/list`,
+    });
+    if (!response.ok) throw response;
+
+    const data = await response.json();
+    return data.data;
   } catch (error) {
     console.log(error);
   }

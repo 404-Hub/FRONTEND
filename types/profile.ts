@@ -1,4 +1,5 @@
 type TProfileInfo = {
+  user_id: number;
   name: string;
   avatar: string;
   role: string;
@@ -11,4 +12,10 @@ type TContacts = {
   text: string;
 };
 
-export type { TProfileInfo, TContacts };
+type TProfileProject = {
+  id: number;
+  title: string;
+  idea_id: number;
+};
+
+export type { TProfileInfo, TContacts, TProfileProject };

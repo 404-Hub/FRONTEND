@@ -1,5 +1,3 @@
-'use client';
-
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -9,11 +7,13 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import GitIcon from '@/components/icons/GitIcon';
 import LinkIcon from '@mui/icons-material/Link';
-import { TContacts, TProfileInfo } from '@/types/profile';
+import { TContacts, TProfileInfo, TProfileProject } from '@/types/profile';
+import Projects from '@/app/[lang]/p/[slug]/_components/profile/Projects';
 
 type TLeftAsideProps = {
   profile: TProfileInfo;
   contacts: TContacts[];
+  projects: TProfileProject[];
   isOwner: boolean;
   isLogged: boolean;
 };
@@ -26,12 +26,6 @@ const LeftAside = (props: TLeftAsideProps) => {
     git: <GitIcon />,
     website: <LinkIcon />,
   };
-
-  const projects: Record<string, string>[] = [
-    { id: '1', name: 'Рисовалка для детей с AI (в процессе)', link: '/' },
-    { id: '2', name: 'Бот для телеги', link: '/' },
-    { id: '3', name: 'Веб Магазин', link: '/' },
-  ];
 
   return (
     <Grid
@@ -48,7 +42,7 @@ const LeftAside = (props: TLeftAsideProps) => {
         <Typography variant="h6">Описание</Typography>
         <Box>
           <Typography variant="body2">{props.profile?.about}</Typography>
-          <Typography variant="body2">Доступен: {props.profile?.availability}</Typography>
+          <Typography variant="body2">Доступен: {props.profile?.availability ?? 'Undefined'}</Typography>
         </Box>
         <Box>
           {props.contacts.map((contact) => (
@@ -59,41 +53,17 @@ const LeftAside = (props: TLeftAsideProps) => {
               sx={{ marginTop: '1rem' }}
             >
               {iconsMap[contact.icon]}
-              <Typography>{contact.text}</Typography>
+              <Typography>{contact.text ?? 'Undefined'}</Typography>
             </Box>
           ))}
         </Box>
       </Paper>
-      <Paper
-        elevation={5}
-        sx={{ marginTop: '1.5rem', padding: '1rem' }}
-      >
-        <Typography variant="h6">Участие в проектах</Typography>
-        <Box>
-          {projects.map((project) => (
-            <Box
-              key={project.id}
-              display={'flex'}
-              justifyContent={'space-between'}
-            >
-              <Typography variant="body2">{project.name}</Typography>
-              <Link href={project.link}>
-                <ArrowForwardIcon />
-              </Link>
-            </Box>
-          ))}
-        </Box>
-        {!props.isOwner && (
-          <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Button
-              variant={'contained'}
-              color={'success'}
-            >
-              Предложить участие в проекте
-            </Button>
-          </Box>
-        )}
-      </Paper>
+      <Projects
+        projects={props.projects}
+        userId={props.profile.user_id}
+        isOwner={props.isOwner}
+        isLogged={props.isLogged}
+      />
     </Grid>
   );
 };
