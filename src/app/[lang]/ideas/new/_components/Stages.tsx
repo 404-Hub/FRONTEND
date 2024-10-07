@@ -54,7 +54,8 @@ export const Stages = (props: { title: string }) => {
     if (resp.success) {
       setIsCreated(true);
       resetState();
-      console.log('Project created successfully');
+      router.push(`/ideas/${resp.id}`);
+      console.log('Idea created successfully');
     }
   };
 
@@ -82,20 +83,20 @@ export const Stages = (props: { title: string }) => {
     },
     {
       label: 'STEP 3',
-      title: 'Specify the Project Name',
+      title: 'Specify the Idea Name',
       fieldName: 'title',
       isMultiline: false,
-      labelTitle: 'Project Name',
+      labelTitle: 'Idea Name',
       showExample: 'Show example',
       exampleText: 'Example text for STEP 3.',
-      buttons: { back: 'Back', next: 'Create Project' },
+      buttons: { back: 'Back', next: 'Create Idea' },
     },
     {
       label: 'STEP 4',
       title: "Let's Summarize 😊",
       descriptionTitle: 'You want to receive:',
       additionalTitle: 'For whom:',
-      projectTitle: 'Project Name:',
+      projectTitle: 'Idea Name:',
       isCorrectTitle: 'Is everything correct?',
       buttons: {
         customButtons: [
@@ -154,11 +155,8 @@ export const Stages = (props: { title: string }) => {
       </MultiStepProcess>
       <Snackbar
         open={isCreated}
-        message={'Project Created'}
-        onClose={() => {
-          setIsCreated(false);
-          router.push('/projects/new');
-        }}
+        color={'success'}
+        message={'Idea Created'}
         autoHideDuration={3000}
       />
     </>

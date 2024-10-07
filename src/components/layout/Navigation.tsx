@@ -13,11 +13,8 @@ export type HeaderLink = {
 };
 
 const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
-  '/': 'main',
-  '/tasks': 'myTasks',
   '/categories': 'findProject',
-  '/projects/new': 'proposeIdea',
-  '/find-project/subscribers': 'subscribers',
+  '/ideas/new': 'proposeIdea',
 };
 
 export const Navigation: FC = () => {
@@ -28,10 +25,10 @@ export const Navigation: FC = () => {
 
   const links = useMemo<HeaderLink[]>(
     () => [
-      {
-        label: 'Главная',
-        value: 'main',
-      },
+      // {
+      //   label: 'Главная',
+      //   value: 'main',
+      // },
       // {
       //   label: 'Мои задачи',
       //   value: 'myTasks',
@@ -40,14 +37,10 @@ export const Navigation: FC = () => {
         label: 'Найти проект',
         value: 'findProject',
       },
-      ...(session.status === 'authenticated'
-        ? [
-            {
-              label: 'Предложить идею для проекта',
-              value: 'proposeIdea',
-            },
-          ]
-        : []),
+      {
+        label: 'Предложить идею для проекта',
+        value: 'proposeIdea',
+      },
     ],
     [session]
   );

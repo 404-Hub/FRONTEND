@@ -4,7 +4,7 @@ import TaskSubmitForMobile from './taskSubmitForMobile/TaskSubmitForMobile';
 import TaskSubmitForDesctop from './taskSubmitForDesctop/TaskSubmitForDesctop';
 import useConditions from './hooks/useConditions';
 
-const TaskSubmit = () => {
+const ProjectSubmit = () => {
   const conditionsInf = useConditions();
   const { conditions, handleChangeCondition, isValidCond } = conditionsInf;
   return (
@@ -23,4 +23,4 @@ const TaskSubmit = () => {
   );
 };
 
-export default TaskSubmit;
+export default ProjectSubmit;

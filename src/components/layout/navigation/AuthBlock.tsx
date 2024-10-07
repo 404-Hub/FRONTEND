@@ -18,6 +18,7 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    closeCallback();
   };
 
   const handleLogout = async () => {
@@ -43,69 +44,48 @@ const AuthBlock: FC<{ type: 'mobile' | 'desktop'; closeCallback: () => void }> =
           : {}),
       }}
     >
+      <Button
+        color="inherit"
+        variant={'contained'}
+        onClick={handleMenuOpen}
+        startIcon={<AccountCircleIcon />}
+      >
+        Аккаунт
+      </Button>
       {session?.user && (
-        <>
-          <Button
-            color="inherit"
-            variant={'contained'}
-            onClick={handleMenuOpen}
-            startIcon={<AccountCircleIcon />}
-          >
-            Аккаунт
-          </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="/profile">Профиль</Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="#">Мои Идеи</Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="/projects">Мои Проекты</Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link href="/account">Аккаунт</Link>
-            </MenuItem>
-            <MenuItem onClick={handleLogout}>Выйти</MenuItem>
-          </Menu>
-        </>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="/profile">Профиль</Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="#">Мои Идеи</Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="/projects">Мои Проекты</Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="/account">Аккаунт</Link>
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>Выйти</MenuItem>
+        </Menu>
       )}
       {!session && (
-        <>
-          <Link href={{ pathname: '/login' }}>
-            <Button
-              sx={{
-                width: '100%',
-              }}
-              color="inherit"
-              variant={'contained'}
-              onClick={() => {
-                closeCallback();
-              }}
-              startIcon={<LoginIcon />}
-            >
-              Войти
-            </Button>
-          </Link>
-          <Link href={{ pathname: '/register' }}>
-            <Button
-              sx={{
-                width: '100%',
-              }}
-              color="inherit"
-              variant={'contained'}
-              onClick={() => {
-                closeCallback();
-              }}
-            >
-              Регистрация
-            </Button>
-          </Link>
-        </>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="/login">Войти</Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link href="/register">Регистрация</Link>
+          </MenuItem>
+        </Menu>
       )}
     </Box>
   );

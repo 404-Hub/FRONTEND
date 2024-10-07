@@ -13,35 +13,26 @@ export function MainCover(props: { translations: any }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        gap: 4,
+        maxWidth: 500,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 4,
-          maxWidth: 500,
-        }}
-      >
-        <Typography variant={'h4'}>{translations.title}</Typography>
-        <Typography variant={'body1'}>{translations.description}</Typography>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant={'contained'}
-            sx={{ flexGrow: 1 }}
-            onClick={() => router.push('/categories')}
-          >
-            {translations.buttons.findProjectMain}
-          </Button>
-          <Button
-            sx={{ flexGrow: 1 }}
-            onClick={() => router.push('/projects/new')}
-          >
-            {translations.buttons.proposeIdeaMain}
-          </Button>
-        </Box>
+      <Typography variant={'h4'}>{translations.title}</Typography>
+      <Typography variant={'body1'}>{translations.description}</Typography>
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        <Button
+          variant={'contained'}
+          sx={{ flexGrow: 1 }}
+          onClick={() => router.push('/categories')}
+        >
+          {translations.buttons.findProjectMain}
+        </Button>
+        <Button
+          sx={{ flexGrow: 1 }}
+          onClick={() => router.push('/ideas/new')}
+        >
+          {translations.buttons.proposeIdeaMain}
+        </Button>
       </Box>
     </Box>
   );
