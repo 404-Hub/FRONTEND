@@ -87,6 +87,8 @@ const NewParty = (props: TNewPartyProps) => {
           setRequirements('');
           setDuration('30');
           setActiveStep(0);
+        } else {
+          console.error('Failed to create party:', resp.error);
         }
       });
 

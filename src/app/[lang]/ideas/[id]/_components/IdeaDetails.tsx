@@ -6,9 +6,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { assignApp, getIdea, voteIdea } from '@/api/client/idea';
-import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
+import { useEffect, useMemo, useState } from 'react';
+import { getIdea, voteIdea } from '@/api/client/idea';
+import { useSession } from 'next-auth/react';
 import { createProject } from '@/api/client/project';
 import Buttons from '@/app/[lang]/ideas/[id]/_components/IdeaDetails/Buttons';
 import RegisterModal from './RegisterModal';
@@ -173,8 +173,8 @@ const IdeaDetails = (props: { id: number }) => {
                 width: '28px',
                 height: '28px',
                 minWidth: '28px',
-                color: vote.type === 'up' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote.type === 'up' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'up' ? 'black' : 'grey',
+                background: vote.type === 'up' ? '#F4F6F8' : 'transparent',
               }}
               color="inherit"
               onClick={() => {
@@ -207,8 +207,8 @@ const IdeaDetails = (props: { id: number }) => {
                 height: '28px',
                 minWidth: '28px',
                 margin: 0,
-                color: vote.type === 'down' ? 'black' : 'grey', // должен был быть projectInf?.vote но не смог запушить
-                background: vote.type === 'down' ? '#F4F6F8' : 'transparent', // должен был быть projectInf?.vote но не смог запушить
+                color: vote.type === 'down' ? 'black' : 'grey',
+                background: vote.type === 'down' ? '#F4F6F8' : 'transparent',
               }}
               onClick={() => {
                 handleVoteClick(false);
@@ -229,7 +229,7 @@ const IdeaDetails = (props: { id: number }) => {
               sx={{ padding: 2 }}
             >
               {idea ? (
-                idea.additional
+                idea.additional_info
               ) : (
                 <Skeleton
                   animation="wave"

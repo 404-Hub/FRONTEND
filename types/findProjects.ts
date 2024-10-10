@@ -123,20 +123,49 @@ export type TVote = {
 
 export type TIdea = {
   id: number;
-  created_by: number | string;
-  category_id: number;
   title: string;
+  category: string;
   description: string;
+  additional_info: string;
+  rate: string;
+  estimation: number;
+  is_assigned: boolean;
   upvotes: number;
   downvotes: number;
+  vote: TVote | null;
+  project?: {
+    id: number;
+    idea_id: number;
+    user_id: number;
+    party_id: number;
+    git_link: string | null;
+    web_link: string | null;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    party: {
+      id: number;
+      created_by: number;
+      idea_id: number;
+      requirements: string;
+      duration: string;
+      is_active: number;
+      created_at: string;
+      updated_at: string;
+    };
+  };
+  party?: {
+    id: number;
+    created_by: number;
+    idea_id: number;
+    requirements: string;
+    duration: string;
+    is_active: number;
+    created_at: string;
+    updated_at: string;
+  };
   inprogress: number;
   done: number;
-  created_at: string;
-  updated_at: string;
-  additional: string;
-  vote: TVote;
-  is_assigned: boolean;
-  project: any;
 };
 
 export type {
