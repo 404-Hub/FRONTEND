@@ -3,12 +3,20 @@ import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleAuth } from '@/authMiddleware';
 
-const authRoutes: string[] = ['/dashboard', '/tasks', '/ideas/new', '/party/new', '/account'];
+const authRoutes: string[] = [
+  '/dashboard',
+  '/tasks',
+  '/ideas/new',
+  '/party/new',
+  '/account',
+  '/projects',
+  '/projects/*',
+];
 const verifyRoutes: string[] = ['/reset-password', '/verify-email'];
 const guestRoutes: string[] = ['/forgot-password', '/login', '/password-reset', '/register'];
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\..*|assets|favicon.ico|sw.js).*)'],
+  matcher: ['/((?!api|monitoring|_next/static|_next/image|.*\\..*|assets|favicon.ico|sw.js).*)'],
 };
 
 export default withAuth(

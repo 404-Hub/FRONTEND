@@ -136,6 +136,7 @@ export type TIdea = {
   additional: string;
   vote: TVote;
   is_assigned: boolean;
+  project: any;
 };
 
 export type {

@@ -16,7 +16,7 @@ export const getProjects = async () => {
   }
 };
 
-export const getProject = async (projectId: number) => {
+export const getProject = async (projectId: string) => {
   try {
     const response = await fetchServer({
       method: 'GET',

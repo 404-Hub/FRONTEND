@@ -6,105 +6,88 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { assignApp, getIdea, voteIdea } from '@/api/client/idea';
 import { useSession, signIn } from 'next-auth/react'; //! Импорт доп.библиотек
 import { createProject } from '@/api/client/project';
+import Buttons from '@/app/[lang]/ideas/[id]/_components/IdeaDetails/Buttons';
 import RegisterModal from './RegisterModal';
 
 const IdeaDetails = (props: { id: number }) => {
-  const [projectInf, setProjectInf] = useState<TIdea>();
-  const [rating, setRating] = useState<number>(0);
-  const [ratingColor, setRatingColor] = useState<string>();
-  const [isTaken, setIsTaken] = useState(false);
+  const [idea, setIdea] = useState<TIdea>();
   const [vote, setVote] = useState<TVote>({ type: 'none' });
-  const [showModal, setShowModal] = useState(false); //! Отображение модального окна
+  const [showModal, setShowModal] = useState(false);
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { data: session, status } = useSession(); //! Данные по сессии
+  const { data: session, status } = useSession();
 
   const PAGE_TITLE = 'назад';
   const RATING = 'Рейтинг';
   const ADDITIONAL = 'Для кого';
   const DETAILS = 'Детали';
-  const BACK = 'Назад';
-  const REJECTION = 'Отказаться';
-  const TAKE_OR_PASS = isTaken ? 'Сдать задачу' : 'Взять на себя';
   const ratingColorsVariant = {
     positive: '#1C8C59',
     negative: '#B52020',
   };
 
-  const fetchProject = useCallback(
-    async (ideaId: number) => {
-      try {
-        const ideaInf: TIdea = await getIdea(ideaId);
-        setProjectInf(ideaInf);
-        if (ideaInf.vote) {
-          setVote(ideaInf.vote);
-        }
-        if (ideaInf.is_assigned) {
-          setIsTaken(true);
-        }
-        setRating(ideaInf.upvotes - ideaInf.downvotes);
-      } catch (error) {
-        throw new Error('An error occurred during try to load more ideas', { cause: error });
+  const rating = useMemo(() => {
+    if (idea) {
+      return idea.upvotes - idea.downvotes;
+    }
+    return 0;
+  }, [idea]);
+
+  const fetchProject = async (ideaId: number) => {
+    try {
+      const ideaInf: TIdea = await getIdea(ideaId);
+      setIdea(ideaInf);
+      if (ideaInf.vote) {
+        setVote(ideaInf.vote);
       }
-    },
-    [projectInf, vote]
-  );
-  const handleIsIdeaTakenChange = async () => {
+    } catch (error) {
+      throw new Error('An error occurred during try to load more ideas', { cause: error });
+    }
+  };
+  const handleProjectCreate = async () => {
     if (!session) {
-      //! Проверка сессии
       setShowModal(true);
       return;
     }
 
-    if (!projectInf) {
+    if (!idea) {
       return;
     }
 
-    const res = await createProject({ idea_id: projectInf.id.toString() });
-    if (res.success && projectInf) {
-      projectInf.is_assigned = true;
-      setIsTaken((prev) => !prev);
+    const res = await createProject({ idea_id: idea.id.toString() });
+    if (res.success) {
+      router.push(`/projects/${res.data.id}`);
     }
   };
 
-  const handleVoteClick = useCallback(
-    async (isUpvote: boolean) => {
-      if (!session) {
-        setShowModal(true);
-        return;
-      }
+  const handleVoteClick = async (isUpvote: boolean) => {
+    if (!session) {
+      setShowModal(true);
+      return;
+    }
 
-      if (!projectInf) {
-        console.error('Project information is undefined');
-        return;
-      }
+    if (!idea) {
+      console.error('Project information is undefined');
+      return;
+    }
 
-      try {
-        const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
-        await voteIdea(String(projectInf.id), voteType);
-
-        await fetchProject(projectInf.id);
-      } catch (error) {
-        console.error('Произошла ошибка во время голосования:', error);
-      }
-    },
-    [session, fetchProject]
-  );
-
-  console.log(vote);
+    try {
+      const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
+      await voteIdea(String(idea.id), voteType);
+      await fetchProject(idea.id);
+    } catch (error) {
+      console.error('Произошла ошибка во время голосования:', error);
+    }
+  };
 
   useEffect(() => {
-    fetchProject(Number(props.id ?? searchParams.get('ideaId')));
-  }, []);
-
-  useEffect(() => {
-    setRatingColor(() => (rating >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative));
-  }, [projectInf, vote]);
+    fetchProject(Number(props.id));
+  }, [props.id]);
 
   return (
     <Paper
@@ -124,6 +107,7 @@ const IdeaDetails = (props: { id: number }) => {
           flexDirection: 'row',
           paddingX: 2,
           alignItems: 'center',
+          cursor: 'pointer',
         }}
         onClick={() => {
           router.back();
@@ -150,8 +134,8 @@ const IdeaDetails = (props: { id: number }) => {
           variant={'h4'}
           sx={{ padding: 2, fontWeight: '500' }}
         >
-          {projectInf ? (
-            projectInf.title
+          {idea ? (
+            idea.title
           ) : (
             <Skeleton
               animation="wave"
@@ -201,10 +185,10 @@ const IdeaDetails = (props: { id: number }) => {
             </Button>
             <Typography
               align="center"
-              sx={{ color: ratingColor }}
+              sx={{ color: rating >= 0 ? ratingColorsVariant.positive : ratingColorsVariant.negative }}
             >
               {/* eslint-disable-next-line no-nested-ternary */}
-              {projectInf ? (
+              {idea ? (
                 rating <= 0 ? (
                   rating
                 ) : (
@@ -244,8 +228,8 @@ const IdeaDetails = (props: { id: number }) => {
               variant="inherit"
               sx={{ padding: 2 }}
             >
-              {projectInf ? (
-                projectInf.additional
+              {idea ? (
+                idea.additional
               ) : (
                 <Skeleton
                   animation="wave"
@@ -265,8 +249,8 @@ const IdeaDetails = (props: { id: number }) => {
               variant="inherit"
               sx={{ padding: 2 }}
             >
-              {projectInf ? (
-                projectInf.description
+              {idea ? (
+                idea.description
               ) : (
                 <Skeleton
                   animation="wave"
@@ -276,56 +260,10 @@ const IdeaDetails = (props: { id: number }) => {
             </Typography>
           </Box>
         </Paper>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 1,
-            background: '#F9FAFB',
-          }}
-        >
-          <Button
-            onClick={() => {
-              router.push(`/party/new?ideaId=${projectInf?.id.toString()}`);
-            }}
-          >
-            Request A Party for this task
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: 'transparent',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 1,
-            background: '#F9FAFB',
-          }}
-        >
-          <Button
-            variant="outlined"
-            color={`${isTaken ? 'error' : 'success'}`}
-            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={() => (isTaken ? handleIsIdeaTakenChange() : router.back())}
-          >
-            {`${isTaken ? REJECTION : BACK}`}
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ textTransform: 'none', width: '48%', fontWeight: 200 }}
-            onClick={() => {
-              if (isTaken) {
-                router.push(`/projects/${props.id ?? searchParams.get('ideaId')}/submit`);
-              } else {
-                handleIsIdeaTakenChange();
-              }
-            }}
-          >
-            {TAKE_OR_PASS}
-          </Button>
-        </Box>
+        <Buttons
+          idea={idea}
+          handleIsIdeaTakenChange={handleProjectCreate}
+        />
         {showModal && (
           <RegisterModal
             open={showModal}
