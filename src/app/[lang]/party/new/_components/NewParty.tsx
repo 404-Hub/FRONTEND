@@ -87,6 +87,8 @@ const NewParty = (props: TNewPartyProps) => {
           setRequirements('');
           setDuration('30');
           setActiveStep(0);
+          // Redirect to the desired route
+          router.push(`/projects/${ideaId}/party`);
         } else {
           console.error('Failed to create party:', resp.error);
         }
