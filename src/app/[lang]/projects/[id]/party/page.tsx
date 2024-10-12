@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         >
           {/* Left side */}
           <ProjectDescription project={currentParty.project} />
-          <ProjectCreator project={currentParty.project} />
+          <ProjectCreator party={currentParty} />
           <ProjectTeam partyMembers={currentParty.partyMembers} />
         </Grid>
         <Grid
@@ -35,7 +35,28 @@ export default async function Page({ params }: { params: { id: string } }) {
           xs={6}
         >
           {/* Right side */}
-          <Chat />
+          <Chat
+            messages={[
+              {
+                id: 'ghagsd-jhdfuhw-khkwef',
+                date: '12 Jan 2023',
+                text: 'расскажем, как найти мотивацию и ресурсы для саморазвития. Поднимайте свой уровень знаний и умений вместе с нами!',
+                user: {
+                  name: 'Jenny Wilson',
+                  avatar: 'http://link.com',
+                },
+              },
+              {
+                id: 'jgsdfygw-khdfw',
+                date: '12 Jan 2023',
+                text: 'ты находишься, всегда есть что учить, и мир полон удивительных знаний. В нашем новом посте мы поделимся с вами несколькими',
+                user: {
+                  name: 'Darlene Robertson',
+                  avatar: 'http://link2.com',
+                },
+              },
+            ]}
+          />
         </Grid>
       </Grid>
     </Container>
