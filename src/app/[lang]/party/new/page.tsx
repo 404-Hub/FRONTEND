@@ -28,7 +28,6 @@ export default async function NewPartyPage({ searchParams }: { searchParams: Rec
       <NewParty
         rolesInfo={roles}
         ideaId={ideaId}
-        projectId={projectId}
       />
     </Container>
   );

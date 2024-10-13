@@ -10,7 +10,6 @@ export const getParty = async (projectId: string) => {
 
     const party = await response.json();
 
-    console.log('party', party);
     return party.data;
   } catch (error) {
     console.log('error', error);
