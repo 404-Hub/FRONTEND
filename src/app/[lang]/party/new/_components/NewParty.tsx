@@ -46,11 +46,13 @@ type TRole = {
 
 interface TNewPartyProps {
   ideaId: string;
+  projectId: string;
   rolesInfo: TRole[];
 }
 
 const NewParty = (props: TNewPartyProps) => {
-  const { ideaId, rolesInfo } = props;
+  console.log('props', props);
+  const { ideaId, rolesInfo, projectId } = props;
   const [activeStep, setActiveStep] = useState(0);
   const [role, setRole] = useState('0');
   const [roles, setRoles] = useState<string[]>([]);
@@ -65,6 +67,7 @@ const NewParty = (props: TNewPartyProps) => {
     if (steps.length === activeStep + 1) {
       const formData = {
         idea_id: ideaId,
+        project_id: projectId,
         requirements,
         duration,
         creator_role: {
@@ -88,7 +91,7 @@ const NewParty = (props: TNewPartyProps) => {
           setDuration('30');
           setActiveStep(0);
           // Redirect to the desired route
-          router.push(`/projects/${ideaId}/party`);
+          router.push(`/projects/${projectId}/party`);
         } else {
           console.error('Failed to create party:', resp.error);
         }

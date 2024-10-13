@@ -3,7 +3,7 @@ import { Paper } from '@mui/material';
 export default function ProjectDescription({ project }: { project: any }) {
   return (
     <Paper
-      sx={{ marginBottom: 4 }}
+      sx={{ marginBottom: 4, padding: '16px 16px 16px 8px' }}
       elevation={8}
     >
       <h2>Описание проекта</h2>
