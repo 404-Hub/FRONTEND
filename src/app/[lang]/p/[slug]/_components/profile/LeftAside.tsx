@@ -42,7 +42,9 @@ const LeftAside = (props: TLeftAsideProps) => {
         <Typography variant="h6">Описание</Typography>
         <Box>
           <Typography variant="body2">{props.profile?.about}</Typography>
-          <Typography variant="body2">Доступен: {props.profile?.availability ?? 'Undefined'}</Typography>
+          {props.profile?.availability && (
+            <Typography variant="body2">Доступен: {props.profile?.availability ?? 'None'}</Typography>
+          )}
         </Box>
         <Box>
           {props.contacts.map((contact) => (
@@ -53,7 +55,7 @@ const LeftAside = (props: TLeftAsideProps) => {
               sx={{ marginTop: '1rem' }}
             >
               {iconsMap[contact.icon]}
-              <Typography>{contact.text ?? 'Undefined'}</Typography>
+              <Typography>{contact.text}</Typography>
             </Box>
           ))}
         </Box>

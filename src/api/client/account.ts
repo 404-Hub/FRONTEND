@@ -1,5 +1,6 @@
 import fetchClient from '@/lib/fetch-client';
 import { TProfile, TRole } from '@/types/entity';
+import { TPartyListItem } from '@/types/party';
 
 interface TChangePasswordData {
   password: string;
@@ -63,8 +64,6 @@ export const saveUserProfile = async (data: any) => {
       formData.append(key, data[key]);
     });
 
-    console.log('formData', formData);
-
     const response = await fetchClient({
       method: 'POST',
       url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/user/profile`,
@@ -87,7 +86,7 @@ export const getPartyList = async () => {
     if (!response.ok) throw response;
 
     const data = await response.json();
-    return data.data;
+    return data.data as Promise<TPartyListItem[]>;
   } catch (error) {
     console.log(error);
   }
