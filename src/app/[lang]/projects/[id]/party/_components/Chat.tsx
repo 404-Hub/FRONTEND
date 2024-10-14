@@ -1,5 +1,5 @@
-import { Box, Input, InputAdornment, Paper, TextField } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import { Box, IconButton, Input, InputAdornment, Paper, TextField, Typography } from '@mui/material';
+import { AccountCircle, AttachFile, Send } from '@mui/icons-material';
 import Message from './Chat/Message';
 
 type TMessageInfo = {
@@ -15,7 +15,7 @@ type TMessageInfo = {
 export default function Chat(props: { messages: TMessageInfo[] }) {
   return (
     <Paper
-      sx={{ marginBottom: 4 }}
+      sx={{ marginBottom: 4, padding: '1rem 1.5rem 1.5rem 1.5rem' }}
       elevation={8}
     >
       {/* Header */}
@@ -24,13 +24,34 @@ export default function Chat(props: { messages: TMessageInfo[] }) {
           display: 'flex',
           gap: '1rem',
           justifyContent: 'space-between',
+          paddingBottom: '1rem',
         }}
       >
-        <div>Chat party</div>
-        <div>Members online</div>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontSize: '1rem' }}
+        >
+          Чат пати
+        </Typography>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontSize: '1rem' }}
+        >
+          3 онлайн
+        </Typography>
       </Box>
+      {/* Line */}
+      <Box
+        sx={{
+          borderBottom: '1px solid #DFE3E8',
+          width: 'calc(100% + 3rem)',
+          marginLeft: '-1.5rem',
+          marginRight: '-1.5rem',
+          marginBottom: '1.5rem',
+        }}
+      />
       {/* Section */}
-      <Box>
+      <Box sx={{ marginBottom: '10rem' }}>
         {props.messages.map((message) => (
           <Message
             key={message.id}
@@ -41,15 +62,24 @@ export default function Chat(props: { messages: TMessageInfo[] }) {
       {/* Footer */}
       <TextField
         id="input-with-icon-textfield"
-        label="TextField"
+        label="write a message"
+        sx={{
+          width: '100%',
+          borderColor: '#18A670', // Цвет границы при фокусе
+        }}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <AccountCircle />
+              <IconButton>
+                <AttachFile sx={{ fontSize: '1.5rem', rotate: '45deg' }} />
+              </IconButton>
+              <IconButton>
+                <Send sx={{ fontSize: '1.5rem' }} />
+              </IconButton>
             </InputAdornment>
           ),
         }}
-        variant="standard"
+        variant="outlined"
       />
     </Paper>
   );
