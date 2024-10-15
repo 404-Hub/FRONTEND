@@ -19,7 +19,7 @@ export default function ProjectCreator({ party }: { party: any }) {
         <Grid
           item
           xs={2}
-          sx={{ display: 'flex', paddingRight: 0 }} //! Не могу убрать отступ
+          sx={{ display: 'flex', paddingRight: 0 }}
         >
           {/* left (avatar)  */}
           <Avatar
@@ -70,7 +70,7 @@ export default function ProjectCreator({ party }: { party: any }) {
               variant="body1"
               sx={{ marginLeft: 1 }}
             >
-              {creatorRequest?.time}
+              {creatorRequest?.time} часов в неделю
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>

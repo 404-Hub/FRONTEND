@@ -23,16 +23,18 @@ export default async function Page({ params }: { params: { id: string } }) {
       >
         <Grid
           item
-          xs={6}
+          xs={12}
+          md={6}
         >
           {/* Left side */}
           <ProjectDescription project={currentParty.project} />
           <ProjectCreator party={currentParty} />
-          <ProjectTeam partyMembers={currentParty.partyMembers} />
+          <ProjectTeam party={currentParty} />
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={12}
+          md={6}
         >
           {/* Right side */}
           <Chat

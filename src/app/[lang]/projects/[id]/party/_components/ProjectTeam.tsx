@@ -3,15 +3,16 @@ import Link from 'next/link';
 
 type TProjectTeamMember = {
   id: number;
-  user: string | null;
+  user: any;
   role: string;
 };
 
-type TProjectTeamProps = {
-  partyMembers: TProjectTeamMember[];
-};
+export default function ProjectTeam({ party }: any) {
+  const { partyMembers, project } = party;
+  const { creator } = project;
 
-export default function ProjectTeam({ partyMembers }: TProjectTeamProps) {
+  const filteredMembers = partyMembers.filter((member: TProjectTeamMember) => member.user?.id !== creator.id);
+
   return (
     <Paper
       sx={{ marginBottom: 4, padding: '1.5rem' }}
@@ -24,8 +25,7 @@ export default function ProjectTeam({ partyMembers }: TProjectTeamProps) {
         >
           Project Team
         </Typography>
-        {/* Flex */}
-        {partyMembers.map((member) => (
+        {filteredMembers.map((member: TProjectTeamMember) => (
           <Box
             key={member.id}
             sx={{
@@ -41,7 +41,7 @@ export default function ProjectTeam({ partyMembers }: TProjectTeamProps) {
               variant="subtitle2"
               sx={{ fontSize: '1rem', paddingLeft: '1.5rem', padding: '1rem' }}
             >
-              {member.role}
+              {member.role} {member.user?.id}
             </Typography>
             <Box sx={{ flex: 1, padding: '1rem' }}>
               <Link href="#">

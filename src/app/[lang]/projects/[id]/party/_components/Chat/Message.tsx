@@ -20,13 +20,13 @@ export default function Message({ message }: { message: TMessageInfo }) {
         <Grid
           item
           xs={2}
-          sx={{ display: 'flex', paddingRight: 0 }} //! Не могу убрать отступ
+          sx={{ display: 'flex' }}
         >
           {/* left (avatar)  */}
           <Avatar
             alt="Your avatar"
             src={message.user?.avatar}
-            sx={{ width: 56, height: 56, padding: 0 }}
+            sx={{ width: 56, height: 56 }}
           />
         </Grid>
         {/** right name, description and etc */}
