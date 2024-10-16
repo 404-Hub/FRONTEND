@@ -17,7 +17,29 @@ import ProjectCreator from './_components/ProjectCreator';
 import ProjectTeam from './_components/ProjectTeam';
 import Chat from './_components/Chat';
 
-export default function PageClient({ currentParty, currentUser }) {
+// Define the types for currentParty and currentUser
+interface User {
+  id: string;
+  name: string;
+  // Add other properties as needed
+}
+
+interface Project {
+  creator: User;
+  // Add other properties as needed
+}
+
+interface Party {
+  project: Project;
+  // Add other properties as needed
+}
+
+interface PageClientProps {
+  currentParty: Party;
+  currentUser: User;
+}
+
+export default function PageClient({ currentParty, currentUser }: PageClientProps) {
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
   console.log('currentUser:', currentUser);
