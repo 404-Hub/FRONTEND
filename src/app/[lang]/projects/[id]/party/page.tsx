@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <PageClient
       currentParty={currentParty}
-      currentUser={currentUser}
+      currentUser={currentUser || { id: '', name: '' }} // Provide a default value
     />
   );
 }

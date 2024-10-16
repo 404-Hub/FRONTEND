@@ -36,7 +36,7 @@ interface Party {
 
 interface PageClientProps {
   currentParty: Party;
-  currentUser: User;
+  currentUser?: User; // Make currentUser optional
 }
 
 export default function PageClient({ currentParty, currentUser }: PageClientProps) {
@@ -46,7 +46,7 @@ export default function PageClient({ currentParty, currentUser }: PageClientProp
   console.log('currentParty.project.creator.id:', currentParty.project.creator.id);
   console.log(
     'currentUser.id === currentParty.project.creator.id:',
-    currentUser.id === currentParty.project.creator.id
+    currentUser?.id === currentParty.project.creator.id
   );
 
   const handleCloseRequest = () => {
