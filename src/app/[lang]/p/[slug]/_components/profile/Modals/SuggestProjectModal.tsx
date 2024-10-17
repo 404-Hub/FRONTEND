@@ -87,8 +87,7 @@ const SuggestProjectModal = (props: TSuggestProjectModalProps) => {
     }
 
     inviteToParty(formData).then((res: { success: boolean }) => {
-      console.log('test', res);
-      if (res.success) {
+      if (res?.success) {
         onClose();
       }
     });
