@@ -7,9 +7,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
+import { TProfileInfo } from '@/types/profile';
 
-const Content = () => {
-  const i = 1;
+type TContentProps = {
+  profile: TProfileInfo;
+  isLogged: boolean;
+  isOwner: boolean;
+};
+const Content = (props: TContentProps) => {
+  let { avatar } = props.profile;
+
+  if (!avatar) {
+    avatar = '/images/default_avatar.png';
+  }
 
   return (
     <Grid
@@ -17,56 +27,58 @@ const Content = () => {
       xs={12}
       md={8}
     >
-      <Paper
-        elevation={2}
-        sx={{ padding: '1rem' }}
-      >
-        <Box>
-          <TextField
-            id={'new-post'}
-            label={'New post'}
-            variant={'outlined'}
-            multiline
-            fullWidth
-            minRows={4}
-          />
-        </Box>
-        <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          sx={{ marginTop: '1rem' }}
+      {props.isOwner && (
+        <Paper
+          elevation={2}
+          sx={{ padding: '1rem' }}
         >
-          <Box
-            display={'flex'}
-            gap={'1rem'}
-            alignItems={'center'}
-          >
-            <AttachFileIcon />
-            <Typography variant="body2">add file</Typography>
-          </Box>
-          <Box
-            display={'flex'}
-            gap={'1.5rem'}
-          >
-            <Button
+          <Box>
+            <TextField
+              id={'new-post'}
+              label={'New post'}
               variant={'outlined'}
-              color={'success'}
-            >
-              Очистить
-            </Button>
-            <Button
-              variant={'contained'}
-              color={'success'}
-            >
-              Опубликовать
-            </Button>
+              multiline
+              fullWidth
+              minRows={4}
+            />
           </Box>
-        </Box>
-      </Paper>
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            sx={{ marginTop: '1rem' }}
+          >
+            <Box
+              display={'flex'}
+              gap={'1rem'}
+              alignItems={'center'}
+            >
+              <AttachFileIcon />
+              <Typography variant="body2">add file</Typography>
+            </Box>
+            <Box
+              display={'flex'}
+              gap={'1.5rem'}
+            >
+              <Button
+                variant={'outlined'}
+                color={'success'}
+              >
+                Очистить
+              </Button>
+              <Button
+                variant={'contained'}
+                color={'success'}
+              >
+                Опубликовать
+              </Button>
+            </Box>
+          </Box>
+        </Paper>
+      )}
 
       <Paper
         elevation={2}
-        sx={{ marginTop: '1.5rem', padding: '1rem' }}
+        sx={{ marginTop: props.isOwner ? '1.5rem' : '0', padding: '1rem' }}
       >
         <Box
           className={'post-header'}
@@ -86,12 +98,14 @@ const Content = () => {
               <Typography variant="caption">12 Aug 2023, 10:00 PM</Typography>
             </Box>
           </Box>
-          <Box
-            display={'flex'}
-            alignItems={'center'}
-          >
-            <MenuIcon />
-          </Box>
+          {props.isOwner && props.isLogged && (
+            <Box
+              display={'flex'}
+              alignItems={'center'}
+            >
+              <MenuIcon />
+            </Box>
+          )}
         </Box>
         <Box
           className={'post-content'}
@@ -125,7 +139,7 @@ const Content = () => {
           >
             <Box
               display={'flex'}
-              gap={'1rem'}
+              gap={'0.5rem'}
               alignItems={'center'}
             >
               <FavoriteIcon color={'error'} />
@@ -176,7 +190,10 @@ const Content = () => {
           sx={{ marginTop: '1rem' }}
         >
           <Box>
-            <Avatar sx={{ width: '56px', height: '56px' }} />
+            <Avatar
+              sx={{ width: '56px', height: '56px' }}
+              src={avatar}
+            />
           </Box>
           <Box
             sx={{
