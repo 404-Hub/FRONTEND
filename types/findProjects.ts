@@ -165,6 +165,7 @@ export type TIdea = {
     updated_at: string;
   };
   inprogress: number;
+  done: number;
 };
 
 export type {
