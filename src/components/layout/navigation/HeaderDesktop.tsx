@@ -77,7 +77,7 @@ const HeaderDesktop: FC<{
           <Box sx={{ display: 'flex', gap: 3 }}>
             <Link
               target={'_blank'}
-              href={'https://t.me/svyatamesto'}
+              href={'https://t.me/+YKgMaur5pIZjZjBi'}
             >
               <Button
                 color="inherit"
