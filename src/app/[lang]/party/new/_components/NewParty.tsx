@@ -79,6 +79,7 @@ const NewParty = (props: TNewPartyProps) => {
 
       storeParty(formData).then((resp) => {
         if (resp.success) {
+          console.log('resp', resp);
           setIsCreated(true);
           setRole('0');
           setRoles([]);
@@ -87,6 +88,8 @@ const NewParty = (props: TNewPartyProps) => {
           setRequirements('');
           setDuration('30');
           setActiveStep(0);
+          // Redirect to the desired route
+          router.push(`/projects/${resp.data.project_id}/party`);
         } else {
           console.error('Failed to create party:', resp.error);
         }
