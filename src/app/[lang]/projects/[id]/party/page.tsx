@@ -7,6 +7,7 @@ import ProjectCreator from './_components/ProjectCreator';
 import ProjectTeam from './_components/ProjectTeam';
 import Chat from './_components/Chat';
 import ButtonCreator from './_components/ButtonCreator';
+import ProjectHeader from './_components/ProjectHeader';
 
 // Define the types for currentParty and currentUser
 interface User {
@@ -35,6 +36,7 @@ function PageClient({ currentParty, currentUser }: { currentParty: Party; curren
       maxWidth="lg"
       disableGutters
     >
+      <ProjectHeader project={currentParty.project} />
       <Grid
         container
         rowSpacing={1}
