@@ -1,14 +1,12 @@
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { AlertColor, Box, Button, Grid, Snackbar } from '@mui/material';
+import { AlertColor, Box, Button, Grid, Snackbar, Alert } from '@mui/material';
 import { getUserProfile, getUserRoles, saveUserProfile } from '@/api/client/account';
 import { TProfile, TRole } from '@/types/entity';
 import General from '@/app/[lang]/account/_components/account/info/General';
 import Contacts from '@/app/[lang]/account/_components/account/info/Contacts';
 import useGlobalState from '@/lib/hooks/useGlobalState';
-import { Alert } from '@mui/lab';
-import CheckIcon from '@mui/icons-material/Check';
 
 const Info = () => {
   const context = useGlobalState();

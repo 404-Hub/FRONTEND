@@ -29,7 +29,7 @@ export function MainCover(props: { translations: any }) {
         </Button>
         <Button
           sx={{ flexGrow: 1 }}
-          onClick={() => router.push('/projects/new')}
+          onClick={() => router.push('/ideas/new')}
         >
           {translations.buttons.proposeIdeaMain}
         </Button>

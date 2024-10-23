@@ -13,11 +13,8 @@ export type HeaderLink = {
 };
 
 const pathToLinkSlugMap: Record<HeaderLink['value'], string> = {
-  '/': 'main',
-  '/tasks': 'myTasks',
   '/categories': 'findProject',
   '/ideas/new': 'proposeIdea',
-  '/find-project/subscribers': 'subscribers',
 };
 
 export const Navigation: FC = () => {
