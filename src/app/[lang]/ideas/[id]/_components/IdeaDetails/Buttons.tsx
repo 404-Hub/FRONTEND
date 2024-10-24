@@ -1,10 +1,13 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { getPartyRequests } from '@/api/client/party'; // Убедитесь, что путь к вашему API корректный
 
 type TIdeaButtons = {
   idea: any;
   handleIsIdeaTakenChange: () => void;
 };
+
 const Buttons = (props: TIdeaButtons) => {
   const router = useRouter();
   const { idea, handleIsIdeaTakenChange } = props;
@@ -14,6 +17,34 @@ const Buttons = (props: TIdeaButtons) => {
 
   const projectButtonText = isTaken ? 'Перейти в проект' : 'Начать проект';
   const partyButtonText = isPartyExist ? 'Перейти в команду' : 'Собрать команду';
+
+  const [partyRequestsCount, setPartyRequestsCount] = useState(0);
+
+  const fetchPartyRequests = async () => {
+    if (idea?.id) {
+      try {
+        const data = await getPartyRequests(idea.id);
+        if (data && data.success) {
+          if (Array.isArray(data.data.items)) {
+            setPartyRequestsCount(data.data.items.length);
+          } else {
+            console.warn('Items is not an array or is undefined:', data.data.items);
+            setPartyRequestsCount(0);
+          }
+        } else {
+          console.warn('Failed to fetch party requests:', data);
+          setPartyRequestsCount(0);
+        }
+      } catch (error) {
+        console.error('Error fetching party requests:', error);
+        setPartyRequestsCount(0);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchPartyRequests();
+  }, [idea]);
 
   const handelPartyClick = () => {
     if (idea.party) {
@@ -56,12 +87,23 @@ const Buttons = (props: TIdeaButtons) => {
             color={'warning'}
             size={'large'}
             sx={{ mt: 2, color: 'white' }}
-            onClick={() => {
-              handelPartyClick();
-            }}
+            onClick={handelPartyClick}
           >
             {partyButtonText}
           </Button>
+
+          {partyRequestsCount < 1 && (
+            <Button
+              variant="outlined"
+              size={'large'}
+              sx={{ mt: 2 }}
+              onClick={() => {
+                router.push(`/party/list/${idea.id}`);
+              }}
+            >
+              Смотреть запросы от других ({partyRequestsCount})
+            </Button>
+          )}
         </Grid>
         <Grid
           item
