@@ -81,10 +81,12 @@ function PageClient({ currentParty, currentUser }: { currentParty: Party; curren
             ]}
           />
         </Grid>
-        <ButtonCreator
-          currentUser={currentUser}
-          currentParty={currentParty}
-        />
+        {currentUser && currentUser.id && currentUser.id === currentParty.project.creator.id && (
+          <ButtonCreator
+            currentUser={currentUser}
+            currentParty={currentParty}
+          />
+        )}
       </Grid>
     </Container>
   );

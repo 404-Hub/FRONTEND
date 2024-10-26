@@ -79,7 +79,6 @@ const NewParty = (props: TNewPartyProps) => {
 
       storeParty(formData).then((resp) => {
         if (resp.success) {
-          console.log('resp', resp);
           setIsCreated(true);
           setRole('0');
           setRoles([]);

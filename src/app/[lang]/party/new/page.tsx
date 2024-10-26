@@ -4,7 +4,6 @@ import { getRoles } from '@/api/server/roles';
 import NewParty from './_components/NewParty';
 
 export default async function NewPartyPage({ searchParams }: { searchParams: Record<string, string> }) {
-  const { projectId } = searchParams;
   const { ideaId } = searchParams;
   if (!ideaId) {
     redirect('/categories/new');
