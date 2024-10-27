@@ -122,19 +122,15 @@ export const authOptions: NextAuthOptions = {
         throw new Error('Refresh token has expired');
       }
 
-      // @todo: разобраться с ошибками eslint
-      // eslint-disable-next-line no-param-reassign
-      session.accessToken = token.accessToken;
-      // eslint-disable-next-line no-param-reassign
-      session.user.name = token.name || '';
-      // eslint-disable-next-line no-param-reassign
-      session.user.email = token.email || '';
-      // eslint-disable-next-line no-param-reassign
-      session.user.email_verified_at = token.email_verified_at;
-      // eslint-disable-next-line no-param-reassign
-      session.user.id = token.id;
+      const newSession = { ...session };
 
-      return session;
+      newSession.accessToken = token.accessToken;
+      newSession.user.id = token.id || '';
+      newSession.user.name = token.name || '';
+      newSession.user.email = token.email || '';
+      newSession.user.email_verified_at = token.email_verified_at;
+
+      return newSession;
     },
   },
   events: {
