@@ -43,3 +43,19 @@ export const updateProjectStatus = async (projectId: string, status: string) => 
     console.log(error);
   }
 };
+
+export const getProjects = async (query: string) => {
+  try {
+    const response = await fetchClient({
+      method: 'GET',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects?query=${query}`,
+    });
+    if (!response.ok) throw response;
+
+    const projects = await response.json();
+
+    return projects.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
