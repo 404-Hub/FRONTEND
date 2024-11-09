@@ -32,7 +32,7 @@ type ActualFilter = {
   actualLabel: string;
 };
 
-type TProject = {
+type TIdea = {
   rating: string;
   upvotes: number;
   downvotes: number;
@@ -48,7 +48,7 @@ type ProjectsListProps = {
 };
 
 type ProjectCardProps = {
-  project: TProject;
+  project: TIdea;
 };
 
 type FilterChangeArgs = {
@@ -121,7 +121,9 @@ export type TVote = {
   type: 'up' | 'down' | 'none';
 };
 
-export type TIdea = {
+export type TProjectStatus = 'active' | 'review' | 'approved' | 'deployed' | 'archived' | 'assembling';
+
+export type TProject = {
   id: number;
   title: string;
   category: string;
@@ -166,6 +168,7 @@ export type TIdea = {
   };
   inprogress: number;
   done: number;
+  status: TProjectStatus;
 };
 
 export type {
@@ -184,7 +187,7 @@ export type {
   SelectedFilters,
   TFilterChangeFunction,
   ActualFilter,
-  TProject,
+  TIdea,
   ProjectsListProps,
   ProjectCardProps,
 };

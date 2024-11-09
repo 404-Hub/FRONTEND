@@ -6,12 +6,12 @@ import { Button, Paper } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import React, { useCallback, useState } from 'react';
-import { ProjectCardProps, TProject } from '@/types/findProjects';
+import { ProjectCardProps, TIdea } from '@/types/findProjects';
 import { useRouter } from 'next/navigation';
 
 const ProjectCard: React.FC<ProjectCardProps> = (props) => {
   const { project } = props;
-  const { title, rating, id, description } = project as TProject;
+  const { title, rating, id, description } = project as TIdea;
   const [elevation, setElevation] = useState(3);
   const height = 288;
 

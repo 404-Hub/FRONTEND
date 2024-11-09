@@ -3,7 +3,7 @@
 import projectsListStyles from '@/styles/findProjectStyles/projectsListStyles';
 import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ProjectsListProps, TProject } from '@/types/findProjects';
+import { ProjectsListProps, TIdea } from '@/types/findProjects';
 import filtersStyles from '@/styles/findProjectStyles/filtersStyles';
 import useGlobalState from '@/lib/hooks/useGlobalState';
 import { getIdeas } from '@/api/client/idea';
@@ -12,7 +12,7 @@ import ProjectCard from './ProjectCard';
 const ProjectsList = (props: ProjectsListProps) => {
   const { categories } = useGlobalState();
   const { categoryId, filtersState } = props;
-  const [projects, setProjects] = useState<TProject[]>([]);
+  const [projects, setProjects] = useState<TIdea[]>([]);
   const [lastRequestCurrentPage, setLastRequestCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [hasAnotherProjects, setHasAnotherProjects] = useState(true);
@@ -22,7 +22,7 @@ const ProjectsList = (props: ProjectsListProps) => {
 
   // eslint-disable-next-line no-unused-vars
 
-  const projectsCheck = (relevantProj: TProject[], newProj: TProject[]) => {
+  const projectsCheck = (relevantProj: TIdea[], newProj: TIdea[]) => {
     if (
       relevantProj.length > 0 &&
       newProj.length > 0 &&

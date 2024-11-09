@@ -2,9 +2,9 @@ import { getParty } from '@/api/server/party';
 import { getCurrentUser } from '@/lib/session';
 import { Container, Grid } from '@mui/material';
 import React from 'react';
-import ProjectDescription from './_components/ProjectDescription';
-import ProjectCreator from './_components/ProjectCreator';
-import ProjectTeam from './_components/ProjectTeam';
+import ProjectDescription from '@/components/project/ProjectDescription';
+import ProjectCreator from '@/components/project/ProjectCreator';
+import ProjectTeam from '@/components/project/ProjectTeam';
 import Chat from './_components/Chat';
 import ButtonCreator from './_components/ButtonCreator';
 import ProjectHeader from './_components/ProjectHeader';
@@ -30,7 +30,11 @@ interface PageProps {
   params: { id: string };
 }
 
-function PageClient({ currentParty, currentUser }: { currentParty: Party; currentUser: User }) {
+export default async function Page({ params }: PageProps) {
+  const { id } = params;
+  const currentParty = await getParty(id);
+  const currentUser = await getCurrentUser();
+
   return (
     <Container
       maxWidth="lg"
@@ -89,18 +93,5 @@ function PageClient({ currentParty, currentUser }: { currentParty: Party; curren
         )}
       </Grid>
     </Container>
-  );
-}
-
-export default async function Page({ params }: PageProps) {
-  const { id } = params;
-  const currentParty = await getParty(id);
-  const currentUser = await getCurrentUser();
-
-  return (
-    <PageClient
-      currentParty={currentParty}
-      currentUser={currentUser || { id: '', name: '' }} // Provide a default value
-    />
   );
 }

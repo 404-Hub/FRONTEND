@@ -6,5 +6,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
 
   const project = await getProject(projectId);
 
+  console.log(project);
+
   return <ProjectTerminal project={project} />;
 }

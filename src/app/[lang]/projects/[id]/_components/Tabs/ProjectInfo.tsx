@@ -1,8 +1,8 @@
-import { Avatar, AvatarGroup, Card, CardContent, Chip, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
-import Description from '@/app/[lang]/projects/[id]/_components/Tabs/ProjectInfo/Description';
-import Team from '@/app/[lang]/projects/[id]/_components/Tabs/ProjectInfo/Team';
-import Author from '@/app/[lang]/projects/[id]/_components/Tabs/ProjectInfo/Author';
+import ProjectDescription from '@/components/project/ProjectDescription';
+import ProjectCreator from '@/components/project/ProjectCreator';
+import ProjectTeam from '@/components/project/ProjectTeam';
 
 type TProjectInfoProps = {
   project: any;
@@ -23,20 +23,20 @@ const ProjectInfo = (props: TProjectInfoProps) => {
           item
           xs={12}
         >
-          <Description project={project} />
+          <ProjectDescription project={project} />
         </Grid>
         <Grid
           item
           xs={12}
         >
-          <Author project={project} />
+          {project.party && <ProjectCreator party={project.party} />}
         </Grid>
         {project.party && (
           <Grid
             item
             xs={12}
           >
-            <Team project={project} />
+            {project.party && <ProjectTeam party={project.party} />}
           </Grid>
         )}
       </Grid>

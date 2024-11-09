@@ -1,6 +1,6 @@
 'use client';
 
-import { TIdea, TVote } from '@/types/findProjects';
+import { TProject, TVote } from '@/types/findProjects';
 import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -14,7 +14,7 @@ import Buttons from '@/app/[lang]/ideas/[id]/_components/IdeaDetails/Buttons';
 import RegisterModal from './RegisterModal';
 
 const IdeaDetails = (props: { id: number }) => {
-  const [idea, setIdea] = useState<TIdea>();
+  const [idea, setIdea] = useState<TProject>();
   const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false);
 
@@ -40,7 +40,7 @@ const IdeaDetails = (props: { id: number }) => {
 
   const fetchProject = async (ideaId: number) => {
     try {
-      const ideaInf: TIdea = await getIdea(ideaId);
+      const ideaInf: TProject = await getIdea(ideaId);
       setIdea(ideaInf);
       if (ideaInf.vote) {
         setVote(ideaInf.vote);
