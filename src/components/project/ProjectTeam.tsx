@@ -1,5 +1,23 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+'use client';
+
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Paper,
+  Typography,
+} from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import ActionButtons from '@/components/project/ProjectTeam/ActionButtons';
+import { cancelRequest } from '@/api/client/party';
+import Requests from '@/components/project/ProjectTeam/Requests';
+import React from 'react';
 
 type TProjectTeamMember = {
   id: number;
@@ -7,11 +25,36 @@ type TProjectTeamMember = {
   role: string;
 };
 
-export default function ProjectTeam({ party }: any) {
-  const { partyMembers, project } = party;
+export default function ProjectTeam({ party, project }: any) {
+  const { partyMembers } = party;
   const { creator } = project;
 
+  const { data: session, status } = useSession();
+
+  const router = useRouter();
+
   const filteredMembers = partyMembers.filter((member: TProjectTeamMember) => member.user?.id !== creator.id);
+
+  const userHasRequest = party.request !== null;
+
+  const isCreator = creator.id === session?.user.id;
+
+  const handleJoin = (role: string) => {
+    if (!session) {
+      router.push('/login');
+    }
+    router.push(`/projects/${project.id}/party/join?role=${role}`);
+  };
+
+  const handleEditRequest = () => {
+    router.push(`/projects/${project.id}/party/request/edit`);
+  };
+
+  const handleCancel = () => {
+    cancelRequest(project.id).then(() => {
+      alert('Request canceled');
+    });
+  };
 
   return (
     <Paper
@@ -19,12 +62,25 @@ export default function ProjectTeam({ party }: any) {
       elevation={8}
     >
       <div>
-        <Typography
-          variant="h6"
-          sx={{ paddingBottom: '1.5rem' }}
+        <Box
+          display={'flex'}
+          justifyContent={'space-between'}
         >
-          Project Team
-        </Typography>
+          <Typography
+            variant="h6"
+            sx={{ paddingBottom: '1.5rem' }}
+          >
+            Команда
+          </Typography>
+          <Box>
+            {isCreator && (
+              <>
+                <Requests projectId={project.id} />
+              </>
+            )}
+          </Box>
+        </Box>
+
         {filteredMembers.map((member: TProjectTeamMember) => (
           <Box
             key={member.id}
@@ -32,6 +88,7 @@ export default function ProjectTeam({ party }: any) {
               display: 'flex',
               gap: '1rem',
               justifyContent: 'space-between',
+              alignItems: 'center',
               backgroundColor: '#F4F6F8',
               marginBottom: '1rem',
               borderRadius: '8px',
@@ -59,26 +116,14 @@ export default function ProjectTeam({ party }: any) {
                 </Typography>
               </Link>
             </Box>
-            {!member.user && (
-              <Button
-                sx={{
-                  backgroundColor: '#18A670',
-                  color: '#FFFFFF',
-                  width: '3.3rem',
-                  height: '2.25rem',
-                  top: '0.75rem',
-                  right: '0.75rem',
-                  borderRadius: '0.375rem',
-                  padding: '0.375rem 0.75rem 0.375rem 0.75rem',
-                  gap: '1rem',
-                  '&:hover': {
-                    backgroundColor: 'purple',
-                  },
-                }}
-              >
-                Join
-              </Button>
-            )}
+            <ActionButtons
+              member={member.user.id}
+              role={member.role}
+              request={party.request}
+              handleJoin={handleJoin}
+              handleCancel={handleCancel}
+              handleEditRequest={handleEditRequest}
+            />
           </Box>
         ))}
       </div>

@@ -17,7 +17,6 @@ type RoleStepProps = {
 
 const RoleStep = (props: RoleStepProps) => {
   const { rolesInfo, role, setRole, hours, setHours, setDescription, description } = props;
-
   const handleClick = (roleId: string) => {
     setRole(roleId);
   };

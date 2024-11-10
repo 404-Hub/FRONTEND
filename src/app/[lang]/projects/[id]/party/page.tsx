@@ -1,6 +1,15 @@
 import { getParty } from '@/api/server/party';
 import { getCurrentUser } from '@/lib/session';
-import { Container, Grid } from '@mui/material';
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+} from '@mui/material';
 import React from 'react';
 import ProjectDescription from '@/components/project/ProjectDescription';
 import ProjectCreator from '@/components/project/ProjectCreator';
@@ -32,15 +41,22 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = params;
-  const currentParty = await getParty(id);
-  const currentUser = await getCurrentUser();
+  const [currentParty, currentUser] = await Promise.all([getParty(id), getCurrentUser()]);
+
+  const isCreator = Boolean(currentUser && currentUser.id && currentUser.id === currentParty.project.creator.id);
 
   return (
     <Container
       maxWidth="lg"
       disableGutters
+      sx={{
+        paddingBottom: 4,
+      }}
     >
-      <ProjectHeader project={currentParty.project} />
+      <ProjectHeader
+        project={currentParty.project}
+        isCreator={isCreator ?? false}
+      />
       <Grid
         container
         rowSpacing={1}
@@ -53,8 +69,14 @@ export default async function Page({ params }: PageProps) {
         >
           {/* Left side */}
           <ProjectDescription project={currentParty.project} />
-          <ProjectCreator party={currentParty} />
-          <ProjectTeam party={currentParty} />
+          <ProjectCreator
+            project={currentParty.project}
+            party={currentParty}
+          />
+          <ProjectTeam
+            project={currentParty.project}
+            party={currentParty}
+          />
         </Grid>
         <Grid
           item
@@ -85,11 +107,13 @@ export default async function Page({ params }: PageProps) {
             ]}
           />
         </Grid>
-        {currentUser && currentUser.id && currentUser.id === currentParty.project.creator.id && (
-          <ButtonCreator
-            currentUser={currentUser}
-            currentParty={currentParty}
-          />
+        {isCreator && (
+          <>
+            <ButtonCreator
+              currentUser={currentUser ?? { id: '', name: '' }}
+              currentParty={currentParty}
+            />
+          </>
         )}
       </Grid>
     </Container>

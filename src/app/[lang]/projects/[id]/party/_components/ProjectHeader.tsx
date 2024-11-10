@@ -1,9 +1,21 @@
+'use client';
+
 import { Typography, Box, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { TProject } from '@/types/findProjects';
+import CancelDialog from '@/app/[lang]/projects/[id]/party/_components/Dialogs/CancelDialog';
+import { useState } from 'react';
+import StartDialog from '@/app/[lang]/projects/[id]/party/_components/Dialogs/StartDialog';
+import { useRouter } from 'next/navigation';
+import { closeParty } from '@/api/client/party';
+import { startProject } from '@/api/client/project';
 
-export default function ProjectHeader({ project }: { project: any }) {
+export default function ProjectHeader({ project, isCreator }: { project: TProject; isCreator: boolean }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [openStartProject, setOpenStartProject] = useState(false);
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
       <Typography
@@ -13,56 +25,83 @@ export default function ProjectHeader({ project }: { project: any }) {
         {project.idea.title}
       </Typography>
 
-      <Box sx={{ display: 'flex', gap: '1rem', marginLeft: 'auto' }}>
-        <Button
-          sx={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '8px',
-            border: '1px solid #F4F6F8',
-            background: '#FFFFFF',
-            minWidth: 'auto',
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <EditIcon sx={{ color: '#161C24' }} />
-        </Button>
-        <Button
-          sx={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '8px',
-            border: '1px solid #F4F6F8',
-            background: '#FFFFFF',
-            minWidth: 'auto',
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <CloseIcon sx={{ color: '#161C24' }} />
-        </Button>
-        <Button
-          sx={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '8px',
-            border: '1px solid #F4F6F8',
-            background: '#FFFFFF',
-            minWidth: 'auto',
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <ArrowForwardIcon sx={{ color: '#161C24' }} />
-        </Button>
-      </Box>
+      {isCreator && (
+        <Box sx={{ display: 'flex', gap: '1rem', marginLeft: 'auto' }}>
+          <Button
+            onClick={() => router.push(`/projects/${project.id}/party/edit`)}
+            sx={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '8px',
+              border: '1px solid #F4F6F8',
+              background: '#FFFFFF',
+              minWidth: 'auto',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <EditIcon sx={{ color: '#161C24' }} />
+          </Button>
+          <Button
+            onClick={() => setOpen(true)}
+            sx={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '8px',
+              border: '1px solid #F4F6F8',
+              background: '#FFFFFF',
+              minWidth: 'auto',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CloseIcon sx={{ color: '#161C24' }} />
+          </Button>
+          <Button
+            onClick={() => setOpenStartProject(true)}
+            sx={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '8px',
+              border: '1px solid #F4F6F8',
+              background: '#FFFFFF',
+              minWidth: 'auto',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ArrowForwardIcon sx={{ color: '#161C24' }} />
+          </Button>
+          <CancelDialog
+            open={open}
+            setOpen={setOpen}
+            onClose={(value) => {
+              if (value) {
+                closeParty(project.id).then(() => {
+                  router.push(`/projects/${project.id}`);
+                });
+              }
+            }}
+          />
+          <StartDialog
+            openStartProject={openStartProject}
+            setOpenStartProject={setOpenStartProject}
+            onClose={(value) => {
+              if (value) {
+                startProject(project.id).then(() => {
+                  router.push(`/projects/${project.id}`);
+                });
+              }
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 }

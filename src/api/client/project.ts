@@ -29,6 +29,20 @@ export const closeProject = async (projectId: string) => {
   }
 };
 
+export const startProject = async (projectId: string) => {
+  try {
+    const response = await fetchClient({
+      method: 'PUT',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects/${projectId}/start`,
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateProjectStatus = async (projectId: string, status: string) => {
   try {
     const response = await fetchClient({

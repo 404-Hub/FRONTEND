@@ -76,13 +76,6 @@ const ProjectsList = (props: TProjectsListProps) => {
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
               >
                 <ButtonGroup>
-                  <Button
-                    onClick={() => {
-                      router.push(`/projects/${project.id}`);
-                    }}
-                  >
-                    В проект
-                  </Button>
                   {project.party && (
                     <Button
                       onClick={() => {
@@ -92,6 +85,13 @@ const ProjectsList = (props: TProjectsListProps) => {
                       В группу
                     </Button>
                   )}
+                  <Button
+                    onClick={() => {
+                      router.push(`/projects/${project.id}`);
+                    }}
+                  >
+                    В проект
+                  </Button>
                 </ButtonGroup>
               </Grid>
             </Grid>

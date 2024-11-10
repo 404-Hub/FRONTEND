@@ -1,11 +1,15 @@
 import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
 
-export default function ProjectCreator({ party }: { party: any }) {
-  const { project } = party;
-
+export default function ProjectCreator({ party, project }: { party: any; project: any }) {
   const { creator } = project;
 
-  const creatorRequest = party.partyMembers.find((member: any) => member.user?.id === creator.id);
+  console.log('creator', creator);
+
+  console.log('partyMembers', party.partyMembers);
+
+  const creatorRequest = party.partyMembers.find((member: any) => String(member.user?.id) === String(creator.id));
+
+  console.log('creatorRequest', creatorRequest);
 
   return (
     <Paper

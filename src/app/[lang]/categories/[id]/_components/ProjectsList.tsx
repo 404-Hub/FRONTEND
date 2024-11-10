@@ -109,6 +109,8 @@ const ProjectsList = (props: ProjectsListProps) => {
                       id,
                       title,
                       description,
+                      vote: project.vote,
+                      additional_info: project.additional_info,
                     }}
                   />
                 </Grid>

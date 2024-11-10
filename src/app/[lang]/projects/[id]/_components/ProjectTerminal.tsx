@@ -29,7 +29,7 @@ type TProjectTerminalProps = {
 const ProjectTerminal = (props: TProjectTerminalProps) => {
   const router = useRouter();
 
-  const [project, setProject] = useState(props.project);
+  const [project, setProject] = useState(props.project ?? {});
   const [activeTab, setActiveTab] = useState(0);
 
   const handleCloseProject = async () => {

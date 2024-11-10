@@ -10,6 +10,10 @@ type Options = {
   complex?: string;
 };
 
+export type TVote = {
+  type: 'up' | 'down' | 'none';
+};
+
 type FilterOption = {
   label: string;
   name: string;
@@ -40,6 +44,8 @@ type TIdea = {
   title: string;
   description: string;
   additional?: string;
+  vote: TVote | null;
+  additional_info: string;
 };
 
 type ProjectsListProps = {
@@ -117,14 +123,11 @@ type FilterProps = {
   filtersState: Record<string, string[]>;
 };
 
-export type TVote = {
-  type: 'up' | 'down' | 'none';
-};
-
 export type TProjectStatus = 'active' | 'review' | 'approved' | 'deployed' | 'archived' | 'assembling';
 
 export type TProject = {
-  id: number;
+  id: string;
+  idea: TIdea;
   title: string;
   category: string;
   description: string;

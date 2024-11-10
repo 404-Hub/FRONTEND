@@ -2,30 +2,28 @@
 
 import { Grid, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React, { useState } from 'react';
+import CancelDialog from '@/app/[lang]/projects/[id]/party/_components/Dialogs/CancelDialog';
+import StartDialog from '@/app/[lang]/projects/[id]/party/_components/Dialogs/StartDialog';
+import { closeParty } from '@/api/client/party';
+import { useRouter } from 'next/navigation';
+import { startProject } from '@/api/client/project';
 
 interface ButtonCreatorProps {
   currentUser: { id: string; name: string };
-  currentParty: { project: { creator: { id: string } } };
+  currentParty: { project: { id: string; creator: { id: string } } };
 }
 
 export default function ButtonCreator({ currentUser, currentParty }: ButtonCreatorProps) {
   const [open, setOpen] = useState(false);
+  const [openStartProject, setOpenStartProject] = useState(false);
+  const router = useRouter();
 
   const handleStartProject = () => {
-    // Logic to start the project
+    setOpenStartProject(true);
   };
 
   const handleCloseRequest = () => {
     setOpen(true);
-  };
-
-  const handleConfirmClose = () => {
-    // Logic to close the request
-    setOpen(false);
-  };
-
-  const handleCancelClose = () => {
-    setOpen(false);
   };
 
   return (
@@ -66,30 +64,28 @@ export default function ButtonCreator({ currentUser, currentParty }: ButtonCreat
           </Button>
         </Grid>
       </Grid>
-      <Dialog
+      <CancelDialog
         open={open}
-        onClose={handleCancelClose}
-      >
-        <DialogTitle>Подтверждение</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Вы уверены, что хотите закрыть запрос?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleCancelClose}
-            color="primary"
-          >
-            Отмена
-          </Button>
-          <Button
-            onClick={handleConfirmClose}
-            color="primary"
-            autoFocus
-          >
-            Подтвердить
-          </Button>
-        </DialogActions>
-      </Dialog>
+        setOpen={setOpen}
+        onClose={(value) => {
+          if (value) {
+            closeParty(currentParty.project.id).then(() => {
+              router.push(`/projects/${currentParty.project.id}`);
+            });
+          }
+        }}
+      />
+      <StartDialog
+        openStartProject={openStartProject}
+        setOpenStartProject={setOpenStartProject}
+        onClose={(value) => {
+          if (value) {
+            startProject(currentParty.project.id).then(() => {
+              router.push(`/projects/${currentParty.project.id}`);
+            });
+          }
+        }}
+      />
     </>
   );
 }

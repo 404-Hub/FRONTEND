@@ -29,14 +29,24 @@ const ProjectInfo = (props: TProjectInfoProps) => {
           item
           xs={12}
         >
-          {project.party && <ProjectCreator party={project.party} />}
+          {project.party && (
+            <ProjectCreator
+              project={project}
+              party={project.party}
+            />
+          )}
         </Grid>
         {project.party && (
           <Grid
             item
             xs={12}
           >
-            {project.party && <ProjectTeam party={project.party} />}
+            {project.party && (
+              <ProjectTeam
+                project={project}
+                party={project.party}
+              />
+            )}
           </Grid>
         )}
       </Grid>

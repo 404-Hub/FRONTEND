@@ -1,6 +1,6 @@
 'use client';
 
-import { TProject, TVote } from '@/types/findProjects';
+import { TIdea, TProject, TVote } from '@/types/findProjects';
 import { Paper, Box, Typography, Button, Icon, Skeleton } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -14,7 +14,7 @@ import Buttons from '@/app/[lang]/ideas/[id]/_components/IdeaDetails/Buttons';
 import RegisterModal from './RegisterModal';
 
 const IdeaDetails = (props: { id: number }) => {
-  const [idea, setIdea] = useState<TProject>();
+  const [idea, setIdea] = useState<TIdea>();
   const [vote, setVote] = useState<TVote>({ type: 'none' });
   const [showModal, setShowModal] = useState(false);
 
@@ -38,9 +38,9 @@ const IdeaDetails = (props: { id: number }) => {
     return 0;
   }, [idea]);
 
-  const fetchProject = async (ideaId: number) => {
+  const fetchIdea = async (ideaId: number) => {
     try {
-      const ideaInf: TProject = await getIdea(ideaId);
+      const ideaInf: TIdea = await getIdea(ideaId);
       setIdea(ideaInf);
       if (ideaInf.vote) {
         setVote(ideaInf.vote);
@@ -79,14 +79,14 @@ const IdeaDetails = (props: { id: number }) => {
     try {
       const voteType: 'up' | 'down' = isUpvote ? 'up' : 'down';
       await voteIdea(String(idea.id), voteType);
-      await fetchProject(idea.id);
+      await fetchIdea(Number(idea.id));
     } catch (error) {
       console.error('Произошла ошибка во время голосования:', error);
     }
   };
 
   useEffect(() => {
-    fetchProject(Number(props.id));
+    fetchIdea(Number(props.id));
   }, [props.id]);
 
   return (
