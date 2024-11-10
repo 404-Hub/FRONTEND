@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { closeProject, updateProjectStatus } from '@/api/client/project';
 import Soon from '@/components/base/Soon';
 import ActionButtons from '@/app/[lang]/projects/[id]/_components/ActionButtons';
+import { useSession } from 'next-auth/react';
 
 type TProjectTerminalProps = {
   project: any;
@@ -31,6 +32,10 @@ const ProjectTerminal = (props: TProjectTerminalProps) => {
 
   const [project, setProject] = useState(props.project ?? {});
   const [activeTab, setActiveTab] = useState(0);
+
+  const { data: session, status } = useSession();
+
+  const isCreator = Boolean(project.creator && session && project.creator.id === session.user.id);
 
   const handleCloseProject = async () => {
     const response = await closeProject(project.id);
@@ -68,11 +73,13 @@ const ProjectTerminal = (props: TProjectTerminalProps) => {
             </Typography>
           </Box>
           <Box>
-            <ActionButtons
-              project={project}
-              handleCloseProject={handleCloseProject}
-              handleRestoreProject={handleRestoreProject}
-            />
+            {isCreator && (
+              <ActionButtons
+                project={project}
+                handleCloseProject={handleCloseProject}
+                handleRestoreProject={handleRestoreProject}
+              />
+            )}
           </Box>
         </Grid>
       </Box>

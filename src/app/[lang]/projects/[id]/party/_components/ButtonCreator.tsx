@@ -10,7 +10,7 @@ import { startProject } from '@/api/client/project';
 
 interface ButtonCreatorProps {
   currentUser: { id: string; name: string };
-  currentParty: { project: { id: string; creator: { id: string } } };
+  currentParty: { status: string; project: { id: string; creator: { id: string } } };
 }
 
 export default function ButtonCreator({ currentUser, currentParty }: ButtonCreatorProps) {
@@ -18,8 +18,16 @@ export default function ButtonCreator({ currentUser, currentParty }: ButtonCreat
   const [openStartProject, setOpenStartProject] = useState(false);
   const router = useRouter();
 
+  console.log('currentParty:', currentParty);
+
+  const isHidden = currentParty.status === 'hidden';
+
   const handleStartProject = () => {
-    setOpenStartProject(true);
+    if (isHidden) {
+      router.push(`/projects/${currentParty.project.id}`);
+    } else {
+      setOpenStartProject(true);
+    }
   };
 
   const handleCloseRequest = () => {
@@ -42,7 +50,7 @@ export default function ButtonCreator({ currentUser, currentParty }: ButtonCreat
             }}
             onClick={handleCloseRequest}
           >
-            Закрыть запрос
+            {isHidden ? 'Распустить группу' : 'Закрыть запрос'}
           </Button>
         </Grid>
         <Grid item>
@@ -60,7 +68,7 @@ export default function ButtonCreator({ currentUser, currentParty }: ButtonCreat
             }}
             onClick={handleStartProject}
           >
-            Начать проект
+            {isHidden ? 'В проект' : 'Начать проект'}
           </Button>
         </Grid>
       </Grid>

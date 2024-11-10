@@ -18,8 +18,22 @@ export const storeParty = async (data: {}) => {
 export const closeParty = async (projectId: string) => {
   try {
     const response = await fetchClient({
-      method: 'POST',
+      method: 'PUT',
       url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects/${projectId}/parties/close`,
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const leaveParty = async (projectId: string) => {
+  try {
+    const response = await fetchClient({
+      method: 'PUT',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects/${projectId}/parties/leave`,
     });
     if (!response.ok) throw response;
 
@@ -76,6 +90,34 @@ export const getPartyRequests = async (projectId: string) => {
 
     const partyRequests = await response.json();
     return partyRequests.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const rejectRequest = async (projectId: string, requestId: string) => {
+  try {
+    const response = await fetchClient({
+      method: 'PUT',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects/${projectId}/parties/requests/${requestId}/reject`,
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const acceptRequest = async (projectId: string, requestId: string) => {
+  try {
+    const response = await fetchClient({
+      method: 'PUT',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/projects/${projectId}/parties/requests/${requestId}/accept`,
+    });
+    if (!response.ok) throw response;
+
+    return await response.json();
   } catch (error) {
     console.log(error);
   }

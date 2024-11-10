@@ -14,6 +14,7 @@ import React from 'react';
 import ProjectDescription from '@/components/project/ProjectDescription';
 import ProjectCreator from '@/components/project/ProjectCreator';
 import ProjectTeam from '@/components/project/ProjectTeam';
+import { notFound } from 'next/navigation';
 import Chat from './_components/Chat';
 import ButtonCreator from './_components/ButtonCreator';
 import ProjectHeader from './_components/ProjectHeader';
@@ -45,6 +46,15 @@ export default async function Page({ params }: PageProps) {
 
   const isCreator = Boolean(currentUser && currentUser.id && currentUser.id === currentParty.project.creator.id);
 
+  if (currentParty.status === 'hidden' && !isCreator) {
+    if (currentUser) {
+      const isMember = Boolean(currentParty.partyMembers.find((member: any) => member.user.id === currentUser.id));
+      if (!isMember) {
+        notFound();
+      }
+    }
+  }
+
   return (
     <Container
       maxWidth="lg"
@@ -55,6 +65,7 @@ export default async function Page({ params }: PageProps) {
     >
       <ProjectHeader
         project={currentParty.project}
+        party={currentParty}
         isCreator={isCreator ?? false}
       />
       <Grid

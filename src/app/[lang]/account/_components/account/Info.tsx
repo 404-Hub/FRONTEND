@@ -54,8 +54,6 @@ const Info = () => {
       }
     });
 
-    console.log('formData', formData);
-
     saveUserProfile(formData).then((res) => {
       if (res) {
         setOpen(true);

@@ -8,7 +8,7 @@ export default async function VerifyEmail(props: { token: string }) {
   // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
   //   event.preventDefault();
   // eslint-disable-next-line no-console
-  console.log('Here: ', props.token);
+  // console.log('Here: ', props.token);
   // eslint-disable-next-line no-console
   // console.log('Test: ', props.token);
 
@@ -18,7 +18,7 @@ export default async function VerifyEmail(props: { token: string }) {
   });
 
   // eslint-disable-next-line no-console
-  console.log(response);
+  // console.log(response);
 
   if (!response.ok) {
     throw response;

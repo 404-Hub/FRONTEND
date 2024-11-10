@@ -24,7 +24,10 @@ const CancelDialog = (props: TCancelDialogProps) => {
     >
       <DialogTitle>Подтверждение</DialogTitle>
       <DialogContent>
-        <DialogContentText>Вы уверены, что хотите закрыть запрос?</DialogContentText>
+        <DialogContentText>
+          Вы уверены, что хотите закрыть запрос? Все активные заявки будут автоматически отклонены а текущие члены
+          команды распущены
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button

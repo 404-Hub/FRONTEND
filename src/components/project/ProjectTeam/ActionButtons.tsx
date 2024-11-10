@@ -1,6 +1,9 @@
-import { Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 type TPartyRequest = {
   id: string;
@@ -9,16 +12,20 @@ type TPartyRequest = {
   role: string;
   info: string;
   time: number;
-  status: string;
+  status: number;
 };
 
 type TActionButtonsProps = {
   member: string | null;
   role: string;
   request: TPartyRequest | null;
+  isCreator: boolean;
+  isAlreadyMember: boolean;
   handleJoin: (role: string) => void;
   handleCancel: () => void;
   handleEditRequest: () => void;
+  handleAcceptRequest: () => void;
+  handleDeclineRequest: () => void;
 };
 
 const buttonStyle = {
@@ -30,34 +37,72 @@ const buttonStyle = {
 };
 
 const ActionButtons = (props: TActionButtonsProps) => {
-  const { member, role, request, handleJoin, handleCancel, handleEditRequest } = props;
+  const {
+    member,
+    role,
+    request,
+    isCreator,
+    isAlreadyMember,
+    handleJoin,
+    handleCancel,
+    handleEditRequest,
+    handleAcceptRequest,
+    handleDeclineRequest,
+  } = props;
 
   if (request && request.role === role) {
-    return (
-      <Box>
-        <Button
-          onClick={handleEditRequest}
-          variant={'contained'}
-          color={'warning'}
-          sx={{ ...buttonStyle, marginRight: '0.5rem' }}
-        >
-          <EditIcon />
-        </Button>
-        <Button
-          onClick={handleCancel}
-          variant={'outlined'}
-          color={'error'}
-          sx={buttonStyle}
-        >
-          <DeleteOutlineOutlinedIcon />
-        </Button>
-      </Box>
-    );
+    if (request.status === 3) {
+      return (
+        <>
+          <Typography
+            variant="body2"
+            sx={{ color: '#647380' }}
+          >
+            Вас пригласили
+          </Typography>
+          <Box
+            display={'flex'}
+            flexDirection={'column'}
+            sx={{ padding: '1rem' }}
+          >
+            <Button onClick={handleAcceptRequest}>
+              <CheckIcon color={'success'} />
+            </Button>
+            <Button onClick={handleDeclineRequest}>
+              <CloseIcon color={'error'} />
+            </Button>
+          </Box>
+        </>
+      );
+    }
+
+    if (request.status === 0) {
+      return (
+        <Box>
+          <Button
+            onClick={handleEditRequest}
+            variant={'contained'}
+            color={'warning'}
+            sx={{ ...buttonStyle, marginRight: '0.5rem' }}
+          >
+            <EditIcon />
+          </Button>
+          <Button
+            onClick={handleCancel}
+            variant={'outlined'}
+            color={'error'}
+            sx={buttonStyle}
+          >
+            <DeleteOutlineOutlinedIcon />
+          </Button>
+        </Box>
+      );
+    }
   }
 
   return (
     <>
-      {!member && (
+      {!member && !isCreator && !isAlreadyMember && (
         <Button
           onClick={() => {
             handleJoin(role);

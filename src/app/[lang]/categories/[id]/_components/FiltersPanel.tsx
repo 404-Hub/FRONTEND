@@ -86,7 +86,6 @@ const FiltersPanel: React.FC<FilterBlockProps> = (props) => {
                 padding: 2,
               }}
               onClick={() => {
-                console.log('click');
                 setShowFilters(false);
               }}
             >
