@@ -44,6 +44,11 @@ export default async function Page({ params }: PageProps) {
   const { id } = params;
   const [currentParty, currentUser] = await Promise.all([getParty(id), getCurrentUser()]);
 
+  console.log('currentParty:', currentParty);
+  if (currentParty && currentParty.is_active === 0) {
+    notFound();
+  }
+
   const isCreator = Boolean(currentUser && currentUser.id && currentUser.id === currentParty.project.creator.id);
 
   if (currentParty.status === 'hidden' && !isCreator) {

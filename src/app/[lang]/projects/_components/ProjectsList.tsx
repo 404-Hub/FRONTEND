@@ -76,7 +76,7 @@ const ProjectsList = (props: TProjectsListProps) => {
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
               >
                 <ButtonGroup>
-                  {project.party && (
+                  {project.party && project.party.is_active && (
                     <Button
                       onClick={() => {
                         router.push(`/projects/${project.id}/party`);
